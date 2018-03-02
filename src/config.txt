@@ -1,0 +1,9 @@
+femur-anatomical-landmarks-size, 23
+humerus-anatomical-landmarks-size, 21
+tibia-anatomical-landmarks-size, 8
+femur-right-logistic-regression-model,7.910,0.062,0.002,0.337,-0.114,0.144,-0.849,-0.174,0.011,-1.715
+humerus-right-logistic-regression-model,-132.074,0.131,0.611,-0.188,-0.797,-0.258,2.073,0.475,0.117,-6.601
+tibia-right-logistic-regression-model,-12.776,0.039,-0.433,0.165,0.210,-0.114,0.119,-1.657
+femur-left-logistic-regression-model,7.910,0.062,0.002,0.337,-0.114,0.144,-0.849,-0.174,0.011,-1.715
+humerus-left-logistic-regression-model,-132.074,0.131,0.611,-0.188,-0.797,-0.258,2.073,0.475,0.117,-6.601
+tibia-left-logistic-regression-model,-12.776,0.039,-0.433,0.165,0.210,-0.114,0.119,-1.657
