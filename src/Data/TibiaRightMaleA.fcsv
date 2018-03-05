@@ -1,0 +1,26 @@
+# Fiducial List file /tibARightMale.fcsv
+# version = 2
+# name = tibARightMale
+# numPoints = 8
+# symbolScale = 5
+# symbolType = 12
+# visibility = 1
+# textScale = 4.5
+# color = 0.4,1,1
+# selectedColor = 1,0.5,0.5
+# opacity = 1
+# ambient = 0
+# diffuse = 1
+# specular = 0
+# power = 1
+# locked = 0
+# numberingScheme = 0
+# columns = label,x,y,z,sel,vis
+tibARightMale-P,5.70731,-22.0146,-144.377,1,1
+tibARightMale-P1,-22.3889,-6.71643,-132.412,1,1
+tibARightMale-P2,33.8059,5.10923,141.401,1,1
+tibARightMale-P3,-38.5344,22.8682,145.759,1,1
+tibARightMale-P4,-16.8421,-24.0916,117.285,1,1
+tibARightMale-P5,0.19829,17.4161,158.201,1,1
+tibARightMale-P6,10.2187,33.2686,135.17,1,1
+tibARightMale-P7,-26.1637,34.1923,142.151,1,1

@@ -1,0 +1,26 @@
+# Fiducial List file /tibCLeftFemale.fcsv
+# version = 2
+# name = tibCLeftFemale
+# numPoints = 8
+# symbolScale = 5
+# symbolType = 12
+# visibility = 1
+# textScale = 4.5
+# color = 0.4,1,1
+# selectedColor = 1,0.5,0.5
+# opacity = 1
+# ambient = 0
+# diffuse = 1
+# specular = 0
+# power = 1
+# locked = 0
+# numberingScheme = 0
+# columns = label,x,y,z,sel,vis
+tibCLeftFemale-P,-14.0803,-17.4862,-172.704,1,1
+tibCLeftFemale-P1,-15.4266,0.88499,-164.81,1,1
+tibCLeftFemale-P2,-33.8566,7.19911,168.813,1,1
+tibCLeftFemale-P3,33.8043,8.78331,165.143,1,1
+tibCLeftFemale-P4,11.9232,-22.173,140.623,1,1
+tibCLeftFemale-P5,-5.00167,8.28611,182.786,1,1
+tibCLeftFemale-P6,-17.467,23.8121,167.494,1,1
+tibCLeftFemale-P7,18.8865,25.5358,164.515,1,1

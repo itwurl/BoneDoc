@@ -1,0 +1,39 @@
+# Fiducial List file /humCRightMale.fcsv
+# version = 2
+# name = humCRightMale
+# numPoints = 21
+# symbolScale = 5
+# symbolType = 12
+# visibility = 1
+# textScale = 4.5
+# color = 0.4,1,1
+# selectedColor = 1,0.5,0.5
+# opacity = 1
+# ambient = 0
+# diffuse = 1
+# specular = 0
+# power = 1
+# locked = 0
+# numberingScheme = 0
+# columns = label,x,y,z,sel,vis
+humCRightMale-P,33.9499,-7.76022,-143.021,1,1
+humCRightMale-P1,-35.3983,-11.0216,-136.669,1,1
+humCRightMale-P2,-0.791221,-23.5488,137.039,1,1
+humCRightMale-P3,-21.6072,-5.65189,150.639,1,1
+humCRightMale-P4,1.51572,-2.53174,-125.576,1,1
+humCRightMale-P5,16.513,-4.93019,-137.522,1,1
+humCRightMale-P6,-14.7317,-0.696793,-136.991,1,1
+humCRightMale-P7,-1.31303,-8.79709,-146.83,1,1
+humCRightMale-P8,9.52049,-18.9836,-162.909,1,1
+humCRightMale-P9,7.91774,8.51385,163.897,1,1
+humCRightMale-P10,13.3011,-13.0743,132.755,1,1
+humCRightMale-P11,14.1053,14.2884,117.316,1,1
+humCRightMale-P12,-7.52722,26.3194,138.236,1,1
+humCRightMale-P13,7.62258,20.0198,160.333,1,1
+humCRightMale-P14,22.0074,7.42349,158.034,1,1
+humCRightMale-P15,12.0302,-6.66996,159.193,1,1
+humCRightMale-P16,-2.74507,4.15191,163.028,1,1
+humCRightMale-P17,-11.3134,14.7682,155.712,1,1
+humCRightMale-P18,5.35727,32.2046,141.814,1,1
+humCRightMale-P19,29.3286,15.5736,134.944,1,1
+humCRightMale-P20,27.8903,-3.89534,144.592,1,1

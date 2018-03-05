@@ -1,0 +1,41 @@
+# Fiducial List file /femALeftFemale.fcsv
+# version = 2
+# name = femALeftFemale
+# numPoints = 23
+# symbolScale = 5
+# symbolType = 12
+# visibility = 1
+# textScale = 4.5
+# color = 0.4,1,1
+# selectedColor = 1,0.5,0.5
+# opacity = 1
+# ambient = 0
+# diffuse = 1
+# specular = 0
+# power = 1
+# locked = 0
+# numberingScheme = 0
+# columns = label,x,y,z,sel,vis
+femALeftFemale-P,-39.2835,-22.9141,182.884,1,1
+femALeftFemale-P1,-18.3026,6.08242,135.153,1,1
+femALeftFemale-P2,14.0543,0.433413,188.596,1,1
+femALeftFemale-P3,12.5376,-27.1462,161.873,1,1
+femALeftFemale-P4,6.41529,16.3837,-178.066,1,1
+femALeftFemale-P5,22.9555,-19.2014,-164.984,1,1
+femALeftFemale-P6,43.9245,14.1791,-165.966,1,1
+femALeftFemale-P7,-29.4917,18.547,-173.42,1,1
+femALeftFemale-P8,-10.233,21.78,-197.598,1,1
+femALeftFemale-P9,-19.9343,-24.0087,199.254,1,1
+femALeftFemale-P10,-1.02731,-29.7752,168.957,1,1
+femALeftFemale-P11,-17.8207,-21.8693,155.324,1,1
+femALeftFemale-P12,-9.16368,-4.43729,171.082,1,1
+femALeftFemale-P13,-10.4695,-19.14,195.575,1,1
+femALeftFemale-P14,-26.5915,-8.19739,194.925,1,1
+femALeftFemale-P15,-30.4784,-28.3594,194.351,1,1
+femALeftFemale-P16,-14.0523,-36.4859,190.471,1,1
+femALeftFemale-P17,-11.6735,-5.29993,183.288,1,1
+femALeftFemale-P18,-35.1133,-6.74062,170.643,1,1
+femALeftFemale-P19,-27.6038,-35.7364,163.364,1,1
+femALeftFemale-P20,-5.87561,-35.9359,176.951,1,1
+femALeftFemale-P21,29.7579,37.0076,-167.417,1,1
+femALeftFemale-P22,-12.6138,42.4224,-175.817,1,1
