@@ -1,0 +1,41 @@
+# Fiducial List file /femCRightMale.fcsv
+# version = 2
+# name = femCRightMale
+# numPoints = 23
+# symbolScale = 5
+# symbolType = 12
+# visibility = 1
+# textScale = 4.5
+# color = 0.4,1,1
+# selectedColor = 1,0.5,0.5
+# opacity = 1
+# ambient = 0
+# diffuse = 1
+# specular = 0
+# power = 1
+# locked = 0
+# numberingScheme = 0
+# columns = label,x,y,z,sel,vis
+femCRightMale-P,46.1697,-11.9459,250.953,1,1
+femCRightMale-P1,25.2572,5.88962,173.206,1,1
+femCRightMale-P2,-17.8159,18.9991,245.085,1,1
+femCRightMale-P3,-16.8674,-21.3537,212.747,1,1
+femCRightMale-P4,-13.0562,19.3832,-236.024,1,1
+femCRightMale-P5,-30.0939,-25.9359,-218.312,1,1
+femCRightMale-P6,-59.8738,14.6946,-220.044,1,1
+femCRightMale-P7,35.0665,9.58082,-226.387,1,1
+femCRightMale-P8,10.3267,21.5257,-257.258,1,1
+femCRightMale-P9,24.0582,-21.9933,265.98,1,1
+femCRightMale-P10,-3.26913,-23.5977,219.418,1,1
+femCRightMale-P11,18.7257,-17.1026,206.635,1,1
+femCRightMale-P12,2.46367,0.801498,231.372,1,1
+femCRightMale-P13,7.89037,-13.0368,264.134,1,1
+femCRightMale-P14,17.5126,-36.8584,258.89,1,1
+femCRightMale-P15,39.1854,-31.5977,253.436,1,1
+femCRightMale-P16,34.574,-3.81054,257.441,1,1
+femCRightMale-P17,-2.29404,-18.6735,243.58,1,1
+femCRightMale-P18,20.3461,-41.4258,227.23,1,1
+femCRightMale-P19,45.422,-8.41306,226.477,1,1
+femCRightMale-P20,20.6136,7.9619,242.475,1,1
+femCRightMale-P21,-40.9378,43.5129,-228.069,1,1
+femCRightMale-P22,12.6577,44.7389,-232.708,1,1
