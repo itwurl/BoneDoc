@@ -1,20 +1,18 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 #include "BoneDocServer.h"
-#include "Femur.h"
 
+static std::string BONEDOC_PATH;
 
-BoneDocServer::BoneDocServer() {
-
+BoneDocServer::BoneDocServer(const char* path) {
+    
+    // extract application path 
+    boost::filesystem::path full_path(boost::filesystem::initial_path<boost::filesystem::path>());
+    full_path = boost::filesystem::system_complete(boost::filesystem::path(path));
+    std::size_t found = full_path.string().find_last_of("/\\");
+    BONEDOC_PATH = full_path.string().substr(0, found);
 }
 
 void session(boost::asio::ip::tcp::socket socket)
 {
-    
     try
     {
         for (;;)
@@ -29,22 +27,31 @@ void session(boost::asio::ip::tcp::socket socket)
 
             // vars
             std::string request_header = "";
-            std::string anatomy = "";
             std::string dataset = "";
+            std::string anatomy = "";
+            std::string side = "";
+            std::string gender = "";
+            std::string ethnic_group = "";
             std::string study = "";
             
             // print the request (header), each line is separated by carriage return symbol '\r'.
-            std::cout << "Client request:" << "\n";
+            //std::cout << "Client request:" << "\n";
 
             while (std::getline(request_stream, request_header) && request_header != "\r")
             {
-                std::cout << request_header << "\n";
+                //std::cout << request_header << "\n";
                 if (request_header.compare(0, 7, "Anatomy") == 0)
                     anatomy = request_header.substr(9, request_header.length()-10);
                 else if (request_header.compare(0, 7, "Dataset") == 0)
                     dataset = request_header.substr(9, request_header.length()-10);
                 else if (request_header.compare(0, 5, "Study") == 0)
                     study = request_header.substr(7, request_header.length()-8);
+                else if (request_header.compare(0, 4, "Side") == 0)
+                    side = request_header.substr(6, request_header.length()-7);
+                else if (request_header.compare(0, 6, "Gender") == 0)
+                    gender = request_header.substr(8, request_header.length()-9);
+                else if (request_header.compare(0, 11, "EthnicGroup") == 0)
+                    ethnic_group = request_header.substr(13, request_header.length()-14);
             }
             std::cout << std::endl;
 
@@ -56,49 +63,76 @@ void session(boost::asio::ip::tcp::socket socket)
             response_stream << "Content-Type: text/plain\r\n";
             response_stream << "Access-Control-Allow-Origin: *\r\n";
             response_stream << "Connection: keep alive\r\n";
-            response_stream << "Access-Control-Allow-Headers: Anatomy,Dataset,Study\r\n\r\n";
+            response_stream << "Access-Control-Allow-Headers: Dataset,Anatomy,Side,Gender,EthnicGroup,Study\r\n\r\n";
             
             // client message is only considered for analysis if header consists of meta infos
-            if ((anatomy != "") && (dataset != "") && (study == "Thesis"))
-            {
-                std::cout << "Starting study 'Thesis' with:" << "\n";
+            if ((anatomy != "") && (dataset != "") && (study == "Thesis")) {
 
-                std::cout << "anatomy: " << anatomy << std::endl;
-                std::cout << "dataset: " << dataset << std::endl;
                 std::cout << "study: " << study << std::endl;
-
+                std::cout << "dataset: " << dataset << std::endl;
+                std::cout << "anatomy: " << anatomy << std::endl;
+                std::cout << "side: " << side << std::endl;
+                std::cout << "gender: " << gender << std::endl;
+                std::cout << "ethnic group: " << ethnic_group << std::endl;
+                
                 std::cout << "\n";
 
                 // concatenate correct path's (DEBUG: currently 'VTK' and 'FCSV' format required!)
                 std::stringstream anatomicalMeshPath;
-                anatomicalMeshPath << "Data/" << dataset << ".vtk";
+                anatomicalMeshPath << BONEDOC_PATH << "/Data/" << dataset << ".vtk";
 
                 std::stringstream anatomicallandmarksPath;
-                anatomicallandmarksPath << "Data/" << dataset << ".fcsv";
+                anatomicallandmarksPath << BONEDOC_PATH << "/Data/" << dataset << ".fcsv";
+
+                std::stringstream configPath;
+                configPath << BONEDOC_PATH << "/config.txt";
 
                 // DEBUG: recognize anatomy from dataset name
-		std::transform(dataset.begin(), dataset.end(), dataset.begin(), ::toupper);
-		if (dataset.find("FEMUR") != std::string::npos)
+		if (anatomy.compare("Femur") == 0)
                 {
-                    Femur femur(anatomicalMeshPath.str(), anatomicallandmarksPath.str());
+                    Femur femur(anatomicalMeshPath.str(), anatomicallandmarksPath.str(), configPath.str());
                     femur.Thesis();
 
-                    response_stream << "anteversion: " << femur.anteversion << std::endl;
-                    response_stream << "ap with: " << femur.AP_width << std::endl;
-                    response_stream << "bone length: " << femur.bone_length << std::endl;
-                    response_stream << "head radius: " << femur.head_radius << std::endl;
-                    response_stream << "inclination: " << femur.inclination << std::endl;
-                    response_stream << "lateral offset: " << femur.lateral_offset << std::endl;
-                    response_stream << "medial offset: " << femur.medial_offset << std::endl;
-                    response_stream << "ml with: " << femur.ML_width << std::endl;
+                    response_stream << "bone length: " << float(int(femur.bone_length * 100)) / 100 << "mm" << std::endl;
+                    response_stream << "medial offset: " << float(int(femur.medial_offset * 100)) / 100 << "mm" << std::endl;
+                    response_stream << "lateral offset: " << float(int(femur.lateral_offset * 100)) / 100 << "mm" << std::endl;
+                    response_stream << "ml width: " << float(int(femur.ML_width * 100)) / 100 << "mm" << std::endl;
+                    response_stream << "ap width: " << float(int(femur.AP_width * 100)) / 100 << "mm" << std::endl;
+                    response_stream << "head radius: " << float(int(femur.head_radius * 100)) / 100 << "mm" << std::endl;
+                    response_stream << "inclination: " << float(int(femur.inclination * 100)) / 100 << "°" << std::endl;
+                    response_stream << "anteversion: " << float(int(femur.anteversion * 100)) / 100 << "°" << std::endl;
+                    response_stream << "asian: " << femur.asian << "%" << std::endl;
+                    response_stream << "caucasian: " << femur.caucasian << "%" << std::endl;
                 }
-                else if (dataset.find("HUMERUS") != std::string::npos)
+                else if (anatomy.compare("Humerus") == 0)
                 {
-                    response_stream << "Under construction!" << std::endl;
+                    Humerus humerus(anatomicalMeshPath.str(), anatomicallandmarksPath.str(), configPath.str());
+                    humerus.Thesis();
+                    
+                    response_stream << "bone length: " << float(int(humerus.bone_length * 100)) / 100 << "mm" << std::endl;
+                    response_stream << "medial offset: " << float(int(humerus.medial_offset * 100)) / 100 << "mm" << std::endl;
+                    response_stream << "lateral offset: " << float(int(humerus.lateral_offset * 100)) / 100 << "mm" << std::endl;
+                    response_stream << "ml width: " << float(int(humerus.ML_width * 100)) / 100 << "mm" << std::endl;
+                    response_stream << "ap width: " << float(int(humerus.AP_width * 100)) / 100 << "mm" << std::endl;
+                    response_stream << "head radius: " << float(int(humerus.head_radius * 100)) / 100 << "mm" << std::endl;
+                    response_stream << "inclination: " << float(int(humerus.inclination * 100)) / 100 << "°" << std::endl;
+                    response_stream << "retroversion: " << float(int(humerus.retroversion * 100)) / 100 << "°" << std::endl;
+                    response_stream << "asian: " << humerus.asian << "%" << std::endl;
+                    response_stream << "caucasian: " << humerus.caucasian << "%" << std::endl;
 		}
-		else if (dataset.find("TIBIA") != std::string::npos)
+		else if (anatomy.compare("Tibia") == 0)
                 {
-                    response_stream << "Under construction!" << std::endl;
+                    Tibia tibia(anatomicalMeshPath.str(), anatomicallandmarksPath.str(), configPath.str());
+                    tibia.Thesis();
+                    
+                    response_stream << "bone length: " << float(int(tibia.bone_length * 100)) / 100 << "mm" << std::endl;
+                    response_stream << "medial offset: " << float(int(tibia.medial_offset * 100)) / 100 << "mm" << std::endl;
+                    response_stream << "lateral offset: " << float(int(tibia.lateral_offset * 100)) / 100 << "mm" << std::endl;
+                    response_stream << "ml width: " << float(int(tibia.ML_width * 100)) / 100 << "mm" << std::endl;
+                    response_stream << "ap width: " << float(int(tibia.AP_width * 100)) / 100 << "mm" << std::endl;
+                    response_stream << "torsion: " << float(int(tibia.torsion * 100)) / 100 << "°" << std::endl;
+                    response_stream << "asian: " << tibia.asian << "%" << std::endl;
+                    response_stream << "caucasian: " << tibia.caucasian << "%" << std::endl;
                 }
 
             }
@@ -106,7 +140,7 @@ void session(boost::asio::ip::tcp::socket socket)
             // write to socket
             boost::asio::write(socket, response);
             
-            // mit break funktioniert es - Nachricht wird dann gesendet!!!!!!!!!
+            // break finally sends message
             break;
         }
 
@@ -132,7 +166,6 @@ void BoneDocServer::Start() {
             //std::cout << "Listening on port " << BONEDOC_SERVER_PORT_STR << " ..." << std::endl << std::endl;
             boost::asio::ip::tcp::socket socket(io_service);
             a.accept(socket);
-            //std::cout << "Client " << socket.remote_endpoint().address() << " connected!" << std::endl << std::endl;
             std::thread(session, std::move(socket)).detach();
         }
 
