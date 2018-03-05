@@ -79,10 +79,10 @@ void session(boost::asio::ip::tcp::socket socket)
 
                 // concatenate correct path's (DEBUG: currently 'VTK' and 'FCSV' format required!)
                 std::stringstream anatomicalMeshPath;
-                anatomicalMeshPath << BONEDOC_PATH << "/Data/" << dataset << ".vtk";
+                anatomicalMeshPath << BONEDOC_PATH << "/data/" << dataset << ".vtk";
 
                 std::stringstream anatomicallandmarksPath;
-                anatomicallandmarksPath << BONEDOC_PATH << "/Data/" << dataset << ".fcsv";
+                anatomicallandmarksPath << BONEDOC_PATH << "/data/" << dataset << ".fcsv";
 
                 std::stringstream configPath;
                 configPath << BONEDOC_PATH << "/config.txt";
