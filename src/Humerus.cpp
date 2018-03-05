@@ -77,12 +77,9 @@ void Humerus::MapAnatomicalLandmarksToAnatomicalMesh() {
 }
 
 void Humerus::Thesis() {
-
-    // valid polyData?
-    if (anatomicalMesh->GetNumberOfPoints() <= 0) {
-        std::cout << "invalid polydata" << std::endl;
-        return;
-    }
+    std::cout << "####################" << std::endl;
+    std::cout << "# Thesis - Humerus #" << std::endl;
+    std::cout << "####################" << std::endl;
 
     // ### CUTTING AT 20- and 80% OF BONE LENGTH ### //
 
@@ -300,16 +297,16 @@ void Humerus::Thesis() {
 
     GuessEthnicGroup();
 
-	std::cout << "ap width: " << AP_width << std::endl;
-	std::cout << "bone length: " << bone_length << std::endl;
-	std::cout << "head radius: " << head_radius << std::endl;
-	std::cout << "inclination: " << inclination << std::endl;
-	std::cout << "lateral offset: " << lateral_offset << std::endl;
-	std::cout << "medial offset: " << medial_offset << std::endl;
-	std::cout << "ml width: " << ML_width << std::endl;
-	std::cout << "retroversion: " << retroversion << std::endl;
-	std::cout << "asian: " << asian << std::endl;
-	std::cout << "caucasian: " << caucasian << std::endl;
+    std::cout << "ap width: " << AP_width << "mm" << std::endl;
+    std::cout << "bone length: " << bone_length << "mm" << std::endl;
+    std::cout << "head radius: " << head_radius << "mm" << std::endl;
+    std::cout << "inclination: " << inclination << "°" << std::endl;
+    std::cout << "lateral offset: " << lateral_offset << "mm" << std::endl;
+    std::cout << "medial offset: " << medial_offset << "mm" << std::endl;
+    std::cout << "ml width: " << ML_width << "mm" << std::endl;
+    std::cout << "retroversion: " << retroversion << "°" << std::endl;
+    std::cout << "asian: " << asian << "%" << std::endl;
+    std::cout << "caucasian: " << caucasian << "%" << std::endl;
 
 }
 

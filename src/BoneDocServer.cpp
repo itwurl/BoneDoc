@@ -155,7 +155,7 @@ void session(boost::asio::ip::tcp::socket socket)
 
 
 void BoneDocServer::Start() {
-
+    std::cout << "Server started listening on port " << BONEDOC_SERVER_PORT_STR << " ..." << std::endl << std::endl;
     try {
 
         boost::asio::io_service io_service;
@@ -175,6 +175,7 @@ void BoneDocServer::Start() {
         std::cerr << "Exception: " << e.what() << "\n";
     }
 
+    std::cout << "Server closed." << std::endl;
 }
 
 BoneDocServer::~BoneDocServer() {

@@ -499,7 +499,7 @@ void Anatomy::SetAnatomicalLandmarks(const std::string path) {
     }
     else
         std::cout << "Could not read file: " + path << std::endl;
-    
+
     if (anatomicalLandmarks.size() != anatomicalLandmarksSize) {
         std::cout << "Unexpected number of anatomical landmarks!" << std::endl;
         exit(-1);
@@ -619,8 +619,9 @@ void Anatomy::SetMetaInfo(const std::string path) {
             std::cout << "Meta-info 'gender' not found!" << std::endl;
         }
     
+        // age ist not important yet
         this->age = "";
-        std::cout << "Meta-info 'age' not found!" << std::endl;
+        //std::cout << "Meta-info 'age' not found!" << std::endl;
 
         return;
     }

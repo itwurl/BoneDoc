@@ -114,7 +114,10 @@ void Femur::ResetMeasurements() {
 }
 
 void Femur::Thesis() {
- 
+    std::cout << "##################" << std::endl;
+    std::cout << "# Thesis - Femur #" << std::endl;
+    std::cout << "##################" << std::endl;
+    
     // optimize manually found anatomical landmarks 'most_distal_point' and 'most_proximal_point'
     OptimizeProximalAndDistalLandmark1();
 
@@ -285,18 +288,17 @@ void Femur::Thesis() {
 
     GuessEthnicGroup();
 
-    std::cout << "anteversion: " << anteversion << std::endl;
-    std::cout << "ap with: " << AP_width << std::endl;
-    std::cout << "bone length: " << bone_length << std::endl;
-    std::cout << "head radius: " << head_radius << std::endl;
-    std::cout << "inclination: " << inclination << std::endl;
-    std::cout << "lateral offset: " << lateral_offset << std::endl;
-    std::cout << "medial offset: " << medial_offset << std::endl;
-    std::cout << "ml with: " << ML_width << std::endl;
-    std::cout << "asian: " << asian << std::endl;
-    std::cout << "caucasian: " << caucasian << std::endl;
-    
-    std::cout << std::endl;
+    std::cout << "anteversion: " << anteversion << "°" << std::endl;
+    std::cout << "ap with: " << AP_width << "mm" << std::endl;
+    std::cout << "bone length: " << bone_length << "mm" << std::endl;
+    std::cout << "head radius: " << head_radius << "mm" << std::endl;
+    std::cout << "inclination: " << inclination << "°" << std::endl;
+    std::cout << "lateral offset: " << lateral_offset << "mm" << std::endl;
+    std::cout << "medial offset: " << medial_offset << "mm" << std::endl;
+    std::cout << "ml with: " << ML_width << "mm" << std::endl;
+    std::cout << "asian: " << asian << "%" << std::endl;
+    std::cout << "caucasian: " << caucasian << "%" << std::endl;
+
 }
 
 void Femur::PPFX() {

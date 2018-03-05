@@ -50,12 +50,9 @@ void Tibia::MapAnatomicalLandmarksToAnatomicalMesh() {
 }
 
 void Tibia::Thesis() {
-    
-    // valid polyData?
-    if (anatomicalMesh->GetNumberOfPoints() <= 0) {
-        std::cout << "invalid polydata!" << std::endl;
-        return;
-    }
+    std::cout << "##################" << std::endl;
+    std::cout << "# Thesis - Tibia #" << std::endl;
+    std::cout << "##################" << std::endl;
 
     // ### center-point: 80% of length (proximal) ###
     double center[3];
@@ -270,15 +267,15 @@ void Tibia::Thesis() {
     TibiaTorsion(medial_condyle, lateral_condyle, medial_malleolus, fibular_notch);
 
     GuessEthnicGroup();
-	
-    std::cout << "ap width: " << AP_width << std::endl;
-    std::cout << "bone length: " << bone_length << std::endl;
-    std::cout << "lateral offset: " << lateral_offset << std::endl;
-    std::cout << "medial offset: " << medial_offset << std::endl;
-    std::cout << "ml width: " << ML_width << std::endl;
-    std::cout << "torsion: " << torsion << std::endl;
-    std::cout << "asian: " << asian << std::endl;
-    std::cout << "caucasian: " << caucasian << std::endl;
+
+    std::cout << "ap width: " << AP_width << "mm" << std::endl;
+    std::cout << "bone length: " << bone_length << "mm" << std::endl;
+    std::cout << "lateral offset: " << lateral_offset << "mm" << std::endl;
+    std::cout << "medial offset: " << medial_offset << "mm" << std::endl;
+    std::cout << "ml width: " << ML_width << "mm" << std::endl;
+    std::cout << "torsion: " << torsion << "°" << std::endl;
+    std::cout << "asian: " << asian << "%" << std::endl;
+    std::cout << "caucasian: " << caucasian << "%" << std::endl;
 }
 
 void Tibia::TibiaTorsion(const double *p6, const double *p7, const double *p4, const double *p5) {
