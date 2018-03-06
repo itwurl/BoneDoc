@@ -131,6 +131,7 @@ void session(boost::asio::ip::tcp::socket socket)
                     response_stream << "ml width: " << float(int(tibia.ML_width * 100)) / 100 << "mm" << std::endl;
                     response_stream << "ap width: " << float(int(tibia.AP_width * 100)) / 100 << "mm" << std::endl;
                     response_stream << "torsion: " << float(int(tibia.torsion * 100)) / 100 << "°" << std::endl;
+                    
                     response_stream << "asian: " << tibia.asian << "%" << std::endl;
                     response_stream << "caucasian: " << tibia.caucasian << "%" << std::endl;
                 }
@@ -152,10 +153,8 @@ void session(boost::asio::ip::tcp::socket socket)
 
 }
 
-
-
 void BoneDocServer::Start() {
-    std::cout << "Server started listening on port " << BONEDOC_SERVER_PORT_STR << " ..." << std::endl << std::endl;
+    std::cout << "Server started. Listening on port " << BONEDOC_SERVER_PORT_STR << " ..." << std::endl << std::endl;
     try {
 
         boost::asio::io_service io_service;

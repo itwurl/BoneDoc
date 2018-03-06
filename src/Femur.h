@@ -3,15 +3,36 @@
 
 #include "Anatomy.h"
 
-class Femur : public Anatomy {
+class Femur : public Anatomy
+{
 private:
+    
+    // config file
     std::string configPath;
 
+    // optimization of distal and proximal landmark [1]
     // based on manually found most proximal/distal anatomical landmarks an axis is build and then used to redefine both landmarks as technical landmarks [1]
     // no references yet.
-    void OptimizeProximalAndDistalLandmark1();
+    void OptimizeProximalAndDistalLandmark();
 
-    // center of condyles [1]: as suggested by Kenny Koah, Jessica Galie for perioprosthetic study (PPFX)  
+    // (temporary) medial and lateral axis to define local coordinate from
+    void SetMedialAndLateralAxis();
+    
+    // proximal shaft center [1]
+    // intersect shaft at 75% of bone length an set contour's center of mass to 'proximal_shaft_center'
+    // no references yet.
+    void SetProximalShaftCenter();
+
+    // distal shaft center [1]
+    // intersect shaft at 25% of bone length an set contour's center of mass to 'distal_shaft_center'
+    // no references yet.
+    void SetDistalShaftCenter();
+
+    // no references yet
+    void SetOffsetAndWidth();
+    
+    // center of condyles [1]
+    // references: suggested by Kenny Koah, Jessica Galie for perioprosthetic study (PPFX)  
     void FemoralCenterOfCondyles1();
 
     // femoral bone-length was the distance (along predefined z-axis) between the most proximal point of the femoral head and the most distal point of the condyle usually the medial condyle [1]
@@ -22,60 +43,80 @@ private:
     // fem_neck_shaft_interception <-> center of condyles [1]: as suggested by Kenny Koah, Jessica Galie for perioprosthetic study (PPFX)
     void FemoralShaftLength1();
 
+    // references: see thesis
+    void MedialOffset();
+    
+    // references: see thesis
+    void LateralOffset();
+    
+    // references: see thesis
+    void MLWidth();
+    
+    // references: see thesis
+    void APWidth();
+    
     // fitting a sphere to the spherical part of the femoral head [1]: no references yet.
-    void FemoralHeadCenter1(double p8[3], double p9[3], double p10[3], double p11[3], double p12[3], double p13[3], double p14[3], double p15[3]);
+    void FemoralHeadCenter1();
 
     // #########################################################################################################################################################
     // FemoralAnteversionAndInclination [1]: femoral anteversion/retroversion and inclination
     // #########################################################################################################################################################
     // anteversion: Reto Sutter, Tobias J Dietrich, Patrick O Zingg, and Christian WA Pfirrmann. Femoral antetorsion:
-    //				comparing asymptomatic volunteers and patients with femoroacetabular impingement. Radiology, 263(2):475{483, 2012.
+    // comparing asymptomatic volunteers and patients with femoroacetabular impingement. Radiology, 263(2):475{483, 2012.
     // explanation: The line of reference in the proximal femur was defined as the line connecting the femoral head center and the center of the femoral neck at
-    //				its narrowest point. The line of reference in the distal femur was defined as the line connecting the dorsal border of the two femoral
-    //				condyles. The femoral antetorsion angle was then calculated between the proximal and distal reference line.
+    // its narrowest point. The line of reference in the distal femur was defined as the line connecting the dorsal border of the two femoral
+    // condyles. The femoral antetorsion angle was then calculated between the proximal and distal reference line.
     // inclination: KS Leung, P Procter, B Robioneck, and K Behrens. Geometric mismatch of the gamma nail to the chinese femur.
-    //				Clinical orthopaedics and related research, 323:42-48, 1996.
-    void FemoralAnteversionAndInclination1(double medial_condyle[3], double lateral_condyle[3]);
+    // Clinical orthopaedics and related research, 323:42-48, 1996.
+    void FemoralAnteversionAndInclination1();
 
     // #########################################################################################################################################################
     // FemoralAnteversion [2]: femoral anteversion/retroversion
     // #########################################################################################################################################################
-    // references:	Yoshioka, Yuki, David Siu, and T. D. Cooke. "The anatomy and functional axes of the femur." J Bone Joint Surg Am 69.6 (1987): 873-880.
-    // summary:		" ... we defined anteversion of the neck somewhat differently than most other authors have We referenced the degree of anteversion to the
-    //				transverse functional axis (the Z axis in Fig. 2-B) rather than to the tangent line of the posterior condylar surfaces."
+    // references:
+    // Yoshioka, Yuki, David Siu, and T. D. Cooke. "The anatomy and functional axes of the femur." J Bone Joint Surg Am 69.6 (1987): 873-880.
+    // summary:
+    // " ... we defined anteversion of the neck somewhat differently than most other authors have We referenced the degree of anteversion to the
+    // transverse functional axis (the Z axis in Fig. 2-B) rather than to the tangent line of the posterior condylar surfaces."
 
 
-    // find interception between neck-axis and femoral shaft-axis [1]: no references yet.
+    // find interception between neck-axis and femoral shaft-axis [1]
+    // no references yet.
     void FemoralNeckAndShaftAxisInterception1();
 
-    // center of mass from femoral shaft contour starting at center of condyles up to intersection of neck and shaft-axis [1]: as suggested by Kenny Koah, Jessica Galie for perioprosthetic study (PPFX)
+    // center of mass from femoral shaft contour starting at center of condyles up to intersection of neck and shaft-axis [1]
+    // references:
+    // as suggested by Kenny Koah, Jessica Galie for perioprosthetic study (PPFX)
     void FemoralTwist1();
 
     // #########################################################################################################################################################
     // FemoralNeckAxis1 [1]: axis between guessed neck-isthmus and femoral head center, pointing to the femoral head center
     // #########################################################################################################################################################
     // no references yet!
-    // summary:		simple approach to estimate neck axis as vector between head-center and center of mass from intersection-plane through neck-isthmus, defined
-    //				by three anatomical landmarks which were have to been put manually on the outer surface of the femoral neck where neck-isthmus is guessed.
+    // summary:
+    // simple approach to estimate neck axis as vector between head-center and center of mass from intersection-plane through neck-isthmus, defined
+    // by three anatomical landmarks which were have to been put manually on the outer surface of the femoral neck where neck-isthmus is guessed.
     void FemoralNeckAxis1();
 
     // #########################################################################################################################################################
     // FemoralNeckAxisCorrection [1]: Neck-axis as line-fit/optimized femoral neck axis based on guessed neck-isthmus and femoral head center 
     // #########################################################################################################################################################
     // no references yet!
-    // explanation:	fitting a line through head-center and center of massed defined by 'fem_neck_intersection_size' times intersections along temporay neck axis
-    //				between head-center and guessed neck-isthmus. New femoral neck axis is then given by vector of fitted line (which may not pass guessed neck-
-    //				isthmus or femoral head center). Beside anatomical variations in theory thinking of femoral head as a sphere and neck as a zylinder this
-    //				axis must pass real femoral head center and neck-isthmus!
+    // summary:
+    // fitting a line through head-center and center of massed defined by 'fem_neck_intersection_size' times intersections along temporay neck axis
+    // between head-center and guessed neck-isthmus. New femoral neck axis is then given by vector of fitted line (which may not pass guessed neck-
+    // isthmus or femoral head center). Beside anatomical variations in theory thinking of femoral head as a sphere and neck as a zylinder this
+    // axis must pass real femoral head center and neck-isthmus!
     void FemoralNeckAxisCorrection1();
 
     // #########################################################################################################################################################
     // FemoralNeckAxis2 [2]: axis between intersection of neck- and shaft axis and femoral head center, pointing to the femoral head center
-    //						 in theory line through head-center and narrowest point of neck ist same as line through head-center and neck1/shaft-interserction.
+    // in theory line through head-center and narrowest point of neck ist same as line through head-center and neck1/shaft-interserction.
     // #########################################################################################################################################################
     // no references yet! 
-    // summary:		Based on 'FemoralNeckAxis1' and 'FemoralNeckAxisCorrection1'. Intersection of neck- and shaft axis has to be found before. Then neck axis
-    //				will be defined between this intersection of neck- and shaft axis and the femoral head center, pointing medial to the femoral head center.
+    // summary:
+    // Based on 'FemoralNeckAxis1' and 'FemoralNeckAxisCorrection1'. Intersection of neck- and shaft axis has to be found before. Then neck axis
+    // will be defined between this intersection of neck- and shaft axis and the femoral head center, pointing medial to the femoral head center.
     void FemoralNeckAxis2();
 
     // reset all calculated parameters
@@ -123,7 +164,7 @@ private:
 
     // guess ethnic group based on logistic regression
     void GuessEthnicGroup();
-        
+
 public:
     Femur(const std::string anatomicalMesh,
             const std::string anatomicalLandmarksPath,
@@ -131,7 +172,7 @@ public:
 
     ~Femur();
 
-    // see thesis 'Ethnizitaetsbestimmung mit multivariater Statistik' (Alexander Wurl) for femur bone
+    // see thesis 'Ethnizitaetsbestimmung mit multivariater Statistik' (Alexander Wurl)
     void Thesis();
 
     // perioprosthetic femoral study (Jessica Galie, ...) for femur bone

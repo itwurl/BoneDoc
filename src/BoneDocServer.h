@@ -19,12 +19,7 @@
 
 class BoneDocServer {
 	
-	//static void session(boost::asio::ip::tcp::socket sock);
-
-
 public:
-
-	//const std::string BONEDOC_CONFIG_FILE = "/home/pi/Projects/BoneDoc/config.txt";
 
     BoneDocServer(const char* path);
     void Start();
@@ -39,7 +34,6 @@ private:
     std::string anatomy = "";
     std::string dataset = "";
     std::string study = "";
-	
 
 };
 

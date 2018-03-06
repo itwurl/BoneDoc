@@ -6,8 +6,8 @@
 
 Humerus::Humerus(const std::string anatomicalMeshPath,
         const std::string anatomicalLandmarksPath,
-        const std::string configPath) {
-
+        const std::string configPath)
+{
     this->configPath = configPath;
     
     // read number of anatomical landmarks
@@ -26,7 +26,8 @@ Humerus::Humerus(const std::string anatomicalMeshPath,
     SetMetaInfo(anatomicalMeshPath);
 }
 
-void Humerus::ResetMeasurements() {
+void Humerus::ResetMeasurements()
+{
     bone_length = medial_offset = lateral_offset = ML_width = AP_width = head_fit_x = head_fit_y = head_fit_z = head_radius = inclination = retroversion = 0;
 
     // initialize corresponding (technical) landmark coordinates and size of sphere for visualizing
@@ -52,7 +53,8 @@ void Humerus::ResetMeasurements() {
     MapAnatomicalLandmarksToAnatomicalMesh();
 }
 
-void Humerus::MapAnatomicalLandmarksToAnatomicalMesh() {
+void Humerus::MapAnatomicalLandmarksToAnatomicalMesh()
+{
     getClosestPointFromMesh(anatomicalLandmarks.at(0), medial_epicondyle, anatomicalMesh);
     getClosestPointFromMesh(anatomicalLandmarks.at(1), lateral_epicondyle, anatomicalMesh);
     getClosestPointFromMesh(anatomicalLandmarks.at(2), minor_tuberculum, anatomicalMesh);
@@ -76,12 +78,13 @@ void Humerus::MapAnatomicalLandmarksToAnatomicalMesh() {
     getClosestPointFromMesh(anatomicalLandmarks.at(20), head_fit_point_8, anatomicalMesh);
 }
 
-void Humerus::Thesis() {
+void Humerus::Thesis()
+{
     std::cout << "####################" << std::endl;
     std::cout << "# Thesis - Humerus #" << std::endl;
     std::cout << "####################" << std::endl;
 
-    // ### CUTTING AT 20- and 80% OF BONE LENGTH ### //
+    // ### intersect shaft at 20- and 80% of bone length ### //
 
     // ### center-point: 80% of length (proximal) ###
     double center[3];
@@ -115,14 +118,15 @@ void Humerus::Thesis() {
     cutPoly_prox->SetPolys(cutStrips_prox->GetOutput()->GetLines());
 
     // crash's may occure if no suitable were done - so return then
-    if (cutPoly_prox->GetNumberOfPoints() == 0) {
+    if (cutPoly_prox->GetNumberOfPoints() == 0)
+    {
         std::cout << "error cutting proximal part of shaft!" << std::endl;
         return;
     }
 
     // get the cutting-contours center
     double cut_center_prox[3];
-    cutPoly_prox->GetCenter( cut_center_prox );
+    cutPoly_prox->GetCenter(cut_center_prox);
 
     // ### center-point: 20% of length ###
     center[0] = most_distal_point[0] + ((most_proximal_point[0]-most_distal_point[0]) * 0.2);
@@ -153,35 +157,37 @@ void Humerus::Thesis() {
     cutPoly_dist->SetPolys(cutStrips_dist->GetOutput()->GetLines());
 
     // crash's may occure if no suitable were done - so return then
-    if (cutPoly_dist->GetNumberOfPoints() == 0) {
+    if (cutPoly_dist->GetNumberOfPoints() == 0)
+    {
         std::cout << "error cutting distal part of shaft!" << std::endl;
         return;
     }
 
     // get the cutting-contours center
     double cut_center_dist[3];
-    cutPoly_dist->GetCenter( cut_center_dist );
+    cutPoly_dist->GetCenter(cut_center_dist);
 
-    double tmp6[6];
-    // medio-lateral and cranio-caudal
-    // medio-laterale axis is shows medial
-    tmp6[0] = medial_epicondyle[0]-lateral_epicondyle[0];
-    tmp6[1] = medial_epicondyle[1]-lateral_epicondyle[1];
-    tmp6[2] = medial_epicondyle[2]-lateral_epicondyle[2];
 
-    // kraniokaudale Achse nach kranial orientiert
-    tmp6[3] = cut_center_prox[0]-cut_center_dist[0];
-    tmp6[4] = cut_center_prox[1]-cut_center_dist[1];
-    tmp6[5] = cut_center_prox[2]-cut_center_dist[2];
+    // define temporarily medio-lateral ...
+    axis[0] = medial_epicondyle[0] - lateral_epicondyle[0];
+    axis[1] = medial_epicondyle[1] - lateral_epicondyle[1];
+    axis[2] = medial_epicondyle[2] - lateral_epicondyle[2];
+    
+    // ... and cranio-caudal axis
+    axis[3] = cut_center_prox[0] - cut_center_dist[0];
+    axis[4] = cut_center_prox[1] - cut_center_dist[1];
+    axis[5] = cut_center_prox[2] - cut_center_dist[2];
 
     // ### DEFINE COORDINATE SYSTEM ###
-    setCoordinateSystem(tmp6, side);
+    SetCoordinateSystem();
+    
 
     double plane[9]; int max = 0; int maxi = 0;
     double tmp3[3];
 
     // look for most medial point
-    for (int i=0; i < cutPoly_dist->GetNumberOfPoints(); ++i) {
+    for (int i=0; i < cutPoly_dist->GetNumberOfPoints(); ++i)
+    {
         cutPoly_dist->GetPoint(i, tmp3);
 
         // plane: n, x, p
@@ -189,7 +195,8 @@ void Humerus::Thesis() {
         plane[3] = tmp3[0]; plane[4] = tmp3[1]; plane[5] = tmp3[2];
         plane[6] = cut_center_dist[0]; plane[7] = cut_center_dist[1]; plane[8] = cut_center_dist[2];
 
-        if (distanceToPlane(plane) > max) {
+        if (distanceToPlane(plane) > max)
+        {
             max = distanceToPlane(plane);
             maxi = i;
         }
@@ -203,7 +210,8 @@ void Humerus::Thesis() {
     max = 0;
     maxi = 0;
     
-    for (int i = 0; i < cutPoly_dist->GetNumberOfPoints(); i++) {
+    for (int i = 0; i < cutPoly_dist->GetNumberOfPoints(); i++)
+    {
         cutPoly_dist->GetPoint(i, tmp3);
 
         // define plane with mediolateral axis as normal * (-1)
@@ -211,7 +219,8 @@ void Humerus::Thesis() {
         plane[3] = tmp3[0]; plane[4] = tmp3[1]; plane[5] = tmp3[2];
         plane[6] = cut_center_dist[0]; plane[7] = cut_center_dist[1]; plane[8] = cut_center_dist[2];
 
-        if (distanceToPlane(plane) > max) {
+        if (distanceToPlane(plane) > max)
+        {
                 max = distanceToPlane(plane);
                 maxi = i;
         }
@@ -223,14 +232,16 @@ void Humerus::Thesis() {
 
     // most posterior point - hum_dist_cut_posterior
     max = 0; maxi = 0;
-    for (int i=0; i<cutPoly_dist->GetNumberOfPoints(); i++ ) {
+    for (int i = 0; i < cutPoly_dist->GetNumberOfPoints(); i++)
+    {
         cutPoly_dist->GetPoint(i, tmp3);
 
         plane[0] = axis[0]; plane[1] = axis[1]; plane[2] = axis[2];
         plane[3] = tmp3[0]; plane[4] = tmp3[1]; plane[5] = tmp3[2];
         plane[6] = cut_center_dist[0]; plane[7] = cut_center_dist[1]; plane[8] = cut_center_dist[2];
 
-        if (distanceToPlane(plane) > max) {
+        if (distanceToPlane(plane) > max)
+        {
             max = distanceToPlane(plane);
             maxi = i;
         }
@@ -243,7 +254,8 @@ void Humerus::Thesis() {
     // most anterior point
     max = 0;
     maxi = 0;
-    for (int i = 0; i < cutPoly_dist->GetNumberOfPoints(); i++) {
+    for (int i = 0; i < cutPoly_dist->GetNumberOfPoints(); i++)
+    {
         cutPoly_dist->GetPoint(i, tmp3);
 
         // define plane with ventral axis
@@ -251,7 +263,8 @@ void Humerus::Thesis() {
         plane[3] = tmp3[0]; plane[4] = tmp3[1]; plane[5] = tmp3[2];
         plane[6] = cut_center_dist[0]; plane[7] = cut_center_dist[1]; plane[8] = cut_center_dist[2];
 
-        if (distanceToPlane(plane) > max) {
+        if (distanceToPlane(plane) > max)
+        {
             max = distanceToPlane(plane);
             maxi = i;
         }
@@ -310,7 +323,8 @@ void Humerus::Thesis() {
 
 }
 
-void Humerus::HumerusHeadCenter(double* p12, double* p13, double* p14, double* p15, double* p16, double* p17, double* p18, double* p19) {
+void Humerus::HumerusHeadCenter(double* p12, double* p13, double* p14, double* p15, double* p16, double* p17, double* p18, double* p19)
+{
     double Cx = 0;
     double Cy = 0;
     double Cz = 0;

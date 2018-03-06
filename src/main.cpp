@@ -1,26 +1,28 @@
 #include "BoneDocServer.h"
+#include "Study.h"
 
-int main(int argc, char *argv[]) {
+int main(int argc, char *argv[])
+{
 
-    // anatomical mesh file, anatomical landmarks file, config file
-    if (argc == 4) {
-        std::cout << "under construction ..." << std::endl;
-        
-        // check meta info and create subclassed anatomy
-        //Femur femur(argv[1], argv[2], argv[3]);
-        
-        // start analysis
-        //femur.Thesis();
-    } else if (argc == 1) {
-
-        // start http-server in application path
-        // analysis will be triggered by http request's
+    if (argc == 1)
+    {
+        // start http-server, analysis will be triggered by client requests
+        // '/data' must be found within application folder
         BoneDocServer server(argv[0]);
-        server.Start();   
-    } else {
-        std::cout << "Usage: [anatomical mesh file (vtk)] "
-                "[anatomical landmarks file (fcsv)] "
-                    "[config file]" << std::endl;
+        server.Start();
+    }
+    else if (argc == 4)
+    {
+        // create a study
+        Study study(argv[1], argv[2], argv[3]);
+        
+        // start an analysis
+        study.Start("Thesis");
+    }
+    else
+    {
+        std::cout << "Usage (server):\t./BoneDoc" << std::endl;
+        std::cout << "Usage (command line):\t./BoneDoc [mesh (*.vtk)] [landmarks (*.csv)] [config (*.txt)]" << std::endl;
         return -1;
     }
 

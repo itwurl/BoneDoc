@@ -1,6 +1,7 @@
 #ifndef Anatomy_H
 #define Anatomy_H
 
+
 // c++
 #include <vector>
 #include <list>
@@ -21,7 +22,8 @@
 
 static const float PI = 3.14159265;
 
-class Anatomy {
+class Anatomy
+{
 protected:
 
     // parameters  n, x, p of plane n*(x-p)
@@ -34,18 +36,13 @@ protected:
     void getClosestPointFromMesh(const std::vector <float> p, double* cp, vtkPolyData* anatomicalMesh);
 
     // defines coordinate system based on 2 vectors (mediolateral and longitudinal), ml becomes new, lon stayed (order of parameter is important)
-    void setCoordinateSystem(double vectors[6], std::string side);
-
-    void setCoordinateSystem(double ml_x, double ml_y, double ml_z, double lon_x, double lon_y, double lon_z, std::string side);
+    void SetCoordinateSystem();
 
     // normal of plane, point on plane and estimated center of contour found by cuttinng plane and anatomicalMesh, returns 0 if contour could not be defined
     void getCenterOfIntersectionContour(vtkPolyData* polyData, double* n, double* p, double* c);
 
     // normal of plane, point on plane and estimated center of contour found by cuttinng plane and anatomicalMesh
     void getCenterOfIntersectionContour(vtkPolyData* polyData, double nx, double ny, double nz, double px, double py, double pz, double* c);
-
-    // get most lateral, most medial, most posterior and most anterior point from contour at 'fem_cut_center_dist'
-    //void getOffsetAndWidthFromContour(vtkPolyData* polyData, double* fem_cut_center_dist, double* p19, double* p20, double* p21, double* p22);
 
     // line fit by estimating three main principle components
     void getLineFit(std::vector<std::vector<double>>, int n, double* result);
@@ -71,7 +68,8 @@ protected:
 
     // crossproduct as defined in [https://de.wikipedia.org/wiki/Kreuzprodukt]
     template <typename T> std::vector<T> CrossProduct(std::vector<T> const &v1, std::vector<T> const &v2);
-    std::vector<double> CrossProduct(std::vector<double> const &v1, std::vector<double> const &v2) {
+    std::vector<double> CrossProduct(std::vector<double> const &v1, std::vector<double> const &v2)
+    {
         std::vector<double> r(v1.size());
         r[0] = v1[1] * v2[2] - v1[2] * v2[1];
         r[1] = v1[2] * v2[0] - v1[0] * v2[2];
@@ -97,7 +95,7 @@ protected:
 
     // anatomical landmarks size
     unsigned int anatomicalLandmarksSize;
-    
+
     // anatomical landmarks
     void SetAnatomicalLandmarks(const std::string path);
     std::vector<std::vector<float>> anatomicalLandmarks;
@@ -107,10 +105,14 @@ protected:
 
     void SetAnatomicalLandmarksSize(std::string configPath, std::string identifier);
 
+
+    
 public:
     Anatomy();
     ~Anatomy();
     
+    static std::string getAnatomyFromString(std::string s);
+ 
     // guessed probability for ethnic groups
     int asian;
     int caucasian;

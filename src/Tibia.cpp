@@ -2,8 +2,8 @@
 
 Tibia::Tibia(const std::string anatomicalMeshPath,
                 const std::string anatomicalLandmarksPath,
-                    const std::string configPath) {
-
+                    const std::string configPath)
+{
     this->configPath = configPath;
     
     // read number of anatomical landmarks
@@ -22,7 +22,8 @@ Tibia::Tibia(const std::string anatomicalMeshPath,
     SetMetaInfo(anatomicalMeshPath);
 }
 
-void Tibia::ResetMeasurements() {
+void Tibia::ResetMeasurements()
+{
     bone_length = medial_offset = lateral_offset = ML_width = AP_width = torsion = 0;
 
     // initialize corresponding (technical) landmark coordinates and size of sphere for visualizing
@@ -38,7 +39,8 @@ void Tibia::ResetMeasurements() {
     MapAnatomicalLandmarksToAnatomicalMesh();
 }
 
-void Tibia::MapAnatomicalLandmarksToAnatomicalMesh() {
+void Tibia::MapAnatomicalLandmarksToAnatomicalMesh()
+{
     getClosestPointFromMesh(anatomicalLandmarks.at(0), medial_malleolus, anatomicalMesh);
     getClosestPointFromMesh(anatomicalLandmarks.at(1), fibular_notch, anatomicalMesh);
     getClosestPointFromMesh(anatomicalLandmarks.at(2), medial_epicondyle, anatomicalMesh);
@@ -49,7 +51,8 @@ void Tibia::MapAnatomicalLandmarksToAnatomicalMesh() {
     getClosestPointFromMesh(anatomicalLandmarks.at(7), lateral_condyle, anatomicalMesh);
 }
 
-void Tibia::Thesis() {
+void Tibia::Thesis()
+{
     std::cout << "##################" << std::endl;
     std::cout << "# Thesis - Tibia #" << std::endl;
     std::cout << "##################" << std::endl;
@@ -133,22 +136,22 @@ void Tibia::Thesis() {
     double cut_center_dist[3];
     cutPoly_dist->GetCenter(cut_center_dist);
 
-
-    double tmp6[6];
-    // mediolateral and kraniokaudal
-    tmp6[0] = medial_condyle[0]-lateral_condyle[0];
-    tmp6[1] = medial_condyle[1]-lateral_condyle[1];
-    tmp6[2] = medial_condyle[2]-lateral_condyle[2];
-
-    tmp6[3] = cut_center_prox[0]-cut_center_dist[0];
-    tmp6[4] = cut_center_prox[1]-cut_center_dist[1];
-    tmp6[5] = cut_center_prox[2]-cut_center_dist[2];
+    
+    // define temporarily medio-lateral ...
+    axis[0] = medial_condyle[0] - lateral_condyle[0];
+    axis[1] = medial_condyle[1] - lateral_condyle[1];
+    axis[2] = medial_condyle[2] - lateral_condyle[2];
+    
+    // ... and cranio-caudal axis
+    axis[3] = cut_center_prox[0] - cut_center_dist[0];
+    axis[4] = cut_center_prox[1] - cut_center_dist[1];
+    axis[5] = cut_center_prox[2] - cut_center_dist[2];
 
     // ### DEFINE COORDINATE SYSTEM ###
-    setCoordinateSystem(tmp6, side);
-
+    SetCoordinateSystem();
+    
+    
     // ### OFFSET AN WIDTH ###
-
     double tmp3[3];
     double plane[9];
     double min = 9999; int mini = 0;

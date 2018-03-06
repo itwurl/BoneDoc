@@ -6,7 +6,7 @@ Femur::Femur(const std::string anatomicalMeshPath,
     
     this->configPath = configPath;
 
-    // read number of anatomical landmarks
+    // read number of anatomical landmarks (todo: should be used for error handling)
     SetAnatomicalLandmarksSize(configPath, "femur-anatomical-landmarks-size");
 
     // load anatomical landmarks
@@ -83,7 +83,7 @@ void Femur::ResetMeasurements() {
 
     // anatomical landmarks size
     anatomicalLandmarksSize = 0;
-        
+
     // anatomical landmarks
     medial_epicondyle[0] = medial_epicondyle[1] = medial_epicondyle[2] = medial_epicondyle[3] = 0;
     lateral_epicondyle[0] = lateral_epicondyle[1] = lateral_epicondyle[2] = lateral_epicondyle[3] = 0;
@@ -113,166 +113,40 @@ void Femur::ResetMeasurements() {
     MapAnatomicalLandmarksToAnatomicalMesh();
 }
 
-void Femur::Thesis() {
+void Femur::Thesis()
+{
     std::cout << "##################" << std::endl;
     std::cout << "# Thesis - Femur #" << std::endl;
     std::cout << "##################" << std::endl;
-    
+
     // optimize manually found anatomical landmarks 'most_distal_point' and 'most_proximal_point'
-    OptimizeProximalAndDistalLandmark1();
+    OptimizeProximalAndDistalLandmark();
 
-    // ### CUTTING AT 25- and 75% OF BONE LENGTH ### //
-    // ### center-point: 75% of length (proximal) ###
-    getCenterOfIntersectionContour(anatomicalMesh, most_proximal_point[0] - most_distal_point[0], most_proximal_point[1] - most_distal_point[1],
-            most_proximal_point[2] - most_distal_point[2], most_distal_point[0] + ((most_proximal_point[0] - most_distal_point[0]) * 0.75),
-                    most_distal_point[1] + ((most_proximal_point[1] - most_distal_point[1]) * 0.75), most_distal_point[2] + 
-                            ((most_proximal_point[2] - most_distal_point[2]) * 0.75), proximal_shaft_center);
+    // intersect shaft at 75% of bone length an set contour's center of mass to 'proximal_shaft_center'
+    SetProximalShaftCenter();
 
-    double center[3];
-    double normal[3];
-    double bn;
+    // intersect shaft at 25% of bone length an set contour's center of mass to 'distal_shaft_center'
+    SetDistalShaftCenter();
 
-    center[0] = most_distal_point[0] + ((most_proximal_point[0] - most_distal_point[0]) * 0.25);
-    center[1] = most_distal_point[1] + ((most_proximal_point[1] - most_distal_point[1]) * 0.25);
-    center[2] = most_distal_point[2] + ((most_proximal_point[2] - most_distal_point[2]) * 0.25);
-
-    bn = sqrt( pow(most_distal_point[0] - most_proximal_point[0], 2) + pow(most_distal_point[1] - most_proximal_point[1], 2) + pow(most_distal_point[2] - most_proximal_point[2], 2) );
-    normal[0] = (most_distal_point[0] - most_proximal_point[0]) / bn;
-    normal[1] = (most_distal_point[1] - most_proximal_point[1]) / bn;
-    normal[2] = (most_distal_point[2] - most_proximal_point[2]) / bn;
-
-    // plane
-    vtkSmartPointer<vtkPlane> vtkplane_dist = vtkSmartPointer<vtkPlane>::New();
-    vtkplane_dist->SetOrigin(center[0], center[1], center[2]);
-    vtkplane_dist->SetNormal(normal[0], normal[1], normal[2]);
-    
-    // surface cut with plane
-    vtkSmartPointer<vtkCutter> cutEdges_dist = vtkSmartPointer<vtkCutter>::New();
-    cutEdges_dist->SetInputData(anatomicalMesh);
-    cutEdges_dist->SetCutFunction(vtkplane_dist);
-    
-    // generates triangle poly-lines from input polygon
-    vtkSmartPointer<vtkStripper> cutStrips_dist = vtkSmartPointer<vtkStripper>::New();
-    cutStrips_dist->SetInputConnection(cutEdges_dist->GetOutputPort());
-    cutStrips_dist->Update();
-    vtkSmartPointer<vtkPolyData> cutPoly_dist = vtkSmartPointer<vtkPolyData>::New();
-    cutPoly_dist->SetPoints(cutStrips_dist->GetOutput()->GetPoints());
-    cutPoly_dist->SetPolys(cutStrips_dist->GetOutput()->GetLines());
-
-    // crash's may occure if no suitable were done - so return then
-    if (cutPoly_dist->GetNumberOfPoints() == 0) {
-        std::cout << "error cutting distal part of shaft!" << std::endl;
-        return;
-    }
-    
-    // get the cutting-contours center
-    cutPoly_dist->GetCenter(distal_shaft_center);
-
-    // ### DEFINE COORDINATE SYSTEM ###
-    setCoordinateSystem(medial_condyle[0] - lateral_condyle[0], medial_condyle[1] - lateral_condyle[1], medial_condyle[2] - lateral_condyle[2], 
-        proximal_shaft_center[0] - distal_shaft_center[0], proximal_shaft_center[1] - distal_shaft_center[1], proximal_shaft_center[2] - distal_shaft_center[2], side);
-
-    // ### OFFSET AND WIDTH ###
-    double tmp3[3];
-    double plane[9];
-    double min = 9999; int mini = 0;
-
-    // look for most lateral point - p19
-    for (int i=0; i<cutPoly_dist->GetNumberOfPoints(); i++) {
-        cutPoly_dist->GetPoint(i, tmp3);
-
-        // plane: n, x, p
-        plane[0] = axis[3]; plane[1] = axis[4]; plane[2] = axis[5];
-        plane[3] = tmp3[0]; plane[4] = tmp3[1]; plane[5] = tmp3[2];
-        plane[6] = distal_shaft_center[0]; plane[7] = distal_shaft_center[1]; plane[8] = distal_shaft_center[2];
-
-        if (distanceToPlane(plane) < min) {
-            min = distanceToPlane(plane);
-            mini = i;
-        }
-
-    }
-
-    double fem_p19[4];
-    cutPoly_dist->GetPoint(mini, fem_p19);
-
-    // most medial point - p20
-    double max = -9999; int maxi = 0;
-    
-    for (int i=0; i<cutPoly_dist->GetNumberOfPoints(); i++) {
-        cutPoly_dist->GetPoint(i, tmp3);
-
-        // define plane with mediolateral axis as normal * (-1)
-        plane[0] = axis[3]; plane[1] = axis[4]; plane[2] = axis[5];
-        plane[3] = tmp3[0]; plane[4] = tmp3[1]; plane[5] = tmp3[2];
-        plane[6] = distal_shaft_center[0]; plane[7] = distal_shaft_center[1]; plane[8] = distal_shaft_center[2];
-
-        if (distanceToPlane(plane) > max) {
-            max = distanceToPlane(plane);
-            maxi = i;
-        }
-
-    }
-
-    double fem_p20[4];
-    cutPoly_dist->GetPoint(maxi, fem_p20);
-
-    // most posterior point - p21
-    max = 0; maxi = 0;
-    
-    for (int i = 0; i < cutPoly_dist->GetNumberOfPoints(); i++) {
-        cutPoly_dist->GetPoint(i, tmp3);
-
-        plane[0] = axis[0]; plane[1] = axis[1]; plane[2] = axis[2];
-        plane[3] = tmp3[0]; plane[4] = tmp3[1]; plane[5] = tmp3[2];
-        plane[6] = distal_shaft_center[0]; plane[7] = distal_shaft_center[1]; plane[8] = distal_shaft_center[2];
-
-        if (distanceToPlane(plane) > max) {
-            max = distanceToPlane(plane);
-            maxi = i;
-        }
+    // axis to define local coordinate system with
+    SetMedialAndLateralAxis();
         
-    }
+    // define local coordinate system
+    SetCoordinateSystem();
 
-    double fem_p21[4];
-    cutPoly_dist->GetPoint(maxi, fem_p21);
-
-    // most anterior
-    max = 0; maxi = 0;
-    
-    for (int i = 0; i < cutPoly_dist->GetNumberOfPoints(); i++ ) {
-        cutPoly_dist->GetPoint(i, tmp3);
-
-        // define plane with mediolateral axis as normal * (-1)
-        plane[0] = -1 * axis[0]; plane[1] = -1 * axis[1]; plane[2] = -1 * axis[2];
-        plane[3] = tmp3[0]; plane[4] = tmp3[1]; plane[5] = tmp3[2];
-        plane[6] = distal_shaft_center[0]; plane[7] = distal_shaft_center[1]; plane[8] = distal_shaft_center[2];
-
-        if (distanceToPlane(plane) > max) {
-            max = distanceToPlane(plane);
-            maxi = i;
-        }
-        
-    }
-
-    double fem_p22[4];
-    cutPoly_dist->GetPoint(maxi, fem_p22);
-
-    // ############################################ //
-    // ### CALCULATION OF ANATOMICAL PARAMETERS ### //
-    // ############################################ //
+    SetOffsetAndWidth();
 
     FemoralBoneLength1();
 
-    medial_offset = distanceToPlane(axis[3], axis[4], axis[5], medial_epicondyle[0], medial_epicondyle[1], medial_epicondyle[2], fem_p20[0], fem_p20[1], fem_p20[2]);
+    MedialOffset();
 
-    lateral_offset = distanceToPlane(axis[3], axis[4], axis[5], fem_p19[0], fem_p19[1], fem_p19[2], lateral_epicondyle[0], lateral_epicondyle[1], lateral_epicondyle[2]);
+    LateralOffset();
 
-    ML_width = distanceToPlane(axis[3], axis[4], axis[5], fem_p20[0], fem_p20[1], fem_p20[2], fem_p19[0], fem_p19[1], fem_p19[2]);
+    MLWidth();
 
-    AP_width = distanceToPlane(axis[0], axis[1], axis[2], fem_p21[0], fem_p21[1], fem_p21[2], fem_p22[0], fem_p22[1], fem_p22[2]);
+    APWidth();
 
-    FemoralHeadCenter1(head_fit_point_1, head_fit_point_2, head_fit_point_3, head_fit_point_4, head_fit_point_5, head_fit_point_6, head_fit_point_7, head_fit_point_8);
+    FemoralHeadCenter1();
 
     FemoralNeckAxis1();
 
@@ -282,7 +156,7 @@ void Femur::Thesis() {
 
     FemoralNeckAxis2();
 
-    FemoralAnteversionAndInclination1(medial_condyle, lateral_condyle);
+    FemoralAnteversionAndInclination1();
 
     FemoralCenterOfCondyles1();
 
@@ -298,13 +172,12 @@ void Femur::Thesis() {
     std::cout << "ml with: " << ML_width << "mm" << std::endl;
     std::cout << "asian: " << asian << "%" << std::endl;
     std::cout << "caucasian: " << caucasian << "%" << std::endl;
-
 }
 
-void Femur::PPFX() {
-
+void Femur::PPFX()
+{
     // optimize manual found anatomical landmarks 'fem_p3' and 'fem_p4'
-    OptimizeProximalAndDistalLandmark1();
+    OptimizeProximalAndDistalLandmark();
 
     // ### CUTTING AT 25- and 75% OF BONE LENGTH ### //
     // ### center-point: 75% of length (proximal) ###
@@ -320,13 +193,12 @@ void Femur::PPFX() {
                     most_distal_point[1] + ((most_proximal_point[1]- most_distal_point[1]) * 0.25), most_distal_point[2] + ((most_proximal_point[2] - most_distal_point[2]) * 0.25),
                             distal_shaft_center);
 
-    // ### DEFINE COORDINATE SYSTEM ###
-    setCoordinateSystem(medial_condyle[0]-lateral_condyle[0], medial_condyle[1]-lateral_condyle[1], medial_condyle[2]-lateral_condyle[2], 
-            proximal_shaft_center[0] - distal_shaft_center[0], proximal_shaft_center[1] - distal_shaft_center[1], proximal_shaft_center[2] - distal_shaft_center[2], side);
+    SetMedialAndLateralAxis();
 
+    // to define local coordinate system from
+    SetCoordinateSystem();
+    
     FemoralBoneLength1();
-
-    FemoralHeadCenter1(head_fit_point_1, head_fit_point_2, head_fit_point_3, head_fit_point_4, head_fit_point_5, head_fit_point_6, head_fit_point_7, head_fit_point_8);
 
     FemoralNeckAxis1();
 
@@ -336,7 +208,7 @@ void Femur::PPFX() {
 
     FemoralNeckAxis2();
 
-    FemoralAnteversionAndInclination1(medial_condyle, lateral_condyle);
+    FemoralAnteversionAndInclination1();
 
     FemoralCenterOfCondyles1();
 
@@ -350,7 +222,7 @@ void Femur::FemoralBoneLength1() {
             most_distal_point[0], most_distal_point[1], most_distal_point[2]), 2));
 }
 
-void Femur::OptimizeProximalAndDistalLandmark1() {
+void Femur::OptimizeProximalAndDistalLandmark() {
     // temporary axis
     double zx = most_proximal_point[0] - most_distal_point[0];
     double zy = most_proximal_point[1] - most_distal_point[1];
@@ -395,22 +267,270 @@ void Femur::OptimizeProximalAndDistalLandmark1() {
     anatomicalMesh->GetPoint(min_z_i, most_distal_point);
 }
 
+void Femur::SetProximalShaftCenter()
+{
+    double n[3] = {most_proximal_point[0] - most_distal_point[0],
+        most_proximal_point[1] - most_distal_point[1],
+            most_proximal_point[2] - most_distal_point[2]};
+
+    double p[3] = {most_distal_point[0] + ((most_proximal_point[0] - most_distal_point[0]) * 0.75),
+        most_distal_point[1] + ((most_proximal_point[1] - most_distal_point[1]) * 0.75),
+            most_distal_point[2] + ((most_proximal_point[2] - most_distal_point[2]) * 0.75)};
+    
+    // plane
+    vtkSmartPointer<vtkPlane> vtkplane = vtkSmartPointer<vtkPlane>::New();
+    vtkplane->SetOrigin(p[0], p[1], p[2]);
+    vtkplane->SetNormal(n[0], n[1], n[2]);
+
+    // surface cut with plane
+    vtkSmartPointer<vtkCutter> cutEdges = vtkSmartPointer<vtkCutter>::New();
+    cutEdges->SetInputData(anatomicalMesh);
+    cutEdges->SetCutFunction(vtkplane);
+
+    // generates triangle poly-lines from input polygon
+    vtkSmartPointer<vtkStripper> cutStrips = vtkSmartPointer<vtkStripper>::New();
+    cutStrips->SetInputConnection(cutEdges->GetOutputPort());
+    cutStrips->Update();
+    vtkSmartPointer<vtkPolyData> cutPoly = vtkSmartPointer<vtkPolyData>::New();
+    cutPoly->SetPoints(cutStrips->GetOutput()->GetPoints());
+    cutPoly->SetPolys(cutStrips->GetOutput()->GetLines());
+
+    // crash's may occure if no suitable cut were done - return then
+    if (cutPoly->GetNumberOfPoints() == 0)
+        std::cout << "could not define intersection contour!" << std::endl;
+    else
+    {
+        // get the cutting-contours center
+        cutPoly->GetCenter(proximal_shaft_center);
+    }
+    
+}
+
+void Femur::SetDistalShaftCenter()
+{
+    double center[3];
+    double normal[3];
+    double bn;
+
+    center[0] = most_distal_point[0] + ((most_proximal_point[0] - most_distal_point[0]) * 0.25);
+    center[1] = most_distal_point[1] + ((most_proximal_point[1] - most_distal_point[1]) * 0.25);
+    center[2] = most_distal_point[2] + ((most_proximal_point[2] - most_distal_point[2]) * 0.25);
+
+    bn = sqrt( pow(most_distal_point[0] - most_proximal_point[0], 2) + pow(most_distal_point[1] - most_proximal_point[1], 2) + pow(most_distal_point[2] - most_proximal_point[2], 2) );
+    normal[0] = (most_distal_point[0] - most_proximal_point[0]) / bn;
+    normal[1] = (most_distal_point[1] - most_proximal_point[1]) / bn;
+    normal[2] = (most_distal_point[2] - most_proximal_point[2]) / bn;
+
+    // plane
+    vtkSmartPointer<vtkPlane> vtkplane_dist = vtkSmartPointer<vtkPlane>::New();
+    vtkplane_dist->SetOrigin(center[0], center[1], center[2]);
+    vtkplane_dist->SetNormal(normal[0], normal[1], normal[2]);
+    
+    // surface cut with plane
+    vtkSmartPointer<vtkCutter> cutEdges_dist = vtkSmartPointer<vtkCutter>::New();
+    cutEdges_dist->SetInputData(anatomicalMesh);
+    cutEdges_dist->SetCutFunction(vtkplane_dist);
+    
+    // generates triangle poly-lines from input polygon
+    vtkSmartPointer<vtkStripper> cutStrips_dist = vtkSmartPointer<vtkStripper>::New();
+    cutStrips_dist->SetInputConnection(cutEdges_dist->GetOutputPort());
+    cutStrips_dist->Update();
+    vtkSmartPointer<vtkPolyData> cutPoly_dist = vtkSmartPointer<vtkPolyData>::New();
+    cutPoly_dist->SetPoints(cutStrips_dist->GetOutput()->GetPoints());
+    cutPoly_dist->SetPolys(cutStrips_dist->GetOutput()->GetLines());
+
+    // crash's may occure if no suitable were done - so return then
+    if (cutPoly_dist->GetNumberOfPoints() == 0)
+    {
+        std::cout << "Error - could not define distal shaft center!" << std::endl;
+        return;
+    }
+    
+    // get the cutting-contours center
+    cutPoly_dist->GetCenter(distal_shaft_center);
+}
+
+void Femur::SetMedialAndLateralAxis()
+{
+    // define temporarily medio-lateral ...
+    axis[0] = medial_condyle[0] - lateral_condyle[0];
+    axis[1] = medial_condyle[1] - lateral_condyle[1];
+    axis[2] = medial_condyle[2] - lateral_condyle[2];
+    
+    // ... and cranio-caudal axis
+    axis[3] = proximal_shaft_center[0] - distal_shaft_center[0];
+    axis[4] = proximal_shaft_center[1] - distal_shaft_center[1];
+    axis[5] = proximal_shaft_center[2] - distal_shaft_center[2];
+}
+
+void Femur::SetOffsetAndWidth()
+{
+    double center[3];
+    double normal[3];
+    double bn;
+
+    center[0] = most_distal_point[0] + ((most_proximal_point[0] - most_distal_point[0]) * 0.25);
+    center[1] = most_distal_point[1] + ((most_proximal_point[1] - most_distal_point[1]) * 0.25);
+    center[2] = most_distal_point[2] + ((most_proximal_point[2] - most_distal_point[2]) * 0.25);
+
+    bn = sqrt( pow(most_distal_point[0] - most_proximal_point[0], 2) + pow(most_distal_point[1] - most_proximal_point[1], 2) + pow(most_distal_point[2] - most_proximal_point[2], 2) );
+    normal[0] = (most_distal_point[0] - most_proximal_point[0]) / bn;
+    normal[1] = (most_distal_point[1] - most_proximal_point[1]) / bn;
+    normal[2] = (most_distal_point[2] - most_proximal_point[2]) / bn;
+
+    // plane
+    vtkSmartPointer<vtkPlane> vtkplane_dist = vtkSmartPointer<vtkPlane>::New();
+    vtkplane_dist->SetOrigin(center[0], center[1], center[2]);
+    vtkplane_dist->SetNormal(normal[0], normal[1], normal[2]);
+    
+    // surface cut with plane
+    vtkSmartPointer<vtkCutter> cutEdges_dist = vtkSmartPointer<vtkCutter>::New();
+    cutEdges_dist->SetInputData(anatomicalMesh);
+    cutEdges_dist->SetCutFunction(vtkplane_dist);
+    
+    // generates triangle poly-lines from input polygon
+    vtkSmartPointer<vtkStripper> cutStrips_dist = vtkSmartPointer<vtkStripper>::New();
+    cutStrips_dist->SetInputConnection(cutEdges_dist->GetOutputPort());
+    cutStrips_dist->Update();
+    vtkSmartPointer<vtkPolyData> cutPoly_dist = vtkSmartPointer<vtkPolyData>::New();
+    cutPoly_dist->SetPoints(cutStrips_dist->GetOutput()->GetPoints());
+    cutPoly_dist->SetPolys(cutStrips_dist->GetOutput()->GetLines());
+
+    // crash's may occure if no suitable were done - so return then
+    if (cutPoly_dist->GetNumberOfPoints() == 0)
+    {
+        std::cout << "Error - could not define distal shaft center!" << std::endl;
+        return;
+    }
+    
+    // get the cutting-contours center
+    cutPoly_dist->GetCenter(distal_shaft_center);
+
+    // ### OFFSET AND WIDTH ###
+    double tmp3[3];
+    double plane[9];
+    double min = 9999; int mini = 0;
+
+    // most lateral shaft point (p19)
+    for (int i=0; i<cutPoly_dist->GetNumberOfPoints(); i++)
+    {
+        cutPoly_dist->GetPoint(i, tmp3);
+
+        // plane: n, x, p
+        plane[0] = axis[3]; plane[1] = axis[4]; plane[2] = axis[5];
+        plane[3] = tmp3[0]; plane[4] = tmp3[1]; plane[5] = tmp3[2];
+        plane[6] = distal_shaft_center[0]; plane[7] = distal_shaft_center[1]; plane[8] = distal_shaft_center[2];
+
+        if (distanceToPlane(plane) < min)
+        {
+            min = distanceToPlane(plane);
+            mini = i;
+        }
+
+    }
+
+    cutPoly_dist->GetPoint(mini, most_lateral_shaft_point);
+
+    // most medial shaft point (p20)
+    double max = -9999; int maxi = 0;
+    
+    for (int i=0; i<cutPoly_dist->GetNumberOfPoints(); i++)
+    {
+        cutPoly_dist->GetPoint(i, tmp3);
+
+        // define plane with mediolateral axis as normal * (-1)
+        plane[0] = axis[3]; plane[1] = axis[4]; plane[2] = axis[5];
+        plane[3] = tmp3[0]; plane[4] = tmp3[1]; plane[5] = tmp3[2];
+        plane[6] = distal_shaft_center[0]; plane[7] = distal_shaft_center[1]; plane[8] = distal_shaft_center[2];
+
+        if (distanceToPlane(plane) > max)
+        {
+            max = distanceToPlane(plane);
+            maxi = i;
+        }
+
+    }
+    
+    cutPoly_dist->GetPoint(maxi, most_medial_shaft_point);
+
+    // most posterior shaft point (p21) 
+    max = 0; maxi = 0;
+    
+    for (int i = 0; i < cutPoly_dist->GetNumberOfPoints(); i++)
+    {
+        cutPoly_dist->GetPoint(i, tmp3);
+
+        plane[0] = axis[0]; plane[1] = axis[1]; plane[2] = axis[2];
+        plane[3] = tmp3[0]; plane[4] = tmp3[1]; plane[5] = tmp3[2];
+        plane[6] = distal_shaft_center[0]; plane[7] = distal_shaft_center[1]; plane[8] = distal_shaft_center[2];
+
+        if (distanceToPlane(plane) > max)
+        {
+            max = distanceToPlane(plane);
+            maxi = i;
+        }
+        
+    }
+
+    cutPoly_dist->GetPoint(maxi, most_posterior_shaft_point);
+
+    // most anterior shaft point (p22))
+    max = 0; maxi = 0;
+    
+    for (int i = 0; i < cutPoly_dist->GetNumberOfPoints(); i++)
+    {
+        cutPoly_dist->GetPoint(i, tmp3);
+
+        // define plane with mediolateral axis as normal * (-1)
+        plane[0] = -1 * axis[0]; plane[1] = -1 * axis[1]; plane[2] = -1 * axis[2];
+        plane[3] = tmp3[0]; plane[4] = tmp3[1]; plane[5] = tmp3[2];
+        plane[6] = distal_shaft_center[0]; plane[7] = distal_shaft_center[1]; plane[8] = distal_shaft_center[2];
+
+        if (distanceToPlane(plane) > max)
+        {
+            max = distanceToPlane(plane);
+            maxi = i;
+        }
+
+    }
+
+    cutPoly_dist->GetPoint(maxi, most_anterior_shaft_point);
+}
+
 void Femur::FemoralShaftLength1() {
     // distance between 'neck_shaft_interception' and 'center_of_condyles' along z-axis
     shaft_length = sqrt(pow(distanceToPlane(axis[6], axis[7], axis[8], neck_shaft_interception[0], neck_shaft_interception[1], neck_shaft_interception[2],
             center_of_condyles[0], center_of_condyles[1], center_of_condyles[2]), 2));
 }
 
-void Femur::FemoralHeadCenter1(double p8[3], double p9[3], double p10[3], double p11[3], double p12[3], double p13[3], double p14[3], double p15[3]) {
+void Femur::MedialOffset()
+{
+    medial_offset = distanceToPlane(axis[3], axis[4], axis[5], medial_epicondyle[0], medial_epicondyle[1], medial_epicondyle[2], most_medial_shaft_point[0], most_medial_shaft_point[1], most_medial_shaft_point[2]);
+}
+
+void Femur::LateralOffset() {
+    lateral_offset = distanceToPlane(axis[3], axis[4], axis[5], most_lateral_shaft_point[0], most_lateral_shaft_point[1], most_lateral_shaft_point[2], lateral_epicondyle[0], lateral_epicondyle[1], lateral_epicondyle[2]);
+}
+
+void Femur::MLWidth() {
+    ML_width = distanceToPlane(axis[3], axis[4], axis[5], most_medial_shaft_point[0], most_medial_shaft_point[1], most_medial_shaft_point[2], most_lateral_shaft_point[0], most_lateral_shaft_point[1], most_lateral_shaft_point[2]);
+}
+
+void Femur::APWidth() {
+    AP_width = distanceToPlane(axis[0], axis[1], axis[2], most_posterior_shaft_point[0], most_posterior_shaft_point[1], most_posterior_shaft_point[2], most_anterior_shaft_point[0], most_anterior_shaft_point[1], most_anterior_shaft_point[2]);
+}
+
+void Femur::FemoralHeadCenter1()
+{
     double sphere[8][3];
-    sphere[0][0] = p8[0]; sphere[0][1] = p8[1]; sphere[0][2] = p8[2];
-    sphere[1][0] = p9[0]; sphere[1][1] = p9[1]; sphere[1][2] = p9[2];
-    sphere[2][0] = p10[0]; sphere[2][1] = p10[1]; sphere[2][2] = p10[2];
-    sphere[3][0] = p11[0]; sphere[3][1] = p11[1]; sphere[3][2] = p11[2];
-    sphere[4][0] = p12[0]; sphere[4][1] = p12[1]; sphere[4][2] = p12[2];
-    sphere[5][0] = p13[0]; sphere[5][1] = p13[1]; sphere[5][2] = p13[2];
-    sphere[6][0] = p14[0]; sphere[6][1] = p14[1]; sphere[6][2] = p14[2];
-    sphere[7][0] = p15[0]; sphere[7][1] = p15[1]; sphere[7][2] = p15[2];
+    sphere[0][0] = head_fit_point_1[0]; sphere[0][1] = head_fit_point_1[1]; sphere[0][2] = head_fit_point_1[2];
+    sphere[1][0] = head_fit_point_2[0]; sphere[1][1] = head_fit_point_2[1]; sphere[1][2] = head_fit_point_2[2];
+    sphere[2][0] = head_fit_point_3[0]; sphere[2][1] = head_fit_point_3[1]; sphere[2][2] = head_fit_point_3[2];
+    sphere[3][0] = head_fit_point_4[0]; sphere[3][1] = head_fit_point_4[1]; sphere[3][2] = head_fit_point_4[2];
+    sphere[4][0] = head_fit_point_5[0]; sphere[4][1] = head_fit_point_5[1]; sphere[4][2] = head_fit_point_5[2];
+    sphere[5][0] = head_fit_point_6[0]; sphere[5][1] = head_fit_point_6[1]; sphere[5][2] = head_fit_point_6[2];
+    sphere[6][0] = head_fit_point_7[0]; sphere[6][1] = head_fit_point_7[1]; sphere[6][2] = head_fit_point_7[2];
+    sphere[7][0] = head_fit_point_8[0]; sphere[7][1] = head_fit_point_8[1]; sphere[7][2] = head_fit_point_8[2];
 
     double Cx = 0;
     double Cy = 0;
@@ -623,8 +743,8 @@ void Femur::FemoralNeckAxis2() {
     neck_axis[2] = (head[2] - neck_shaft_interception[2]) / b;
 }
 
-void Femur::FemoralAnteversionAndInclination1(double medial_condyle[3], double lateral_condyle[3]) {
-
+void Femur::FemoralAnteversionAndInclination1()
+{
     //#######################
     //### (1) inclination ###
     //#######################

@@ -11,8 +11,8 @@ IF((CMAKE_SYSTEM_NAME STREQUAL Linux) AND
     # c++11 is used
     ADD_DEFINITIONS(-std=c++11)
 
-    SET(BoneDoc_SOURCES BoneDocServer.cpp main.cpp Anatomy.cpp Femur.cpp Humerus.cpp Tibia.cpp)
-    SET(BoneDoc_HEADERS BoneDocServer.h Anatomy.h Femur.h Humerus.h Tibia.h)
+    SET(BoneDoc_SOURCES BoneDocServer.cpp main.cpp Anatomy.cpp Femur.cpp Humerus.cpp Tibia.cpp Study.cpp)
+    SET(BoneDoc_HEADERS BoneDocServer.h Anatomy.h Femur.h Humerus.h Tibia.h Study.h)
 
     # BOOST
     FIND_PACKAGE(Boost REQUIRED)
