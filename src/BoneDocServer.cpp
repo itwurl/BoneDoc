@@ -152,7 +152,7 @@ void session(boost::asio::ip::tcp::socket socket)
 void BoneDocServer::Start()
 {
     std::cout << "Server started. Listening on port " << BONEDOC_SERVER_PORT_STR << " ..." << std::endl << std::endl;
-    
+
     try
     {
 

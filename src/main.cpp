@@ -3,7 +3,6 @@
 
 int main(int argc, char *argv[])
 {
-
     if (argc == 1)
     {
         // start http-server, analysis will be triggered by client requests

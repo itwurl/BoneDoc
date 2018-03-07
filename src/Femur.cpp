@@ -164,13 +164,13 @@ void Femur::Thesis()
     GuessEthnicGroup();
 
     std::cout << "anteversion: " << anteversion << "°" << std::endl;
-    std::cout << "ap with: " << AP_width << "mm" << std::endl;
+    std::cout << "ap width: " << AP_width << "mm" << std::endl;
     std::cout << "bone length: " << bone_length << "mm" << std::endl;
     std::cout << "head radius: " << head_radius << "mm" << std::endl;
     std::cout << "inclination: " << inclination << "°" << std::endl;
     std::cout << "lateral offset: " << lateral_offset << "mm" << std::endl;
     std::cout << "medial offset: " << medial_offset << "mm" << std::endl;
-    std::cout << "ml with: " << ML_width << "mm" << std::endl;
+    std::cout << "ml width: " << ML_width << "mm" << std::endl;
     std::cout << "asian: " << asian << "%" << std::endl;
     std::cout << "caucasian: " << caucasian << "%" << std::endl;
 }
