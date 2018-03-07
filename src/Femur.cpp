@@ -176,22 +176,14 @@ void Femur::Thesis()
 
 void Femur::PPFX()
 {
-    // optimize manual found anatomical landmarks 'fem_p3' and 'fem_p4'
+    // optimize manual found anatomical landmarks
     OptimizeProximalAndDistalLandmark();
 
-    // ### CUTTING AT 25- and 75% OF BONE LENGTH ### //
-    // ### center-point: 75% of length (proximal) ###
-    getCenterOfIntersectionContour(anatomicalMesh, most_proximal_point[0] - most_distal_point[0], most_proximal_point[1] - most_distal_point[1],
-            most_proximal_point[2] - most_distal_point[2], most_distal_point[0] + ((most_proximal_point[0] - most_distal_point[0]) * 0.75),
-                    most_distal_point[1] + ((most_proximal_point[1] - most_distal_point[1]) * 0.75), most_distal_point[2] + ((most_proximal_point[2] - most_distal_point[2]) * 0.75),
-                            proximal_shaft_center);
+    // intersect shaft at 75% of bone length an set contour's center of mass to 'proximal_shaft_center'
+    SetProximalShaftCenter();
 
-
-    /// ### center-point: 25% of length ###
-    getCenterOfIntersectionContour(anatomicalMesh, most_proximal_point[0]- most_distal_point[0], most_proximal_point[1]- most_distal_point[1], 
-            most_proximal_point[2]- most_distal_point[2], most_distal_point[0] + ((most_proximal_point[0]- most_distal_point[0]) * 0.25), 
-                    most_distal_point[1] + ((most_proximal_point[1]- most_distal_point[1]) * 0.25), most_distal_point[2] + ((most_proximal_point[2] - most_distal_point[2]) * 0.25),
-                            distal_shaft_center);
+    // intersect shaft at 25% of bone length an set contour's center of mass to 'distal_shaft_center'
+    SetDistalShaftCenter();
 
     SetMedialAndLateralAxis();
 
@@ -217,12 +209,14 @@ void Femur::PPFX()
     FemoralTwist1();
 }
 
-void Femur::FemoralBoneLength1() {
+void Femur::FemoralBoneLength1()
+{
     bone_length = sqrt(pow(distanceToPlane(axis[6], axis[7], axis[8], most_proximal_point[0], most_proximal_point[1], most_proximal_point[2],
             most_distal_point[0], most_distal_point[1], most_distal_point[2]), 2));
 }
 
-void Femur::OptimizeProximalAndDistalLandmark() {
+void Femur::OptimizeProximalAndDistalLandmark()
+{
     // temporary axis
     double zx = most_proximal_point[0] - most_distal_point[0];
     double zy = most_proximal_point[1] - most_distal_point[1];
@@ -243,18 +237,21 @@ void Femur::OptimizeProximalAndDistalLandmark() {
     double center[3];
     anatomicalMesh->GetCenter(center);
 
-    for (vtkIdType i = 0; i < anatomicalMesh->GetNumberOfPoints(); i++) {
+    for (vtkIdType i = 0; i < anatomicalMesh->GetNumberOfPoints(); i++)
+    {
         double tmp[3];
         anatomicalMesh->GetPoint(i, tmp);
 
         double d = distanceToPlane(zx, zy, zz, tmp[0], tmp[1], tmp[2], center[0], center[1], center[2]); 
 
-        if (d > max_z) {
+        if (d > max_z)
+        {
             max_z = d;
             max_z_i = i;
         }
 
-        if (d < min_z) {
+        if (d < min_z) 
+        {
             min_z = d;
             min_z_i = i;
         }
@@ -497,7 +494,8 @@ void Femur::SetOffsetAndWidth()
     cutPoly_dist->GetPoint(maxi, most_anterior_shaft_point);
 }
 
-void Femur::FemoralShaftLength1() {
+void Femur::FemoralShaftLength1()
+{
     // distance between 'neck_shaft_interception' and 'center_of_condyles' along z-axis
     shaft_length = sqrt(pow(distanceToPlane(axis[6], axis[7], axis[8], neck_shaft_interception[0], neck_shaft_interception[1], neck_shaft_interception[2],
             center_of_condyles[0], center_of_condyles[1], center_of_condyles[2]), 2));
@@ -508,15 +506,18 @@ void Femur::MedialOffset()
     medial_offset = distanceToPlane(axis[3], axis[4], axis[5], medial_epicondyle[0], medial_epicondyle[1], medial_epicondyle[2], most_medial_shaft_point[0], most_medial_shaft_point[1], most_medial_shaft_point[2]);
 }
 
-void Femur::LateralOffset() {
+void Femur::LateralOffset()
+{
     lateral_offset = distanceToPlane(axis[3], axis[4], axis[5], most_lateral_shaft_point[0], most_lateral_shaft_point[1], most_lateral_shaft_point[2], lateral_epicondyle[0], lateral_epicondyle[1], lateral_epicondyle[2]);
 }
 
-void Femur::MLWidth() {
+void Femur::MLWidth()
+{
     ML_width = distanceToPlane(axis[3], axis[4], axis[5], most_medial_shaft_point[0], most_medial_shaft_point[1], most_medial_shaft_point[2], most_lateral_shaft_point[0], most_lateral_shaft_point[1], most_lateral_shaft_point[2]);
 }
 
-void Femur::APWidth() {
+void Femur::APWidth()
+{
     AP_width = distanceToPlane(axis[0], axis[1], axis[2], most_posterior_shaft_point[0], most_posterior_shaft_point[1], most_posterior_shaft_point[2], most_anterior_shaft_point[0], most_anterior_shaft_point[1], most_anterior_shaft_point[2]);
 }
 
@@ -538,7 +539,8 @@ void Femur::FemoralHeadCenter1()
     double tmp[4];
     tmp[3] = 1;
 
-    for (int i = 0; i < 8; i++) {
+    for (int i = 0; i < 8; i++)
+    {
         Cx = Cx + sphere[i][0];
         Cy = Cy + sphere[i][1];
         Cz = Cz + sphere[i][2];
@@ -561,9 +563,10 @@ void Femur::FemoralHeadCenter1()
     Cz = 0;
 }
 
-void Femur::FemoralNeckAxis1() {
-
-    if ((head[0] == 0) && (head[1] == 0) && (head[2] == 0)) {
+void Femur::FemoralNeckAxis1()
+{
+    if ((head[0] == 0) && (head[1] == 0) && (head[2] == 0))
+    {
         std::cout << "head-center not defined!" << std::endl;
         return;
     }
@@ -621,14 +624,17 @@ void Femur::FemoralNeckAxis1() {
     neck_axis[2] = neck_axis[2] / b3;
 }
 
-void Femur::FemoralNeckAxisCorrection1() {
+void Femur::FemoralNeckAxisCorrection1()
+{
     
-    if ((neck_isthmus_center[0] == 0) && (neck_isthmus_center[1] == 0) && (neck_isthmus_center[2] == 0)) {
+    if ((neck_isthmus_center[0] == 0) && (neck_isthmus_center[1] == 0) && (neck_isthmus_center[2] == 0))
+    {
         std::cout << "neck-isthmus-center not defined!" << std::endl;
         return;
     }
     
-    if ((head[0] == 0) && (head[1] == 0) && (head[2] == 0)) {
+    if ((head[0] == 0) && (head[1] == 0) && (head[2] == 0))
+    {
         std::cout << "head-center not defined!" << std::endl;
         return;
     }
@@ -658,7 +664,8 @@ void Femur::FemoralNeckAxisCorrection1() {
         centers[i].resize(3);
 
     // loop along tempory neck-axis starting from neck-isthmus
-    for (int i = 0; i < neck_intersection_size; i++) {
+    for (int i = 0; i < neck_intersection_size; i++)
+    {
         lambda = (i * (neck_length / (neck_intersection_size-1)));
 
         p[0] = neck_isthmus_center[0] + (lambda * neck_axis[0]);
@@ -712,7 +719,9 @@ void Femur::FemoralNeckAxisCorrection1() {
         neck_axis[0] /= b;
         neck_axis[1] /= b;
         neck_axis[2] /= b;
-    } else {
+    }
+    else
+    {
         neck_axis[0] = position_vectors[3] - position_vectors[0];
         neck_axis[1] = position_vectors[4] - position_vectors[1];
         neck_axis[2] = position_vectors[5] - position_vectors[2];
@@ -725,11 +734,13 @@ void Femur::FemoralNeckAxisCorrection1() {
 
 }
 
-void Femur::FemoralNeckAxis2() {
+void Femur::FemoralNeckAxis2()
+{
     
     // 'neck_shaft_interception' and 'head' had to be defined
     if (((0 == neck_shaft_interception[0]) && (0 == neck_shaft_interception[1]) && (0 == neck_shaft_interception[2])) ||
-            ((0 == head[0]) && (0 == head[1]) && (0 == head[2]))) {
+            ((0 == head[0]) && (0 == head[1]) && (0 == head[2])))
+    {
         std::cout << "Intersection between neck- and shaft axis or femoral head center was not defined before!" << std::endl;
         return;
     }
@@ -816,7 +827,8 @@ void Femur::FemoralAnteversionAndInclination1()
         anteversion = betaR * (180 / PI);
 }
 
-void Femur::FemoralCenterOfCondyles1() {
+void Femur::FemoralCenterOfCondyles1()
+{
     double lambda = distanceToPlane(axis[6], axis[7], axis[8],
             intercondylar_notch[0], intercondylar_notch[1], intercondylar_notch[2],
                     proximal_shaft_center[0], proximal_shaft_center[1], proximal_shaft_center[2]);
@@ -827,8 +839,8 @@ void Femur::FemoralCenterOfCondyles1() {
     center_of_condyles[2] = proximal_shaft_center[2] + (lambda * axis[8]);
 }
 
-void Femur::FemoralNeckAndShaftAxisInterception1() {
-
+void Femur::FemoralNeckAndShaftAxisInterception1()
+{
     // x-axis 
     std::vector<double> x(3);
     x.at(0) = axis[0];
@@ -875,7 +887,8 @@ void Femur::FemoralNeckAndShaftAxisInterception1() {
     neck_shaft_interception[3] = 1;
 }
 
-void Femur::FemoralTwist1() {
+void Femur::FemoralTwist1()
+{
     double intersection[3];
     double twistIntersection[4];
 
@@ -893,8 +906,8 @@ void Femur::FemoralTwist1() {
     double lambda = 0;
     double cut_center[3];
 
-    for (int i = 0; i < twist_intersections_size; i++) {
-       
+    for (int i = 0; i < twist_intersections_size; i++)
+    {
         // intersections points starting with i = 0, so subtract -1 from twist_intersections_size for correct number 
         lambda = (i*(shaft_length/(twist_intersections_size-1)));
 
@@ -910,7 +923,8 @@ void Femur::FemoralTwist1() {
 
         tree->IntersectWithLine(lineP0, lineP1, intersectPoints, NULL);
 
-        if (intersectPoints->GetNumberOfPoints() == 0) {
+        if (intersectPoints->GetNumberOfPoints() == 0)
+        {
             std::cout << "no intersections found!" << std::endl;
             return;
         }
@@ -918,13 +932,15 @@ void Femur::FemoralTwist1() {
         int min_j = 0;
         double dist = 9999;
 
-        for (int j = 0; j < intersectPoints->GetNumberOfPoints(); j++) {
+        for (int j = 0; j < intersectPoints->GetNumberOfPoints(); j++)
+        {
             intersectPoints->GetPoint(j, intersection);
 
             // get distance to lateral epicondyle
             // found intersections distance to plane through lateral epicondyle with vector y (which points lateral)
             if (distanceToPlane(axis[3], axis[4], axis[5], intersection[0], intersection[1], intersection[2], 
-                    lateral_epicondyle[0], lateral_epicondyle[1], lateral_epicondyle[2]) < dist) {
+                    lateral_epicondyle[0], lateral_epicondyle[1], lateral_epicondyle[2]) < dist)
+            {
                 dist = distanceToPlane(axis[3], axis[4], axis[5], intersection[0], intersection[1], intersection[2], 
                     lateral_epicondyle[0], lateral_epicondyle[1], lateral_epicondyle[2]);
                 min_j = j;
@@ -944,14 +960,16 @@ void Femur::FemoralTwist1() {
 
 }
 
-void Femur::GuessEthnicGroup() {
+void Femur::GuessEthnicGroup()
+{
     std::string model;
     
     if (side == "LEFT")
         model = "femur-left-logistic-regression-model";
     else if (side == "RIGHT")
         model = "femur-right-logistic-regression-model";
-    else {
+    else
+    {
         asian = 0;
         caucasian = 0;
         return;
@@ -960,7 +978,8 @@ void Femur::GuessEthnicGroup() {
     // load model from config file
     std::ifstream file(configPath);
         
-    if (!file.is_open()) {
+    if (!file.is_open())
+    {
         std::cout << "Could not load config file!" << std::endl;
         return;
     }
@@ -973,12 +992,13 @@ void Femur::GuessEthnicGroup() {
     std::string delimiter = ",";
 
     // read all lines
-    while (getline(file, row)) {
-
+    while (getline(file, row))
+    {
         found = false;
 
         // read every single comma separated value
-        while ((pos = row.find(delimiter)) != std::string::npos) {			
+        while ((pos = row.find(delimiter)) != std::string::npos)
+        {			
             value = row.substr(0, pos);
             row.erase(0, pos + delimiter.length());
 
@@ -990,7 +1010,8 @@ void Femur::GuessEthnicGroup() {
             
         }
         
-        if (found) {
+        if (found)
+        {
             value = row.substr(pos+1, row.length());
             coefficients.push_back(std::stof(value.c_str()));
         }
@@ -1021,5 +1042,6 @@ void Femur::GuessEthnicGroup() {
     asian = 100 - caucasian;
 }
 
-Femur::~Femur() {
+Femur::~Femur()
+{
 }

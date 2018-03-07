@@ -42,8 +42,20 @@ private:
     double PP[3];
     double PA[3];
 
+    // technical landmarks
+    double proximal_shaft_center[3];
+    double distal_shaft_center[3];
+    double most_lateral_shaft_point[3]; // most lateral point of shaft-axis
+    double most_medial_shaft_point[3]; // most medial point of shaft-axis
+    double most_posterior_shaft_point[3]; // most posterior point of shaft-axis
+    double most_anterior_shaft_point[3]; // most anterior point of shaft-axis
+    
+    
     void HumerusHeadCenter(double *p12, double *p13, double *p14, double *p15, double *p16, double *p17, double *p18, double *p19);
-
+    
+    // (temporary) medial and lateral axis to define local coordinate from
+    void SetMedialAndLateralAxis();
+    
     void HumerusInclinationAndRetroversion(double *p9, double *p10, double *p11);
 
     // find technical landmark (closest point) for each anatomical landmark

@@ -125,8 +125,7 @@ void Humerus::Thesis()
     }
 
     // get the cutting-contours center
-    double cut_center_prox[3];
-    cutPoly_prox->GetCenter(cut_center_prox);
+    cutPoly_prox->GetCenter(proximal_shaft_center);
 
     // ### center-point: 20% of length ###
     center[0] = most_distal_point[0] + ((most_proximal_point[0]-most_distal_point[0]) * 0.2);
@@ -164,19 +163,8 @@ void Humerus::Thesis()
     }
 
     // get the cutting-contours center
-    double cut_center_dist[3];
-    cutPoly_dist->GetCenter(cut_center_dist);
-
-
-    // define temporarily medio-lateral ...
-    axis[0] = medial_epicondyle[0] - lateral_epicondyle[0];
-    axis[1] = medial_epicondyle[1] - lateral_epicondyle[1];
-    axis[2] = medial_epicondyle[2] - lateral_epicondyle[2];
+    cutPoly_dist->GetCenter(distal_shaft_center);
     
-    // ... and cranio-caudal axis
-    axis[3] = cut_center_prox[0] - cut_center_dist[0];
-    axis[4] = cut_center_prox[1] - cut_center_dist[1];
-    axis[5] = cut_center_prox[2] - cut_center_dist[2];
 
     // ### DEFINE COORDINATE SYSTEM ###
     SetCoordinateSystem();
@@ -193,7 +181,7 @@ void Humerus::Thesis()
         // plane: n, x, p
         plane[0] = axis[3]; plane[1] = axis[4]; plane[2] = axis[5];
         plane[3] = tmp3[0]; plane[4] = tmp3[1]; plane[5] = tmp3[2];
-        plane[6] = cut_center_dist[0]; plane[7] = cut_center_dist[1]; plane[8] = cut_center_dist[2];
+        plane[6] = distal_shaft_center[0]; plane[7] = distal_shaft_center[1]; plane[8] = distal_shaft_center[2];
 
         if (distanceToPlane(plane) > max)
         {
@@ -203,10 +191,9 @@ void Humerus::Thesis()
 
     }
 
-    double hum_dist_cut_medial[4];
-    cutPoly_dist->GetPoint(maxi, hum_dist_cut_medial);
+    cutPoly_dist->GetPoint(maxi, most_medial_shaft_point);
 
-    // most lateral point - hum_dist_cut_lateral
+    // most lateral point
     max = 0;
     maxi = 0;
     
@@ -217,7 +204,7 @@ void Humerus::Thesis()
         // define plane with mediolateral axis as normal * (-1)
         plane[0] = -1 * axis[3]; plane[1] = -1 * axis[4]; plane[2] = -1 * axis[5];
         plane[3] = tmp3[0]; plane[4] = tmp3[1]; plane[5] = tmp3[2];
-        plane[6] = cut_center_dist[0]; plane[7] = cut_center_dist[1]; plane[8] = cut_center_dist[2];
+        plane[6] = distal_shaft_center[0]; plane[7] = distal_shaft_center[1]; plane[8] = distal_shaft_center[2];
 
         if (distanceToPlane(plane) > max)
         {
@@ -226,11 +213,10 @@ void Humerus::Thesis()
         }
 
     }
+    
+    cutPoly_dist->GetPoint(maxi, most_lateral_shaft_point);
 
-    double hum_dist_cut_lateral[4];
-    cutPoly_dist->GetPoint(maxi, hum_dist_cut_lateral);
-
-    // most posterior point - hum_dist_cut_posterior
+    // most posterior point
     max = 0; maxi = 0;
     for (int i = 0; i < cutPoly_dist->GetNumberOfPoints(); i++)
     {
@@ -238,7 +224,7 @@ void Humerus::Thesis()
 
         plane[0] = axis[0]; plane[1] = axis[1]; plane[2] = axis[2];
         plane[3] = tmp3[0]; plane[4] = tmp3[1]; plane[5] = tmp3[2];
-        plane[6] = cut_center_dist[0]; plane[7] = cut_center_dist[1]; plane[8] = cut_center_dist[2];
+        plane[6] = distal_shaft_center[0]; plane[7] = distal_shaft_center[1]; plane[8] = distal_shaft_center[2];
 
         if (distanceToPlane(plane) > max)
         {
@@ -248,8 +234,7 @@ void Humerus::Thesis()
 
     }
 
-    double hum_dist_cut_posterior[4];
-    cutPoly_dist->GetPoint(maxi, hum_dist_cut_posterior);
+    cutPoly_dist->GetPoint(maxi, most_posterior_shaft_point);
 
     // most anterior point
     max = 0;
@@ -261,7 +246,7 @@ void Humerus::Thesis()
         // define plane with ventral axis
         plane[0] = -1 * axis[0]; plane[1] = -1 * axis[1]; plane[2] = -1 * axis[2];
         plane[3] = tmp3[0]; plane[4] = tmp3[1]; plane[5] = tmp3[2];
-        plane[6] = cut_center_dist[0]; plane[7] = cut_center_dist[1]; plane[8] = cut_center_dist[2];
+        plane[6] = distal_shaft_center[0]; plane[7] = distal_shaft_center[1]; plane[8] = distal_shaft_center[2];
 
         if (distanceToPlane(plane) > max)
         {
@@ -271,36 +256,35 @@ void Humerus::Thesis()
 
     }
 
-    double hum_dist_cut_anterior[4];
-    cutPoly_dist->GetPoint(maxi, hum_dist_cut_anterior);
+    cutPoly_dist->GetPoint(maxi, most_anterior_shaft_point);
 
     // bone length:
-    bone_length = sqrt( pow(most_proximal_point[0]-most_distal_point[0], 2) + pow(most_proximal_point[1]-most_distal_point[1], 2) + pow(most_proximal_point[2]-most_distal_point[2], 2) );
+    bone_length = sqrt(pow(most_proximal_point[0]-most_distal_point[0], 2) + pow(most_proximal_point[1]-most_distal_point[1], 2) + pow(most_proximal_point[2]-most_distal_point[2], 2));
 
     // medial offset:
     // plane: n, x, p
     plane[0] = axis[3]; plane[1] = axis[4]; plane[2] = axis[5];
     plane[3] = medial_epicondyle[0]; plane[4] = medial_epicondyle[1]; plane[5] = medial_epicondyle[2];
-    plane[6] = hum_dist_cut_medial[0]; plane[7] = hum_dist_cut_medial[1]; plane[8] = hum_dist_cut_medial[2];
-    medial_offset = distanceToPlane( plane );
+    plane[6] = most_medial_shaft_point[0]; plane[7] = most_medial_shaft_point[1]; plane[8] = most_medial_shaft_point[2];
+    medial_offset = distanceToPlane(plane);
 
     // lateral offset:
     plane[0] = -axis[3]; plane[1] = -axis[4]; plane[2] = -axis[5];
     plane[3] = lateral_epicondyle[0]; plane[4] = lateral_epicondyle[1]; plane[5] = lateral_epicondyle[2];
-    plane[6] = hum_dist_cut_lateral[0]; plane[7] = hum_dist_cut_lateral[1]; plane[8] = hum_dist_cut_lateral[2];
-    lateral_offset = distanceToPlane( plane );
+    plane[6] = most_lateral_shaft_point[0]; plane[7] = most_lateral_shaft_point[1]; plane[8] = most_lateral_shaft_point[2];
+    lateral_offset = distanceToPlane(plane);
 
     // ml width:
     plane[0] = axis[3]; plane[1] = axis[4]; plane[2] = axis[5];
-    plane[3] = hum_dist_cut_medial[0]; plane[4] = hum_dist_cut_medial[1]; plane[5] = hum_dist_cut_medial[2];
-    plane[6] = hum_dist_cut_lateral[0]; plane[7] = hum_dist_cut_lateral[1]; plane[8] = hum_dist_cut_lateral[2];
-    ML_width = distanceToPlane( plane );
+    plane[3] = most_medial_shaft_point[0]; plane[4] = most_medial_shaft_point[1]; plane[5] = most_medial_shaft_point[2];
+    plane[6] = most_lateral_shaft_point[0]; plane[7] = most_lateral_shaft_point[1]; plane[8] = most_lateral_shaft_point[2];
+    ML_width = distanceToPlane(plane);
 
     // ap width:
     plane[0] = axis[0]; plane[1] = axis[1]; plane[2] = axis[2];
-    plane[3] = hum_dist_cut_posterior[0]; plane[4] = hum_dist_cut_posterior[1]; plane[5] = hum_dist_cut_posterior[2];
-    plane[6] = hum_dist_cut_anterior[0]; plane[7] = hum_dist_cut_anterior[1]; plane[8] = hum_dist_cut_anterior[2];
-    AP_width = distanceToPlane( plane );
+    plane[3] = most_posterior_shaft_point[0]; plane[4] = most_posterior_shaft_point[1]; plane[5] = most_posterior_shaft_point[2];
+    plane[6] = most_anterior_shaft_point[0]; plane[7] = most_anterior_shaft_point[1]; plane[8] = most_anterior_shaft_point[2];
+    AP_width = distanceToPlane(plane);
 
     // spherefit with head_fit_point_1 - head_fit_point_8
     HumerusHeadCenter(head_fit_point_1, head_fit_point_2, head_fit_point_3, head_fit_point_4, head_fit_point_5, head_fit_point_6, head_fit_point_7, head_fit_point_8);
@@ -517,14 +501,29 @@ void Humerus::HumerusInclinationAndRetroversion(double* anterior, double* medial
     retroversion = acos(param2) * (360 / (2 * PI));
 }
 
-void Humerus::GuessEthnicGroup() {
+void Humerus::SetMedialAndLateralAxis()
+{
+    // define temporarily medio-lateral ...
+    axis[0] = medial_epicondyle[0] - lateral_epicondyle[0];
+    axis[1] = medial_epicondyle[1] - lateral_epicondyle[1];
+    axis[2] = medial_epicondyle[2] - lateral_epicondyle[2];
+    
+    // ... and cranio-caudal axis
+    axis[3] = proximal_shaft_center[0] - distal_shaft_center[0];
+    axis[4] = proximal_shaft_center[1] - distal_shaft_center[1];
+    axis[5] = proximal_shaft_center[2] - distal_shaft_center[2];
+}
+
+void Humerus::GuessEthnicGroup()
+{
     std::string model;
     
     if (side == "LEFT")
         model = "humerus-left-logistic-regression-model";
     else if (side == "RIGHT")
         model = "humerus-right-logistic-regression-model";
-    else {
+    else
+    {
         asian = 0;
         caucasian = 0;
         return;
