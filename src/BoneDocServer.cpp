@@ -2,8 +2,8 @@
 
 static std::string BONEDOC_PATH;
 
-BoneDocServer::BoneDocServer(const char* path) {
-    
+BoneDocServer::BoneDocServer(const char* path)
+{
     // extract application path 
     boost::filesystem::path full_path(boost::filesystem::initial_path<boost::filesystem::path>());
     full_path = boost::filesystem::system_complete(boost::filesystem::path(path));
@@ -17,7 +17,6 @@ void session(boost::asio::ip::tcp::socket socket)
     {
         for (;;)
         {
-            
             // read the request header (until blank line)
             boost::asio::streambuf request;
             boost::asio::read_until(socket, request, "\r\n");
@@ -73,7 +72,7 @@ void session(boost::asio::ip::tcp::socket socket)
                 //std::cout << "side: " << side << std::endl;
                 //std::cout << "gender: " << gender << std::endl;
                 //std::cout << "ethnic group: " << ethnic_group << std::endl;
-                
+
                 // concatenate correct path's (DEBUG: currently 'VTK' and 'FCSV' format required!)
                 std::stringstream anatomicalMeshPath;
                 anatomicalMeshPath << BONEDOC_PATH << "/data/" << dataset << ".vtk";
@@ -145,19 +144,23 @@ void session(boost::asio::ip::tcp::socket socket)
     }
     catch (std::exception& e)
     {
-      std::cerr << "Exception in thread: " << e.what() << "\n";
+        std::cerr << "Exception in thread: " << e.what() << "\n";
     }
 
 }
 
-void BoneDocServer::Start() {
+void BoneDocServer::Start()
+{
     std::cout << "Server started. Listening on port " << BONEDOC_SERVER_PORT_STR << " ..." << std::endl << std::endl;
-    try {
+    
+    try
+    {
 
         boost::asio::io_service io_service;
         boost::asio::ip::tcp::acceptor a(io_service, boost::asio::ip::tcp::endpoint(boost::asio::ip::tcp::v4(), BONEDOC_SERVER_PORT));
 
-        for (;;) {
+        for (;;)
+        {
 
             //std::cout << "Listening on port " << BONEDOC_SERVER_PORT_STR << " ..." << std::endl << std::endl;
             boost::asio::ip::tcp::socket socket(io_service);

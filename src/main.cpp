@@ -22,7 +22,7 @@ int main(int argc, char *argv[])
     else
     {
         std::cout << "Usage (server):\t./BoneDoc" << std::endl;
-        std::cout << "Usage (command line):\t./BoneDoc [mesh (*.vtk)] [landmarks (*.csv)] [config (*.txt)]" << std::endl;
+        std::cout << "Usage (command line):\t./BoneDoc [mesh (*.stl *.vtk)] [landmarks (*.csv)] [config (*.txt)]" << std::endl;
         return -1;
     }
 

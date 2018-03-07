@@ -235,7 +235,7 @@ void Tibia::SetOffsetAndWidth()
     double min = 9999; int mini = 0;
     
     // look for most lateral point - p8
-    for (int i=0; i < cutPoly_prox->GetNumberOfPoints(); i++) {
+    for (int i=0; i < cutPoly_prox->GetNumberOfPoints(); ++i) {
         cutPoly_prox->GetPoint(i, tmp3);
 
         // plane: n, x, p
@@ -255,7 +255,7 @@ void Tibia::SetOffsetAndWidth()
     // most medial point - p9
     double max = -9999; int maxi = 0;
     
-    for (int i=0; i<cutPoly_prox->GetNumberOfPoints(); i++ ) {
+    for (int i=0; i<cutPoly_prox->GetNumberOfPoints(); ++i ) {
         cutPoly_prox->GetPoint(i, tmp3);
 
         // define plane with mediolateral axis as normal * (-1)
@@ -275,7 +275,7 @@ void Tibia::SetOffsetAndWidth()
     // most posterior point - p10
     max = 0; maxi = 0;
     
-    for (int i = 0; i < cutPoly_prox->GetNumberOfPoints(); i++) {
+    for (int i = 0; i < cutPoly_prox->GetNumberOfPoints(); ++i) {
         cutPoly_prox->GetPoint(i, tmp3);
 
         plane[0] = axis[0]; plane[1] = axis[1]; plane[2] = axis[2];
@@ -294,7 +294,7 @@ void Tibia::SetOffsetAndWidth()
     // most anterior p11
     max = 0; maxi = 0;
     
-    for (int i = 0; i < cutPoly_prox->GetNumberOfPoints(); i++)
+    for (int i = 0; i < cutPoly_prox->GetNumberOfPoints(); ++i)
     {
         cutPoly_prox->GetPoint(i, tmp3);
 

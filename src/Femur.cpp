@@ -238,7 +238,7 @@ void Femur::OptimizeProximalAndDistalLandmark()
     double center[3];
     anatomicalMesh->GetCenter(center);
 
-    for (vtkIdType i = 0; i < anatomicalMesh->GetNumberOfPoints(); i++)
+    for (vtkIdType i = 0; i < anatomicalMesh->GetNumberOfPoints(); ++i)
     {
         double tmp[3];
         anatomicalMesh->GetPoint(i, tmp);
@@ -410,7 +410,7 @@ void Femur::SetOffsetAndWidth()
     double min = 9999; int mini = 0;
 
     // most lateral shaft point (p19)
-    for (int i=0; i<cutPoly_dist->GetNumberOfPoints(); i++)
+    for (int i=0; i<cutPoly_dist->GetNumberOfPoints(); ++i)
     {
         cutPoly_dist->GetPoint(i, tmp3);
 
@@ -432,7 +432,7 @@ void Femur::SetOffsetAndWidth()
     // most medial shaft point (p20)
     double max = -9999; int maxi = 0;
     
-    for (int i=0; i<cutPoly_dist->GetNumberOfPoints(); i++)
+    for (int i=0; i<cutPoly_dist->GetNumberOfPoints(); ++i)
     {
         cutPoly_dist->GetPoint(i, tmp3);
 
@@ -454,7 +454,7 @@ void Femur::SetOffsetAndWidth()
     // most posterior shaft point (p21) 
     max = 0; maxi = 0;
     
-    for (int i = 0; i < cutPoly_dist->GetNumberOfPoints(); i++)
+    for (int i = 0; i < cutPoly_dist->GetNumberOfPoints(); ++i)
     {
         cutPoly_dist->GetPoint(i, tmp3);
 
@@ -475,7 +475,7 @@ void Femur::SetOffsetAndWidth()
     // most anterior shaft point (p22))
     max = 0; maxi = 0;
     
-    for (int i = 0; i < cutPoly_dist->GetNumberOfPoints(); i++)
+    for (int i = 0; i < cutPoly_dist->GetNumberOfPoints(); ++i)
     {
         cutPoly_dist->GetPoint(i, tmp3);
 
@@ -540,7 +540,7 @@ void Femur::FemoralHeadCenter1()
     double tmp[4];
     tmp[3] = 1;
 
-    for (int i = 0; i < 8; i++)
+    for (int i = 0; i < 8; ++i)
     {
         Cx = Cx + sphere[i][0];
         Cy = Cy + sphere[i][1];
@@ -664,7 +664,7 @@ void Femur::FemoralNeckAxisCorrection1()
         centers[i].resize(3);
 
     // loop along tempory neck-axis starting from neck-isthmus
-    for (int i = 0; i < neck_intersection_size; i++)
+    for (int i = 0; i < neck_intersection_size; ++i)
     {
         lambda = (i * (neck_length / (neck_intersection_size-1)));
 
@@ -905,7 +905,7 @@ void Femur::FemoralTwist1()
     double lambda = 0;
     double cut_center[3];
 
-    for (int i = 0; i < twist_intersections_size; i++)
+    for (int i = 0; i < twist_intersections_size; ++i)
     {
         // intersections points starting with i = 0, so subtract -1 from twist_intersections_size for correct number 
         lambda = (i*(shaft_length/(twist_intersections_size-1)));

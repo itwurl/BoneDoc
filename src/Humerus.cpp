@@ -280,7 +280,7 @@ void Humerus::SetOffsetAndWidth()
     max = 0;
     maxi = 0;
     
-    for (int i = 0; i < cutPoly_dist->GetNumberOfPoints(); i++)
+    for (int i = 0; i < cutPoly_dist->GetNumberOfPoints(); ++i)
     {
         cutPoly_dist->GetPoint(i, tmp3);
 
@@ -301,7 +301,7 @@ void Humerus::SetOffsetAndWidth()
 
     // most posterior point
     max = 0; maxi = 0;
-    for (int i = 0; i < cutPoly_dist->GetNumberOfPoints(); i++)
+    for (int i = 0; i < cutPoly_dist->GetNumberOfPoints(); ++i)
     {
         cutPoly_dist->GetPoint(i, tmp3);
 
@@ -322,7 +322,7 @@ void Humerus::SetOffsetAndWidth()
     // most anterior point
     max = 0;
     maxi = 0;
-    for (int i = 0; i < cutPoly_dist->GetNumberOfPoints(); i++)
+    for (int i = 0; i < cutPoly_dist->GetNumberOfPoints(); ++i)
     {
         cutPoly_dist->GetPoint(i, tmp3);
 
