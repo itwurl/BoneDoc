@@ -53,7 +53,6 @@ void session(boost::asio::ip::tcp::socket socket)
                 else if (request_header.compare(0, 11, "EthnicGroup") == 0)
                     ethnic_group = request_header.substr(13, request_header.length()-14);
             }
-            std::cout << std::endl;
 
             // put server's response to output stream
             boost::asio::streambuf response;
@@ -66,17 +65,15 @@ void session(boost::asio::ip::tcp::socket socket)
             response_stream << "Access-Control-Allow-Headers: Dataset,Anatomy,Side,Gender,EthnicGroup,Study\r\n\r\n";
             
             // client message is only considered for analysis if header consists of meta infos
-            if ((anatomy != "") && (dataset != "") && (study == "Thesis")) {
-
-                std::cout << "study: " << study << std::endl;
-                std::cout << "dataset: " << dataset << std::endl;
-                std::cout << "anatomy: " << anatomy << std::endl;
-                std::cout << "side: " << side << std::endl;
-                std::cout << "gender: " << gender << std::endl;
-                std::cout << "ethnic group: " << ethnic_group << std::endl;
+            if ((anatomy != "") && (dataset != "") && (study == "Thesis"))
+            {
+                //std::cout << "study: " << study << std::endl;
+                //std::cout << "dataset: " << dataset << std::endl;
+                //std::cout << "anatomy: " << anatomy << std::endl;
+                //std::cout << "side: " << side << std::endl;
+                //std::cout << "gender: " << gender << std::endl;
+                //std::cout << "ethnic group: " << ethnic_group << std::endl;
                 
-                std::cout << "\n";
-
                 // concatenate correct path's (DEBUG: currently 'VTK' and 'FCSV' format required!)
                 std::stringstream anatomicalMeshPath;
                 anatomicalMeshPath << BONEDOC_PATH << "/data/" << dataset << ".vtk";

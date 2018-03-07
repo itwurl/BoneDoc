@@ -2,8 +2,8 @@
 
 Femur::Femur(const std::string anatomicalMeshPath,
         const std::string anatomicalLandmarksPath,
-        const std::string configPath) {
-    
+        const std::string configPath)
+{
     this->configPath = configPath;
 
     // read number of anatomical landmarks (todo: should be used for error handling)
@@ -22,8 +22,8 @@ Femur::Femur(const std::string anatomicalMeshPath,
     SetMetaInfo(anatomicalMeshPath);
 }
 
-void Femur::MapAnatomicalLandmarksToAnatomicalMesh() {
-    
+void Femur::MapAnatomicalLandmarksToAnatomicalMesh()
+{    
     // project anatomical landmarks onto anatomical mesh -> technical landmarks
     getClosestPointFromMesh(anatomicalLandmarks.at(0), fovea, anatomicalMesh);
     getClosestPointFromMesh(anatomicalLandmarks.at(1), minor_trochanter, anatomicalMesh);
@@ -50,7 +50,8 @@ void Femur::MapAnatomicalLandmarksToAnatomicalMesh() {
     getClosestPointFromMesh(anatomicalLandmarks.at(22), medial_condyle, anatomicalMesh);
 }
 
-void Femur::ResetMeasurements() {
+void Femur::ResetMeasurements()
+{
     // sphere-fit parameters
     rms0 = 99999;
     a0 = b0 = c0 = r0 = distance = 0;
@@ -626,7 +627,6 @@ void Femur::FemoralNeckAxis1()
 
 void Femur::FemoralNeckAxisCorrection1()
 {
-    
     if ((neck_isthmus_center[0] == 0) && (neck_isthmus_center[1] == 0) && (neck_isthmus_center[2] == 0))
     {
         std::cout << "neck-isthmus-center not defined!" << std::endl;
@@ -736,7 +736,6 @@ void Femur::FemoralNeckAxisCorrection1()
 
 void Femur::FemoralNeckAxis2()
 {
-    
     // 'neck_shaft_interception' and 'head' had to be defined
     if (((0 == neck_shaft_interception[0]) && (0 == neck_shaft_interception[1]) && (0 == neck_shaft_interception[2])) ||
             ((0 == head[0]) && (0 == head[1]) && (0 == head[2])))

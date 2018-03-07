@@ -1,9 +1,5 @@
 #include "Humerus.h"
 
-#include "vtkPlane.h"
-#include "vtkCutter.h"
-#include "vtkStripper.h"
-
 Humerus::Humerus(const std::string anatomicalMeshPath,
         const std::string anatomicalLandmarksPath,
         const std::string configPath)
@@ -84,8 +80,46 @@ void Humerus::Thesis()
     std::cout << "# Thesis - Humerus #" << std::endl;
     std::cout << "####################" << std::endl;
 
-    // ### intersect shaft at 20- and 80% of bone length ### //
+    SetProximalShaftCenter();
+    
+    SetDistalShaftCenter();
+    
+    SetMedialAndLateralAxis();
+    
+    SetCoordinateSystem();
+    
+    SetOffsetAndWidth();
 
+    BoneLength();
+
+    MedialOffset();
+
+    LateralOffset();
+
+    MLWidth();
+    
+    APWidth();
+
+    HumerusHeadCenter();
+
+    HumerusInclinationAndRetroversion();
+
+    GuessEthnicGroup();
+
+    std::cout << "ap width: " << AP_width << "mm" << std::endl;
+    std::cout << "bone length: " << bone_length << "mm" << std::endl;
+    std::cout << "head radius: " << head_radius << "mm" << std::endl;
+    std::cout << "inclination: " << inclination << "°" << std::endl;
+    std::cout << "lateral offset: " << lateral_offset << "mm" << std::endl;
+    std::cout << "medial offset: " << medial_offset << "mm" << std::endl;
+    std::cout << "ml width: " << ML_width << "mm" << std::endl;
+    std::cout << "retroversion: " << retroversion << "°" << std::endl;
+    std::cout << "asian: " << asian << "%" << std::endl;
+    std::cout << "caucasian: " << caucasian << "%" << std::endl;
+}
+
+void Humerus::SetProximalShaftCenter()
+{
     // ### center-point: 80% of length (proximal) ###
     double center[3];
     center[0] = most_distal_point[0] + ((most_proximal_point[0]-most_distal_point[0]) * 0.8);
@@ -126,7 +160,14 @@ void Humerus::Thesis()
 
     // get the cutting-contours center
     cutPoly_prox->GetCenter(proximal_shaft_center);
+}
 
+void Humerus::SetDistalShaftCenter()
+{
+    double center[3]; 
+    double normal[3];
+    double bn;
+    
     // ### center-point: 20% of length ###
     center[0] = most_distal_point[0] + ((most_proximal_point[0]-most_distal_point[0]) * 0.2);
     center[1] = most_distal_point[1] + ((most_proximal_point[1]-most_distal_point[1]) * 0.2);
@@ -164,13 +205,55 @@ void Humerus::Thesis()
 
     // get the cutting-contours center
     cutPoly_dist->GetCenter(distal_shaft_center);
-    
+}
 
-    // ### DEFINE COORDINATE SYSTEM ###
-    SetCoordinateSystem();
+void Humerus::SetOffsetAndWidth()
+{
+    double center[3]; 
+    double normal[3];
+    double bn;
     
+    // ### center-point: 20% of length ###
+    center[0] = most_distal_point[0] + ((most_proximal_point[0]-most_distal_point[0]) * 0.2);
+    center[1] = most_distal_point[1] + ((most_proximal_point[1]-most_distal_point[1]) * 0.2);
+    center[2] = most_distal_point[2] + ((most_proximal_point[2]-most_distal_point[2]) * 0.2);
 
-    double plane[9]; int max = 0; int maxi = 0;
+    bn = sqrt( pow(most_distal_point[0]-most_proximal_point[0], 2) + pow(most_distal_point[1]-most_proximal_point[1], 2) + pow(most_distal_point[2]-most_proximal_point[2], 2) );
+    normal[0] = (most_distal_point[0]-most_proximal_point[0]) / bn;
+    normal[1] = (most_distal_point[1]-most_proximal_point[1]) / bn;
+    normal[2] = (most_distal_point[2]-most_proximal_point[2]) / bn;
+
+    // plane
+    vtkSmartPointer<vtkPlane> vtkplane_dist = vtkSmartPointer<vtkPlane>::New();
+    vtkplane_dist->SetOrigin(center[0], center[1], center[2]);
+    vtkplane_dist->SetNormal(normal[0], normal[1], normal[2]);
+    
+    // surface cut with plane
+    vtkSmartPointer<vtkCutter> cutEdges_dist = vtkSmartPointer<vtkCutter>::New();
+    cutEdges_dist->SetInputData(anatomicalMesh);
+    cutEdges_dist->SetCutFunction(vtkplane_dist);
+    
+    // generates triangle poly-lines from input polygon
+    vtkSmartPointer<vtkStripper> cutStrips_dist = vtkSmartPointer<vtkStripper>::New();
+    cutStrips_dist->SetInputConnection(cutEdges_dist->GetOutputPort());
+    cutStrips_dist->Update();
+    vtkSmartPointer<vtkPolyData> cutPoly_dist = vtkSmartPointer<vtkPolyData>::New();
+    cutPoly_dist->SetPoints(cutStrips_dist->GetOutput()->GetPoints());
+    cutPoly_dist->SetPolys(cutStrips_dist->GetOutput()->GetLines());
+
+    // crash's may occure if no suitable were done - so return then
+    if (cutPoly_dist->GetNumberOfPoints() == 0)
+    {
+        std::cout << "error cutting distal part of shaft!" << std::endl;
+        return;
+    }
+
+    // get the cutting-contours center
+    cutPoly_dist->GetCenter(distal_shaft_center);
+
+    double plane[9];
+    int max = 0;
+    int maxi = 0;
     double tmp3[3];
 
     // look for most medial point
@@ -256,58 +339,60 @@ void Humerus::Thesis()
 
     }
 
-    cutPoly_dist->GetPoint(maxi, most_anterior_shaft_point);
+    cutPoly_dist->GetPoint(maxi, most_anterior_shaft_point);    
+}
 
+void Humerus::BoneLength()
+{
     // bone length:
     bone_length = sqrt(pow(most_proximal_point[0]-most_distal_point[0], 2) + pow(most_proximal_point[1]-most_distal_point[1], 2) + pow(most_proximal_point[2]-most_distal_point[2], 2));
+}
 
+void Humerus::MedialOffset()
+{
     // medial offset:
-    // plane: n, x, p
+    double plane[9];
+    
     plane[0] = axis[3]; plane[1] = axis[4]; plane[2] = axis[5];
     plane[3] = medial_epicondyle[0]; plane[4] = medial_epicondyle[1]; plane[5] = medial_epicondyle[2];
     plane[6] = most_medial_shaft_point[0]; plane[7] = most_medial_shaft_point[1]; plane[8] = most_medial_shaft_point[2];
     medial_offset = distanceToPlane(plane);
-
+}
+    
+void Humerus::LateralOffset()
+{
     // lateral offset:
+    double plane[9];
+
     plane[0] = -axis[3]; plane[1] = -axis[4]; plane[2] = -axis[5];
     plane[3] = lateral_epicondyle[0]; plane[4] = lateral_epicondyle[1]; plane[5] = lateral_epicondyle[2];
     plane[6] = most_lateral_shaft_point[0]; plane[7] = most_lateral_shaft_point[1]; plane[8] = most_lateral_shaft_point[2];
     lateral_offset = distanceToPlane(plane);
-
+}
+    
+void Humerus::MLWidth()
+{
     // ml width:
+    double plane[9];
+
     plane[0] = axis[3]; plane[1] = axis[4]; plane[2] = axis[5];
     plane[3] = most_medial_shaft_point[0]; plane[4] = most_medial_shaft_point[1]; plane[5] = most_medial_shaft_point[2];
     plane[6] = most_lateral_shaft_point[0]; plane[7] = most_lateral_shaft_point[1]; plane[8] = most_lateral_shaft_point[2];
     ML_width = distanceToPlane(plane);
-
+}
+    
+void Humerus::APWidth()
+{
     // ap width:
+    double plane[9];
+
     plane[0] = axis[0]; plane[1] = axis[1]; plane[2] = axis[2];
     plane[3] = most_posterior_shaft_point[0]; plane[4] = most_posterior_shaft_point[1]; plane[5] = most_posterior_shaft_point[2];
     plane[6] = most_anterior_shaft_point[0]; plane[7] = most_anterior_shaft_point[1]; plane[8] = most_anterior_shaft_point[2];
     AP_width = distanceToPlane(plane);
-
-    // spherefit with head_fit_point_1 - head_fit_point_8
-    HumerusHeadCenter(head_fit_point_1, head_fit_point_2, head_fit_point_3, head_fit_point_4, head_fit_point_5, head_fit_point_6, head_fit_point_7, head_fit_point_8);
-
-    // inclination and retroversion of humerus with p9, p10, p11
-    HumerusInclinationAndRetroversion(most_anterior_neck_point, most_medial_neck_point, most_posterior_neck_point);
-
-    GuessEthnicGroup();
-
-    std::cout << "ap width: " << AP_width << "mm" << std::endl;
-    std::cout << "bone length: " << bone_length << "mm" << std::endl;
-    std::cout << "head radius: " << head_radius << "mm" << std::endl;
-    std::cout << "inclination: " << inclination << "°" << std::endl;
-    std::cout << "lateral offset: " << lateral_offset << "mm" << std::endl;
-    std::cout << "medial offset: " << medial_offset << "mm" << std::endl;
-    std::cout << "ml width: " << ML_width << "mm" << std::endl;
-    std::cout << "retroversion: " << retroversion << "°" << std::endl;
-    std::cout << "asian: " << asian << "%" << std::endl;
-    std::cout << "caucasian: " << caucasian << "%" << std::endl;
-
 }
 
-void Humerus::HumerusHeadCenter(double* p12, double* p13, double* p14, double* p15, double* p16, double* p17, double* p18, double* p19)
+void Humerus::HumerusHeadCenter()
 {
     double Cx = 0;
     double Cy = 0;
@@ -315,37 +400,37 @@ void Humerus::HumerusHeadCenter(double* p12, double* p13, double* p14, double* p
     double head_circle[8][3];
 
     // define points for head sphere-fit
-    head_circle[0][0] = p12[0];
-    head_circle[0][1] = p12[1];
-    head_circle[0][2] = p12[2];
+    head_circle[0][0] = head_fit_point_1[0];
+    head_circle[0][1] = head_fit_point_1[1];
+    head_circle[0][2] = head_fit_point_1[2];
 
-    head_circle[1][0] = p13[0];
-    head_circle[1][1] = p13[1];
-    head_circle[1][2] = p13[2];
+    head_circle[1][0] = head_fit_point_2[0];
+    head_circle[1][1] = head_fit_point_2[1];
+    head_circle[1][2] = head_fit_point_2[2];
 
-    head_circle[2][0] = p14[0];
-    head_circle[2][1] = p14[1];
-    head_circle[2][2] = p14[2];
+    head_circle[2][0] = head_fit_point_3[0];
+    head_circle[2][1] = head_fit_point_3[1];
+    head_circle[2][2] = head_fit_point_3[2];
 
-    head_circle[3][0] = p15[0];
-    head_circle[3][1] = p15[1];
-    head_circle[3][2] = p15[2];
+    head_circle[3][0] = head_fit_point_4[0];
+    head_circle[3][1] = head_fit_point_4[1];
+    head_circle[3][2] = head_fit_point_4[2];
 
-    head_circle[4][0] = p16[0];
-    head_circle[4][1] = p16[1];
-    head_circle[4][2] = p16[2];
+    head_circle[4][0] = head_fit_point_5[0];
+    head_circle[4][1] = head_fit_point_5[1];
+    head_circle[4][2] = head_fit_point_5[2];
 
-    head_circle[5][0] = p17[0];
-    head_circle[5][1] = p17[1];
-    head_circle[5][2] = p17[2];
+    head_circle[5][0] = head_fit_point_6[0];
+    head_circle[5][1] = head_fit_point_6[1];
+    head_circle[5][2] = head_fit_point_6[2];
 
-    head_circle[6][0] = p18[0];
-    head_circle[6][1] = p18[1];
-    head_circle[6][2] = p18[2];
+    head_circle[6][0] = head_fit_point_7[0];
+    head_circle[6][1] = head_fit_point_7[1];
+    head_circle[6][2] = head_fit_point_7[2];
 
-    head_circle[7][0] = p19[0];
-    head_circle[7][1] = p19[1];
-    head_circle[7][2] = p19[2];
+    head_circle[7][0] = head_fit_point_8[0];
+    head_circle[7][1] = head_fit_point_8[1];
+    head_circle[7][2] = head_fit_point_8[2];
 
     // fit of humeral head
     rms0 = 99999; 
@@ -357,7 +442,8 @@ void Humerus::HumerusHeadCenter(double* p12, double* p13, double* p14, double* p
     Cy = 0;
     Cz = 0;
 
-    for (int i = 0; i < 8; ++i) {
+    for (int i = 0; i < 8; ++i)
+    {
         Cx = Cx + head_circle[i][0];
         Cy = Cy + head_circle[i][1];
         Cz = Cz + head_circle[i][2];
@@ -380,28 +466,28 @@ void Humerus::HumerusHeadCenter(double* p12, double* p13, double* p14, double* p
     Cz = 0;
 }
 
-void Humerus::HumerusInclinationAndRetroversion(double* anterior, double* medial, double* posterior) {
-    
+void Humerus::HumerusInclinationAndRetroversion()
+{
     // vector pointing posterior
     std::vector<double> v1(3);
-    v1.at(0) = posterior[0] - medial[0];
-    v1.at(1) = posterior[1] - medial[1];
-    v1.at(2) = posterior[2] - medial[2];
+    v1.at(0) = most_posterior_neck_point[0] - most_medial_neck_point[0];
+    v1.at(1) = most_posterior_neck_point[1] - most_medial_neck_point[1];
+    v1.at(2) = most_posterior_neck_point[2] - most_medial_neck_point[2];
 
     // norm
-    double b1 = sqrt(pow( v1.at(0), 2) + pow(v1.at(1), 2) + pow(v1.at(2), 2));
+    double b1 = sqrt(pow(v1.at(0), 2) + pow(v1.at(1), 2) + pow(v1.at(2), 2));
     v1.at(0) = v1.at(0) / b1;
     v1.at(1) = v1.at(1) / b1;
     v1.at(2) = v1.at(2) / b1;
 
     // vector pointing anterior
     std::vector<double> v2(3);
-    v2.at(0) = anterior[0] - medial[0];
-    v2.at(1) = anterior[1] - medial[1];
-    v2.at(2) = anterior[2] - medial[2];
+    v2.at(0) = most_anterior_neck_point[0] - most_medial_neck_point[0];
+    v2.at(1) = most_anterior_neck_point[1] - most_medial_neck_point[1];
+    v2.at(2) = most_anterior_neck_point[2] - most_medial_neck_point[2];
 
     // norm
-    double b2 = sqrt(pow( v2.at(0), 2) + pow(v2.at(1), 2) + pow(v2.at(2), 2));
+    double b2 = sqrt(pow(v2.at(0), 2) + pow(v2.at(1), 2) + pow(v2.at(2), 2));
     v2.at(0) = v2.at(0) / b2;
     v2.at(1) = v2.at(1) / b2;
     v2.at(2) = v2.at(2) / b2;
@@ -419,7 +505,7 @@ void Humerus::HumerusInclinationAndRetroversion(double* anterior, double* medial
     std::vector<double> neck_axis_ap(3);
 
     // distance to coronal plane
-    double lambda1 = axis[0] * neck_axis.at(0) + axis[1] * neck_axis.at(1) + axis[2] * neck_axis.at(2);
+    double lambda1 = (axis[0] * neck_axis.at(0)) + (axis[1] * neck_axis.at(1)) + (axis[2] * neck_axis.at(2));
 
     // intersection with coronal plane
     neck_axis_ap.at(0) = neck_axis.at(0) + lambda1 * axis[0];
