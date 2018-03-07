@@ -1014,7 +1014,7 @@ void Femur::GuessEthnicGroup()
         {
             value = row.substr(pos+1, row.length());
             coefficients.push_back(std::stof(value.c_str()));
-        }
+        } 
         
     }
 
