@@ -14,7 +14,7 @@ BoneDoc needs to be compiled from sources using typical [CMake](https://cmake.or
 
 ## Quickstart
 
-Starting BoneDoc from command line requires three input files (mesh, landmarks, config). The mesh represents a bone by polygonal data where actually vtk- and stl format can be processed with BoneDoc. Each row in a landmarks file represents an anatomical landmark. The config file contains all relevant anatomical landmarks currently used.
+Starting BoneDoc from command line requires three input files (mesh, landmarks, config). The mesh represents a bone by polygonal data where actually vtk- and stl format can be processed with BoneDoc. Each row in a landmarks file represents an anatomical landmark. The config file contains size and label for all anatomical landmarks currently used.
 
 So you are free to create and use your own data. For quick testing files in '/data' folder might be used like that:
 
