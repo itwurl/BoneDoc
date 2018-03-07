@@ -21,13 +21,13 @@ So you are free to create and use your own data. For quick testing files in '/da
 ```
 >./BoneDoc data/FemurLeftFemaleA.vtk data/FemurLeftFemaleA-landmarks.csv config.txt
 >anteversion: 27.25°
->antero-posterior with: 26.63mm
+>antero-posterior width: 26.63mm
 >bone length: 397.16mm
 >head radius: 20.98mm
 >inclination: 135.37°
 >lateral offset: 18.65mm
 >medial offset: 24.06mm
->medio-lateral with: 29.05mm
+>medio-lateral width: 29.05mm
 >asian: 85%
 >caucasian: 15%
 ```
