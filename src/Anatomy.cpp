@@ -426,6 +426,41 @@ void Anatomy::SetAnatomicalLandmarks(const std::string path) {
     file.close();
 }
 
+void Anatomy::SetAnatomicalLandmarksFromJsonArray(const std::string json) {
+
+    anatomicalLandmarks.clear();
+	std::vector<double> values;
+	
+	for (int i = 0; i < json.length() - 1; ++i) {
+
+		i = i + 2;
+		int pos = i;
+
+		while (json.substr(i, 1) != "]") {
+
+			if (json.substr(i, 1) == ",") {
+
+				printf( json.substr(pos, i-pos).c_str() );
+				printf("\n");
+				values.push_back(std::stod(json.substr(pos, i - pos)));
+				pos = i + 1;
+			}
+
+			i += 1;
+
+		}
+
+		printf(json.substr(pos, i - pos).c_str());
+		printf("\n");
+		values.push_back(std::stod(json.substr(pos, i - pos)));
+
+		auto it = values.begin();
+        anatomicalLandmarks.push_back({ *it, *(++it), *(++it) });
+	}
+
+}
+
+
 void Anatomy::SetAnatomicalMesh(const std::string path) {
 
     // make file ending great (again)

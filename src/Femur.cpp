@@ -23,7 +23,7 @@ Femur::Femur(const std::string anatomicalMeshPath,
 }
 
 void Femur::MapAnatomicalLandmarksToAnatomicalMesh()
-{    
+{
     // project anatomical landmarks onto anatomical mesh -> technical landmarks
     getClosestPointFromMesh(anatomicalLandmarks.at(0), fovea, anatomicalMesh);
     getClosestPointFromMesh(anatomicalLandmarks.at(1), minor_trochanter, anatomicalMesh);

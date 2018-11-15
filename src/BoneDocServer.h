@@ -28,12 +28,9 @@ public:
 
 private:
 
-    const int BONEDOC_SERVER_PORT = 16118;
-    const char* BONEDOC_SERVER_PORT_STR = "16118";
+    const int BONEDOC_SERVER_PORT = 61180;
+    const char* BONEDOC_SERVER_PORT_STR = "61180";
 
-    std::string anatomy = "";
-    std::string dataset = "";
-    std::string study = "";
 
 };
 

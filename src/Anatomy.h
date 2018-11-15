@@ -98,6 +98,8 @@ protected:
 
     // anatomical landmarks
     void SetAnatomicalLandmarks(const std::string path);
+	void SetAnatomicalLandmarksFromJsonArray(const std::string array);
+
     std::vector<std::vector<float>> anatomicalLandmarks;
 
     // estimate age, sex and side from file name
