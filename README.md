@@ -1,6 +1,6 @@
 # BoneDoc
 
-BoneDoc is a c++ command line tool for 3d shape analysis of human bones. Due to abstract concept in code it should makes it possible to try out ideas and build prototypes for anatomical studies of various kinds.
+BoneDoc is a c++ command line tool for 3d shape analysis of human bones. Abstract concept in code faciliates protoyping for anatomical studies of various kinds.
 
 ## Prototypes:
 
