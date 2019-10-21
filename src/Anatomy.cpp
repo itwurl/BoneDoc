@@ -377,7 +377,7 @@ void Anatomy::SetAnatomicalLandmarks(const std::string path) {
     // make file ending great (again)
     std::string tmp = "";
     tmp.resize(path.size());
-    std::transform(path.begin(), path.end(), tmp.begin(), toupper);
+    std::transform(path.begin(), path.end(), tmp.begin(), (int (*)(int))std::toupper);
 
     // check for supported file type
     if (tmp.substr(tmp.length() - 3, 3) != "CSV") {
@@ -466,7 +466,7 @@ void Anatomy::SetAnatomicalMesh(const std::string path) {
     // make file ending great (again)
     std::string tmp = "";
     tmp.resize(path.size());
-    std::transform(path.begin(), path.end(), tmp.begin(), toupper);
+    std::transform(path.begin(), path.end(), tmp.begin(), (int (*)(int))std::toupper);
     tmp = tmp.substr(tmp.length() - 3, 3);
 
     // check for supported file type

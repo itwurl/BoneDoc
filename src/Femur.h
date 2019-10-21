@@ -17,7 +17,7 @@ private:
 
     // (temporary) medial and lateral axis to define local coordinate from
     void SetMedialAndLateralAxis();
-    
+
     // proximal shaft center [1]
     // intersect shaft at 75% of bone length an set contour's center of mass to 'proximal_shaft_center'
     // no references yet.
@@ -30,9 +30,9 @@ private:
 
     // no references yet
     void SetOffsetAndWidth();
-    
+
     // center of condyles [1]
-    // references: suggested by Kenny Koah, Jessica Galie for perioprosthetic study (PPFX)  
+    // references: suggested by Kenny Koah, Jessica Galie for perioprosthetic study (PPFX)
     void FemoralCenterOfCondyles1();
 
     // femoral bone-length was the distance (along predefined z-axis) between the most proximal point of the femoral head and the most distal point of the condyle usually the medial condyle [1]
@@ -45,16 +45,16 @@ private:
 
     // references: see thesis
     void MedialOffset();
-    
+
     // references: see thesis
     void LateralOffset();
-    
+
     // references: see thesis
     void MLWidth();
-    
+
     // references: see thesis
     void APWidth();
-    
+
     // fitting a sphere to the spherical part of the femoral head [1]: no references yet.
     void FemoralHeadCenter1();
 
@@ -99,7 +99,7 @@ private:
     void FemoralNeckAxis1();
 
     // #########################################################################################################################################################
-    // FemoralNeckAxisCorrection [1]: Neck-axis as line-fit/optimized femoral neck axis based on guessed neck-isthmus and femoral head center 
+    // FemoralNeckAxisCorrection [1]: Neck-axis as line-fit/optimized femoral neck axis based on guessed neck-isthmus and femoral head center
     // #########################################################################################################################################################
     // no references yet!
     // summary:
@@ -113,7 +113,7 @@ private:
     // FemoralNeckAxis2 [2]: axis between intersection of neck- and shaft axis and femoral head center, pointing to the femoral head center
     // in theory line through head-center and narrowest point of neck ist same as line through head-center and neck1/shaft-interserction.
     // #########################################################################################################################################################
-    // no references yet! 
+    // no references yet!
     // summary:
     // Based on 'FemoralNeckAxis1' and 'FemoralNeckAxisCorrection1'. Intersection of neck- and shaft axis has to be found before. Then neck axis
     // will be defined between this intersection of neck- and shaft axis and the femoral head center, pointing medial to the femoral head center.
@@ -125,29 +125,29 @@ private:
     // anatomical landmarks (x23, x, y, z, index for vertice)
     double fovea[4]; // #1
     double minor_trochanter[4]; // #2
-    double major_trochanter[4]; // #3 
-    double linea_intertrochanterica[4]; // #4 
-    double intercondylar_notch[4]; // #5 
-    double facies_patellaris[4]; // #6 
-    double lateral_epicondyle[4]; // #7 
-    double medial_epicondyle[4]; // #8 
-    double most_distal_point[4]; // #9 
-    double most_proximal_point[4]; // #10 
-    double most_anterior_neck_point[4]; // #11 
-    double most_medial_neck_point[4]; // #12 
-    double most_posterior_neck_point[4]; // #13 
-    double head_fit_point_1[4]; // #14 
-    double head_fit_point_2[4]; // #15 
-    double head_fit_point_3[4]; // #16 
-    double head_fit_point_4[4]; // #17 
-    double head_fit_point_5[4]; // #18 
-    double head_fit_point_6[4]; // #19 
-    double head_fit_point_7[4]; // #20 
-    double head_fit_point_8[4]; // #21 
+    double major_trochanter[4]; // #3
+    double linea_intertrochanterica[4]; // #4
+    double intercondylar_notch[4]; // #5
+    double facies_patellaris[4]; // #6
+    double lateral_epicondyle[4]; // #7
+    double medial_epicondyle[4]; // #8
+    double most_distal_point[4]; // #9
+    double most_proximal_point[4]; // #10
+    double most_anterior_neck_point[4]; // #11
+    double most_medial_neck_point[4]; // #12
+    double most_posterior_neck_point[4]; // #13
+    double head_fit_point_1[4]; // #14
+    double head_fit_point_2[4]; // #15
+    double head_fit_point_3[4]; // #16
+    double head_fit_point_4[4]; // #17
+    double head_fit_point_5[4]; // #18
+    double head_fit_point_6[4]; // #19
+    double head_fit_point_7[4]; // #20
+    double head_fit_point_8[4]; // #21
     double lateral_condyle[4]; // #22
-    double medial_condyle [4]; // #23 
+    double medial_condyle [4]; // #23
 
-    // technical landmarks (x10) 
+    // technical landmarks (x10)
     double most_lateral_shaft_point[3]; // most lateral point of shaft-axis
     double most_medial_shaft_point[3]; // most medial point of shaft-axis
     double most_posterior_shaft_point[3]; // most posterior point of shaft-axis

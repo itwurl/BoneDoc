@@ -22,6 +22,8 @@
 
 static const float PI = 3.14159265;
 
+using namespace std;
+
 class Anatomy
 {
 protected:
@@ -33,7 +35,7 @@ protected:
     double distanceToPlane(double nx, double ny, double nz, double x, double y, double z, double px, double py, double pz);
 
     // Closest point (in polydata, outgoing from p) found in cp[0..2] and id cp[4] will be written back to 'cp'
-    void getClosestPointFromMesh(const std::vector <float> p, double* cp, vtkPolyData* anatomicalMesh);
+    void getClosestPointFromMesh(const vector <float> p, double* cp, vtkPolyData* anatomicalMesh);
 
     // defines coordinate system based on 2 vectors (mediolateral and longitudinal), ml becomes new, lon stayed (order of parameter is important)
     void SetCoordinateSystem();
@@ -45,7 +47,7 @@ protected:
     void getCenterOfIntersectionContour(vtkPolyData* polyData, double nx, double ny, double nz, double px, double py, double pz, double* c);
 
     // line fit by estimating three main principle components
-    void getLineFit(std::vector<std::vector<double>>, int n, double* result);
+    void getLineFit(vector<vector<double>>, int n, double* result);
 
     // characteristic polynom
     void getCharacteristicalPolynom(double a11, double a12, double a13, double a21, double a22, double a23, double a31, double a32, double a33, double* result);
@@ -54,7 +56,7 @@ protected:
     void getEigenvector(double eigenvalue_x, double eigenvalue_y, double eigenvalue_z, double a11, double a12, double a13, double a21, double a22, double a23, double a31, double a32, double a33, double* result);
 
     // axis based on calculated coordinate system
-    double axis[9]; 
+    double axis[9];
 
     double rms0;
     double a0;
@@ -67,19 +69,19 @@ protected:
     void SphereFit(double p[][3], int n, double ai, double bi, double ci);
 
     // crossproduct as defined in [https://de.wikipedia.org/wiki/Kreuzprodukt]
-    template <typename T> std::vector<T> CrossProduct(std::vector<T> const &v1, std::vector<T> const &v2);
-    std::vector<double> CrossProduct(std::vector<double> const &v1, std::vector<double> const &v2)
+    template <typename T> vector<T> CrossProduct(vector<T> const &v1, vector<T> const &v2);
+    vector<double> CrossProduct(vector<double> const &v1, vector<double> const &v2)
     {
-        std::vector<double> r(v1.size());
+        vector<double> r(v1.size());
         r[0] = v1[1] * v2[2] - v1[2] * v2[1];
         r[1] = v1[2] * v2[0] - v1[0] * v2[2];
         r[2] = v1[0] * v2[1] - v1[1] * v2[0];
         return r;
     }
 
-    std::string sex;
-    std::string side;
-    std::string age;
+    string sex;
+    string side;
+    string age;
 
     // euclidean distance between xa, yb and zc
     double getDistance(double p1x, double p1y, double p1z, double p2x, double p2y, double p2z);
@@ -90,30 +92,30 @@ protected:
     vtkSmartPointer<vtkSTLReader> readSTL;// = vtkSmartPointer<vtkSTLReader>::New();
 
     // anatomical mesh
-    void SetAnatomicalMesh(const std::string path);
+    void SetAnatomicalMesh(const string path);
     vtkSmartPointer<vtkPolyData> anatomicalMesh;
 
     // anatomical landmarks size
     unsigned int anatomicalLandmarksSize;
 
     // anatomical landmarks
-    void SetAnatomicalLandmarks(const std::string path);
-	void SetAnatomicalLandmarksFromJsonArray(const std::string array);
+    void SetAnatomicalLandmarks(const string path);
+	void SetAnatomicalLandmarksFromJsonArray(const string array);
 
-    std::vector<std::vector<float>> anatomicalLandmarks;
+    vector<vector<float>> anatomicalLandmarks;
 
     // estimate age, sex and side from file name
-    void SetMetaInfo(const std::string path);
+    void SetMetaInfo(const string path);
 
-    void SetAnatomicalLandmarksSize(std::string configPath, std::string identifier);
+    void SetAnatomicalLandmarksSize(string configPath, string identifier);
 
 
-    
+
 public:
     Anatomy();
     ~Anatomy();
-    
-    static std::string getAnatomyFromString(std::string s);
+
+    static string getAnatomyFromString(string s);
  
     // guessed probability for ethnic groups
     int asian;

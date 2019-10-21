@@ -1,9 +1,15 @@
-femur-anatomical-landmarks-size, 23
+# femur
+femur-anatomical-landmarks-size,23
+femur-anatomical-landmarks,Fovea Capitis Femoris,Trochanter Minus,Trochanter Majus,Linea Intertrochanterica,Intercondylar Notch,Facies Patellaris,Epicondylus Lateralis,Epicondylus Medialis,Most Distal Point,Most Proximal Point,Most Anterior Neck Point,Most Medial Neck Point,Most Posterior Neck Point,Head Fit 1,Head Fit 2,Head Fit 3,Head Fit 4,Head Fit 5,Head Fit 6,Head Fit 7,Head Fit 8,Condylus Lateralis,Condylus Medialis
+# humerus
 humerus-anatomical-landmarks-size, 21
+humerus-anatomical-landmarks,Epicondylus Medialis,Epicondylus Lateralis,Tuberculum Minus,Tuberculum Majus,Superior Fossa Olecrani,Medial Fossa Olecrani,Lateral Fossa Olecrani,Inferior Fossa Olecrani,Most Distal Point,Most Proximal Point,Most Anterior Neck Point,Most Medial Neck Point,Most Posterior Neck Point,Head Fit 1,Head Fit 2,Head Fit 3,Head Fit 4,Head Fit 5,Head Fit 6,Head Fit 7,Head Fit 8
+# tibia
 tibia-anatomical-landmarks-size, 8
-femur-right-logistic-regression-model,7.910,0.062,0.002,0.337,-0.114,0.144,-0.849,-0.174,0.011,-1.715
+tibia-anatomical-landmarks,Malleolus Medialis,Fibular Notch,Epicondylus Medialis,Epicondylus Lateralis,Tuberositas Tibiae,Most Proximal Point,Condylus Medialis,Condylus Lateralis
+# coefficients from logistic regression (thesis)
+LogisticModelFemur,0.0299,0.2214,0.1742,0.3971,-0.1501,-1.2465,-0.0193,0.0275,0.2673
 humerus-right-logistic-regression-model,-132.074,0.131,0.611,-0.188,-0.797,-0.258,2.073,0.475,0.117,-6.601
 tibia-right-logistic-regression-model,-12.776,0.039,-0.433,0.165,0.210,-0.114,0.119,-1.657
-femur-left-logistic-regression-model,7.910,0.062,0.002,0.337,-0.114,0.144,-0.849,-0.174,0.011,-1.715
 humerus-left-logistic-regression-model,-132.074,0.131,0.611,-0.188,-0.797,-0.258,2.073,0.475,0.117,-6.601
 tibia-left-logistic-regression-model,-12.776,0.039,-0.433,0.165,0.210,-0.114,0.119,-1.657
