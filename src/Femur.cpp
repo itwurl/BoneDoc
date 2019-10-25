@@ -1,8 +1,8 @@
 #include "Femur.h"
 
-Femur::Femur(const string anatomicalMeshPath,
-        const string anatomicalLandmarksPath,
-        const string configPath)
+Femur::Femur(const std::string anatomicalMeshPath,
+        const std::string anatomicalLandmarksPath,
+        const std::string configPath)
 {
     this->configPath = configPath;
 
@@ -116,9 +116,9 @@ void Femur::ResetMeasurements()
 
 void Femur::Thesis()
 {
-    cout << "##################" << endl;
-    cout << "# Thesis - Femur #" << endl;
-    cout << "##################" << endl;
+    std::cout << "##################" << std::endl;
+    std::cout << "# Thesis - Femur #" << std::endl;
+    std::cout << "##################" << std::endl;
 
     // optimize manually found anatomical landmarks 'most_distal_point' and 'most_proximal_point'
     OptimizeProximalAndDistalLandmark();
@@ -163,16 +163,16 @@ void Femur::Thesis()
 
     GuessEthnicGroup();
 
-    cout << "bone length: " << bone_length << "mm" << endl;
-    cout << "medial offset: " << medial_offset << "mm" << endl;
-    cout << "lateral offset: " << lateral_offset << "mm" << endl;
-    cout << "ml width: " << ML_width << "mm" << endl;
-    cout << "ap width: " << AP_width << "mm" << endl;
-    cout << "head radius: " << head_radius << "mm" << endl;
-    cout << "inclination: " << inclination << "°" << endl;
-    cout << "anteversion: " << anteversion << "°" << endl;
-    cout << "asian: " << asian << "%" << endl;
-    cout << "caucasian: " << caucasian << "%" << endl;
+    std::cout << "anteversion: " << anteversion << "°" << std::endl;
+    std::cout << "ap width: " << AP_width << "mm" << std::endl;
+    std::cout << "bone length: " << bone_length << "mm" << std::endl;
+    std::cout << "head radius: " << head_radius << "mm" << std::endl;
+    std::cout << "inclination: " << inclination << "°" << std::endl;
+    std::cout << "lateral offset: " << lateral_offset << "mm" << std::endl;
+    std::cout << "medial offset: " << medial_offset << "mm" << std::endl;
+    std::cout << "ml width: " << ML_width << "mm" << std::endl;
+    std::cout << "asian: " << asian << "%" << std::endl;
+    std::cout << "caucasian: " << caucasian << "%" << std::endl;
 }
 
 void Femur::PPFX()
@@ -295,7 +295,7 @@ void Femur::SetProximalShaftCenter()
 
     // crash's may occure if no suitable cut were done - return then
     if (cutPoly->GetNumberOfPoints() == 0)
-        cout << "could not define intersection contour!" << endl;
+        std::cout << "could not define intersection contour!" << std::endl;
     else
     {
         // get the cutting-contours center
@@ -340,7 +340,7 @@ void Femur::SetDistalShaftCenter()
     // crash's may occure if no suitable were done - so return then
     if (cutPoly_dist->GetNumberOfPoints() == 0)
     {
-        cout << "Error - could not define distal shaft center!" << endl;
+        std::cout << "Error - could not define distal shaft center!" << std::endl;
         return;
     }
     
@@ -397,7 +397,7 @@ void Femur::SetOffsetAndWidth()
     // crash's may occure if no suitable were done - so return then
     if (cutPoly_dist->GetNumberOfPoints() == 0)
     {
-        cout << "Error - could not define distal shaft center!" << endl;
+        std::cout << "Error - could not define distal shaft center!" << std::endl;
         return;
     }
     
@@ -568,7 +568,7 @@ void Femur::FemoralNeckAxis1()
 {
     if ((head[0] == 0) && (head[1] == 0) && (head[2] == 0))
     {
-        cout << "head-center not defined!" << endl;
+        std::cout << "head-center not defined!" << std::endl;
         return;
     }
 
@@ -629,13 +629,13 @@ void Femur::FemoralNeckAxisCorrection1()
 {
     if ((neck_isthmus_center[0] == 0) && (neck_isthmus_center[1] == 0) && (neck_isthmus_center[2] == 0))
     {
-        cout << "neck-isthmus-center not defined!" << endl;
+        std::cout << "neck-isthmus-center not defined!" << std::endl;
         return;
     }
     
     if ((head[0] == 0) && (head[1] == 0) && (head[2] == 0))
     {
-        cout << "head-center not defined!" << endl;
+        std::cout << "head-center not defined!" << std::endl;
         return;
     }
 
@@ -655,7 +655,7 @@ void Femur::FemoralNeckAxisCorrection1()
     double lambda = 0;
 
     // centers of neck
-    vector<vector<double>> centers;
+    std::vector<std::vector<double>> centers;
 
     // set up sizes +1 for the head
     centers.resize(neck_intersection_size+1);
@@ -740,7 +740,7 @@ void Femur::FemoralNeckAxis2()
     if (((0 == neck_shaft_interception[0]) && (0 == neck_shaft_interception[1]) && (0 == neck_shaft_interception[2])) ||
             ((0 == head[0]) && (0 == head[1]) && (0 == head[2])))
     {
-        cout << "Intersection between neck- and shaft axis or femoral head center was not defined before!" << endl;
+        std::cout << "Intersection between neck- and shaft axis or femoral head center was not defined before!" << std::endl;
         return;
     }
 
@@ -841,17 +841,17 @@ void Femur::FemoralCenterOfCondyles1()
 void Femur::FemoralNeckAndShaftAxisInterception1()
 {
     // x-axis 
-    vector<double> x(3);
+    std::vector<double> x(3);
     x.at(0) = axis[0];
     x.at(1) = axis[1];
     x.at(2) = axis[2];
 
-    vector<double> tmp(3);
+    std::vector<double> tmp(3);
     tmp.at(0) = neck_axis[0];
     tmp.at(1) = neck_axis[1];
     tmp.at(2) = neck_axis[2];
 
-    vector<double> xXneck = CrossProduct(tmp, x);
+    std::vector<double> xXneck = CrossProduct(tmp, x);
 
     double lambda;
 
@@ -924,7 +924,7 @@ void Femur::FemoralTwist1()
 
         if (intersectPoints->GetNumberOfPoints() == 0)
         {
-            cout << "no intersections found!" << endl;
+            std::cout << "no intersections found!" << std::endl;
             return;
         }
 
@@ -961,24 +961,24 @@ void Femur::FemoralTwist1()
 
 void Femur::GuessEthnicGroup()
 {
-    // set logistic model
-    string model = "LogisticModelFemur";
+    // set current model
+    std::string model = "LogisticModelFemur";
 
     // load model from config file
-    ifstream file(configPath);
+    std::ifstream file(configPath);
         
     if (!file.is_open())
     {
-        cout << "Could not load config file!" << endl;
+        std::cout << "Could not load config file!" << std::endl;
         return;
     }
-
-    string value;
-    string row;
+    
+    std::string value;
+    std::string row;
     bool found = false;
-    vector<float> coefficients;
+    std::vector<float> coefficients;
     size_t pos = 0;
-    string delimiter = ",";
+    std::string delimiter = ",";
 
     // read all lines
     while (getline(file, row))
@@ -986,8 +986,8 @@ void Femur::GuessEthnicGroup()
         found = false;
 
         // read every single comma separated value
-        while ((pos = row.find(delimiter)) != string::npos)
-        {
+        while ((pos = row.find(delimiter)) != std::string::npos)
+        {			
             value = row.substr(0, pos);
             row.erase(0, pos + delimiter.length());
 
@@ -995,34 +995,35 @@ void Femur::GuessEthnicGroup()
             if (value.compare(model) == 0)
                 found = true;
             else if (found)
-                coefficients.push_back(stof(value.c_str()));
+                coefficients.push_back(std::stof(value.c_str()));
+            
         }
         
         if (found)
         {
             value = row.substr(pos+1, row.length());
-            coefficients.push_back(stof(value.c_str()));
-        }
+            coefficients.push_back(std::stof(value.c_str()));
+        } 
         
     }
 
     file.close();
-
+ 
     int gender = 0;
-
+    
     if (sex == "FEMALE")
         gender = 0;
     else if (sex == "MALE")
         gender = 1;
 
-    float logits =
-        (coefficients.at(0) * bone_length) +
-        (coefficients.at(1) * medial_offset) +
-        (coefficients.at(2) * lateral_offset) +
-        (coefficients.at(3) * ML_width) +
-        (coefficients.at(4) * AP_width) +
-        (coefficients.at(5) * head_radius) +
-        (coefficients.at(6) * inclination) +
+    float logits = 
+        (coefficients.at(0) * bone_length) + 
+        (coefficients.at(1) * medial_offset) + 
+        (coefficients.at(2) * lateral_offset) + 
+        (coefficients.at(3) * ML_width) + 
+        (coefficients.at(4) * AP_width) + 
+        (coefficients.at(5) * head_radius) + 
+        (coefficients.at(6) * inclination) + 
         (coefficients.at(7) * anteversion) +
         (coefficients.at(8) * gender);
 

@@ -106,13 +106,13 @@ void Humerus::Thesis()
 
     GuessEthnicGroup();
 
-    std::cout << "bone length: " << bone_length << "mm" << std::endl;
-    std::cout << "medial offset: " << medial_offset << "mm" << std::endl;
-    std::cout << "lateral offset: " << lateral_offset << "mm" << std::endl;
-    std::cout << "ml width: " << ML_width << "mm" << std::endl;
     std::cout << "ap width: " << AP_width << "mm" << std::endl;
+    std::cout << "bone length: " << bone_length << "mm" << std::endl;
     std::cout << "head radius: " << head_radius << "mm" << std::endl;
     std::cout << "inclination: " << inclination << "°" << std::endl;
+    std::cout << "lateral offset: " << lateral_offset << "mm" << std::endl;
+    std::cout << "medial offset: " << medial_offset << "mm" << std::endl;
+    std::cout << "ml width: " << ML_width << "mm" << std::endl;
     std::cout << "retroversion: " << retroversion << "°" << std::endl;
     std::cout << "asian: " << asian << "%" << std::endl;
     std::cout << "caucasian: " << caucasian << "%" << std::endl;
@@ -602,7 +602,6 @@ void Humerus::SetMedialAndLateralAxis()
 
 void Humerus::GuessEthnicGroup()
 {
-    // set logistic model
     std::string model = "LogisticModelHumerus";
 
     // load model from config file
@@ -617,7 +616,7 @@ void Humerus::GuessEthnicGroup()
     while (getline(file, row)) {
         found = false;
 
-        while ((pos = row.find(delimiter)) != std::string::npos) {
+        while ((pos = row.find(delimiter)) != std::string::npos) {			
             value = row.substr(0, pos);
 
             row.erase(0, pos + delimiter.length());
@@ -632,7 +631,7 @@ void Humerus::GuessEthnicGroup()
             value = row.substr(pos+1, row.length());
             coefficients.push_back(std::stof(value.c_str()));
         }
-
+        
     }
 
     file.close();
@@ -644,15 +643,15 @@ void Humerus::GuessEthnicGroup()
     else if (sex == "MALE")
         gender = 1;
 
-    float logits =
+    float logits = 
         (coefficients.at(0) * bone_length) +
-        (coefficients.at(1) * medial_offset) +
+        (coefficients.at(1) * medial_offset) + 
         (coefficients.at(2) * lateral_offset) +
         (coefficients.at(3) * ML_width) +
         (coefficients.at(4) * AP_width) +
         (coefficients.at(5) * head_radius) +
         (coefficients.at(6) * inclination) +
-        (coefficients.at(7) * retroversion) +
+        (coefficients.at(7) * retroversion) + 
         (coefficients.at(8) * gender);
 
     caucasian = (int)((1 / (1 + exp(-logits))) * 100);
