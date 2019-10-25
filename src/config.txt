@@ -9,7 +9,5 @@ tibia-anatomical-landmarks-size, 8
 tibia-anatomical-landmarks,Malleolus Medialis,Fibular Notch,Epicondylus Medialis,Epicondylus Lateralis,Tuberositas Tibiae,Most Proximal Point,Condylus Medialis,Condylus Lateralis
 # coefficients from logistic regression (thesis)
 LogisticModelFemur,0.0299,0.2214,0.1742,0.3971,-0.1501,-1.2465,-0.0193,0.0275,0.2673
-humerus-right-logistic-regression-model,-132.074,0.131,0.611,-0.188,-0.797,-0.258,2.073,0.475,0.117,-6.601
-tibia-right-logistic-regression-model,-12.776,0.039,-0.433,0.165,0.210,-0.114,0.119,-1.657
-humerus-left-logistic-regression-model,-132.074,0.131,0.611,-0.188,-0.797,-0.258,2.073,0.475,0.117,-6.601
-tibia-left-logistic-regression-model,-12.776,0.039,-0.433,0.165,0.210,-0.114,0.119,-1.657
+LogisticModelHumerus,0.1267,-0.5316,0.4698,-0.1997,-0.0343,0.9722,-0.3044,-0-4289,-1.9313
+LogisticModelTibia,0.09,-0.5017,-0.138,-0.1777,-0.4349,0.0693,1.4198

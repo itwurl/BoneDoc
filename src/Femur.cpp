@@ -163,14 +163,14 @@ void Femur::Thesis()
 
     GuessEthnicGroup();
 
-    cout << "anteversion: " << anteversion << "°" << endl;
-    cout << "ap width: " << AP_width << "mm" << endl;
     cout << "bone length: " << bone_length << "mm" << endl;
+    cout << "medial offset: " << medial_offset << "mm" << endl;
+    cout << "lateral offset: " << lateral_offset << "mm" << endl;
+    cout << "ml width: " << ML_width << "mm" << endl;
+    cout << "ap width: " << AP_width << "mm" << endl;
     cout << "head radius: " << head_radius << "mm" << endl;
     cout << "inclination: " << inclination << "°" << endl;
-    cout << "lateral offset: " << lateral_offset << "mm" << endl;
-    cout << "medial offset: " << medial_offset << "mm" << endl;
-    cout << "ml width: " << ML_width << "mm" << endl;
+    cout << "anteversion: " << anteversion << "°" << endl;
     cout << "asian: " << asian << "%" << endl;
     cout << "caucasian: " << caucasian << "%" << endl;
 }
@@ -961,7 +961,7 @@ void Femur::FemoralTwist1()
 
 void Femur::GuessEthnicGroup()
 {
-
+    // set logistic model
     string model = "LogisticModelFemur";
 
     // load model from config file
