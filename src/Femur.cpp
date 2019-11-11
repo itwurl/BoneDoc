@@ -116,9 +116,9 @@ void Femur::ResetMeasurements()
 
 void Femur::Thesis()
 {
-    cout << "##################" << endl;
-    cout << "# Thesis - Femur #" << endl;
-    cout << "##################" << endl;
+    //cout << "##################" << endl;
+    //cout << "# Thesis - Femur #" << endl;
+    //cout << "##################" << endl;
 
     // optimize manually found anatomical landmarks 'most_distal_point' and 'most_proximal_point'
     OptimizeProximalAndDistalLandmark();
@@ -165,16 +165,7 @@ void Femur::Thesis()
 
     GuessEthnicGroup();
 
-    cout << "bone length: " << bone_length << "mm" << endl;
-    cout << "medial offset: " << medial_offset << "mm" << endl;
-    cout << "lateral offset: " << lateral_offset << "mm" << endl;
-    cout << "ml width: " << ML_width << "mm" << endl;
-    cout << "ap width: " << AP_width << "mm" << endl;
-    cout << "head radius: " << head_radius << "mm" << endl;
-    cout << "inclination: " << inclination << "°" << endl;
-    cout << "anteversion: " << anteversion << "°" << endl;
-    cout << "asian: " << asian << "%" << endl;
-    cout << "caucasian: " << caucasian << "%" << endl;
+    cout << bone_length << "\t" << medial_offset << "\t" << lateral_offset << "\t" << ML_width << "\t" << AP_width << "\t" << head_radius << "\t" << inclination << "\t" << anteversion << "\t" << asian << "\t" << caucasian << endl;
 }
 
 void Femur::PPFX()

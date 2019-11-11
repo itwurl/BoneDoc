@@ -76,9 +76,9 @@ void Humerus::MapAnatomicalLandmarksToAnatomicalMesh()
 
 void Humerus::Thesis()
 {
-    std::cout << "####################" << std::endl;
-    std::cout << "# Thesis - Humerus #" << std::endl;
-    std::cout << "####################" << std::endl;
+    //std::cout << "####################" << std::endl;
+    //std::cout << "# Thesis - Humerus #" << std::endl;
+    //std::cout << "####################" << std::endl;
 
     SetProximalShaftCenter();
     
@@ -106,16 +106,8 @@ void Humerus::Thesis()
 
     GuessEthnicGroup();
 
-    std::cout << "bone length: " << bone_length << "mm" << std::endl;
-    std::cout << "medial offset: " << medial_offset << "mm" << std::endl;
-    std::cout << "lateral offset: " << lateral_offset << "mm" << std::endl;
-    std::cout << "ml width: " << ML_width << "mm" << std::endl;
-    std::cout << "ap width: " << AP_width << "mm" << std::endl;
-    std::cout << "head radius: " << head_radius << "mm" << std::endl;
-    std::cout << "inclination: " << inclination << "°" << std::endl;
-    std::cout << "retroversion: " << retroversion << "°" << std::endl;
-    std::cout << "asian: " << asian << "%" << std::endl;
-    std::cout << "caucasian: " << caucasian << "%" << std::endl;
+    cout << bone_length << "\t" << medial_offset << "\t" << lateral_offset << "\t" << ML_width << "\t" << AP_width << "\t" << head_radius << "\t" << inclination << "\t" << retroversion << "\t" << asian << "\t" << caucasian << endl;
+
 }
 
 void Humerus::SetProximalShaftCenter()

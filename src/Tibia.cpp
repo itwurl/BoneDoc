@@ -53,9 +53,9 @@ void Tibia::MapAnatomicalLandmarksToAnatomicalMesh()
 
 void Tibia::Thesis()
 {
-    std::cout << "##################" << std::endl;
-    std::cout << "# Thesis - Tibia #" << std::endl;
-    std::cout << "##################" << std::endl;
+    //std::cout << "##################" << std::endl;
+    //std::cout << "# Thesis - Tibia #" << std::endl;
+    //std::cout << "##################" << std::endl;
 
     // to be calculated in global system
     SetProximalShaftCenter();
@@ -82,14 +82,8 @@ void Tibia::Thesis()
 
     GuessEthnicGroup();
 
-    std::cout << "bone length: " << bone_length << "mm" << std::endl;
-    std::cout << "medial offset: " << medial_offset << "mm" << std::endl;
-    std::cout << "lateral offset: " << lateral_offset << "mm" << std::endl;
-    std::cout << "ml width: " << ML_width << "mm" << std::endl;
-    std::cout << "ap width: " << AP_width << "mm" << std::endl;
-    std::cout << "torsion: " << torsion << "°" << std::endl;
-    std::cout << "asian: " << asian << "%" << std::endl;
-    std::cout << "caucasian: " << caucasian << "%" << std::endl;
+    cout << bone_length << "\t" << medial_offset << "\t" << lateral_offset << "\t" << ML_width << "\t" << AP_width << "\t" << torsion << "\t" << asian << "\t" << caucasian << endl;
+
 }
 
 // no references yet.
