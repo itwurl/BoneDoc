@@ -99,16 +99,9 @@ void Anatomy::SetCoordinateSystem()
     axis[7] /= bz;
     axis[8] /= bz;
 
-    std::cout << axis[0] << " " << axis[1] << " " << axis[2] << " " << std::endl;
-    std::cout << axis[3] << " " << axis[4] << " " << axis[5] << " " << std::endl;
-    std::cout << axis[6] << " " << axis[7] << " " << axis[8] << " " << std::endl;
-
     float b1 = (axis[0]*axis[0])+(axis[1]*axis[1])+(axis[2]*axis[2]);
     float b2 = (axis[3]*axis[3])+(axis[4]*axis[4])+(axis[5]*axis[5]);
     float b3 = (axis[6]*axis[6])+(axis[7]*axis[7])+(axis[8]*axis[8]);
-
-    std::cout << b1 << "\t" << b2 << "\t" << b3 << std::endl;
-
 }
 
 void Anatomy::SphereFit(double p[][3], int n, double ai, double bi, double ci) {
