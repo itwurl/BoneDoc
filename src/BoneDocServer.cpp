@@ -9,6 +9,8 @@ BoneDocServer::BoneDocServer(const char* path)
     full_path = boost::filesystem::system_complete(boost::filesystem::path(path));
     std::size_t found = full_path.string().find_last_of("/\\");
     BONEDOC_PATH = full_path.string().substr(0, found);
+	
+	//BONEDOC_PATH = "/home/pi/Projects/BoneDoc";
 }
 
 void session(boost::asio::ip::tcp::socket socket)
@@ -24,38 +26,39 @@ void session(boost::asio::ip::tcp::socket socket)
             // put request to input stream
             std::istream request_stream(&request);
 			
-            // vars
-            std::string request_header = "";
-            std::string dataset = "";
-            std::string anatomy = "";
-            std::string side = "";
-            std::string gender = "";
-            std::string ethnic_group = "";
-            std::string study = "";
+			// vars
+			std::string request_header = "";
+
+			// mesh to be loaded, may be the model's mean or a random mesh created from the pca model
+			std::string mesh = ""; 
+			std::string anatomy = "";
+			std::string side = "";
+			std::string gender = "";
+			std::string ethnic_group = "";
+			std::string study = "";
 			std::string anatomical_landmarks = "";
-            
+
             // print the request (header), each line is separated by carriage return symbol '\r'.
             //std::cout << "Client request:" << "\n";
 
             while (std::getline(request_stream, request_header) && request_header != "\r")
             {
-                //std::cout << request_header << "\n";
+                std::cout << request_header << "\n";
+				
                 if (request_header.compare(0, 7, "Anatomy") == 0)
-                    anatomy = request_header.substr(9, request_header.length()-10);
-                else if (request_header.compare(0, 7, "Dataset") == 0)
-                    dataset = request_header.substr(9, request_header.length()-10);
-                else if (request_header.compare(0, 5, "Study") == 0)
-                    study = request_header.substr(7, request_header.length()-8);
-                else if (request_header.compare(0, 4, "Side") == 0)
-                    side = request_header.substr(6, request_header.length()-7);
-                else if (request_header.compare(0, 6, "Gender") == 0)
-                    gender = request_header.substr(8, request_header.length()-9);
+                    anatomy = request_header.substr(9, request_header.length() - 10);
                 else if (request_header.compare(0, 11, "EthnicGroup") == 0)
-                    ethnic_group = request_header.substr(13, request_header.length()-14);
-                else if (request_header.compare(0, 19, "AnatomicalLandmarks") == 0) {
-                    anatomical_landmarks = request_header.substr(21, request_header.length()-22);
-					//std::cout << request_header.substr(21, request_header.length()-22) << std::endl;
-				}
+                    ethnic_group = request_header.substr(13, request_header.length() - 14);
+                else if (request_header.compare(0, 6, "Gender") == 0)
+                    gender = request_header.substr(8, request_header.length() - 9);
+                else if (request_header.compare(0, 4, "Mean") == 0)
+                    mesh = request_header.substr(6, request_header.length() - 7);
+                else if (request_header.compare(0, 6, "Random") == 0)
+                    mesh = request_header.substr(8, request_header.length() - 9);
+                else if (request_header.compare(0, 4, "Side") == 0)
+                    side = request_header.substr(6, request_header.length() - 7);
+                else if (request_header.compare(0, 5, "Study") == 0)
+                    study = request_header.substr(7, request_header.length() - 8);
 				else {
 					// unknown request
 				}
@@ -71,33 +74,29 @@ void session(boost::asio::ip::tcp::socket socket)
 			//response_stream << "Content-Length: 9999";
             response_stream << "Access-Control-Allow-Origin: *\r\n";
             response_stream << "Connection: keep alive\r\n";
-            response_stream << "Access-Control-Allow-Headers: Dataset,Anatomy,Side,Gender,EthnicGroup,Study,AnatomicalLandmarks\r\n\r\n";
+            response_stream << "Access-Control-Allow-Headers: Anatomy,EthnicGroup,Gender,Mean,Random,Side,Study\r\n\r\n";
             
             // client message is only considered for analysis if header consists of meta infos
-            if ((anatomy != "") && (dataset != "") && (study == "Thesis"))
+            if ((anatomy != "") && (mesh != "") && (study == "Thesis"))
             {
-                //std::cout << "study: " << study << std::endl;
-                //std::cout << "dataset: " << dataset << std::endl;
-                //std::cout << "anatomy: " << anatomy << std::endl;
-                //std::cout << "side: " << side << std::endl;
-                //std::cout << "gender: " << gender << std::endl;
-                //std::cout << "ethnic group: " << ethnic_group << std::endl;
-
-                // concatenate correct path's (DEBUG: currently 'VTK' and 'FCSV' format required!)
+		
+                // concatenate correct path's (DEBUG: currently 'VTK' and 'FCSV' format required!)???
                 std::stringstream anatomicalMeshPath;
-                anatomicalMeshPath << BONEDOC_PATH << "/Data/Temp/" << dataset << ".vtk";
-		std::cout << "BONEDOC_PATH: " << BONEDOC_PATH << std::endl;
-		std::cout << "anatomicalMeshPath: " << anatomicalMeshPath.str() << std::endl;
+                //anatomicalMeshPath << BONEDOC_PATH << "/data/" << mesh << ".vtk";
+				anatomicalMeshPath << BONEDOC_PATH << "/data/" << mesh << ".stl";
+				std::cout << anatomicalMeshPath.str() << std::endl;
 
                 std::stringstream anatomicallandmarksPath;
-                anatomicallandmarksPath << BONEDOC_PATH << "/Data/Temp/" << dataset << "-landmarks.csv";
+                anatomicallandmarksPath << BONEDOC_PATH << "/data/" << mesh << "-landmarks.csv";
 
                 std::stringstream configPath;
                 configPath << BONEDOC_PATH << "/config.txt";
 
-                // DEBUG: recognize anatomy from dataset name
-		if (anatomy.compare("Femur") == 0)
+                // DEBUG: recognize anatomy from mesh's name
+				if (anatomy.compare("Femur") == 0)
                 {
+					//std::cout << anatomicalMeshPath.str() << " " << anatomicallandmarksPath.str() << " " << configPath.str() << std::endl;
+					
                     Femur femur(anatomicalMeshPath.str(), anatomicallandmarksPath.str(), configPath.str());
 					femur.Thesis();
 
@@ -111,6 +110,7 @@ void session(boost::asio::ip::tcp::socket socket)
                     response_stream << "anteversion: " << float(int(femur.anteversion * 100)) / 100 << "°" << std::endl;
                     response_stream << "asian: " << femur.asian << "%" << std::endl;
                     response_stream << "caucasian: " << femur.caucasian << "%" << std::endl;
+					
                 }
                 else if (anatomy.compare("Humerus") == 0)
                 {
@@ -127,8 +127,8 @@ void session(boost::asio::ip::tcp::socket socket)
                     response_stream << "retroversion: " << float(int(humerus.retroversion * 100)) / 100 << "°" << std::endl;
                     response_stream << "asian: " << humerus.asian << "%" << std::endl;
                     response_stream << "caucasian: " << humerus.caucasian << "%" << std::endl;
-		}
-		else if (anatomy.compare("Tibia") == 0)
+				}
+				else if (anatomy.compare("Tibia") == 0)
                 {
                     Tibia tibia(anatomicalMeshPath.str(), anatomicallandmarksPath.str(), configPath.str());
                     tibia.Thesis();

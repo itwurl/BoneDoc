@@ -41,51 +41,74 @@ void Anatomy::SetCoordinateSystem()
         std::cout << "Unknown side - can not define coordinate system!" << std::endl;
         return;
     }
-       
-    // norm vectors
-    double bx = sqrt(pow(axis[0], 2) + pow(axis[1], 2) + pow(axis[2], 2));
-    double by = sqrt(pow(axis[3], 2) + pow(axis[4], 2) + pow(axis[5], 2));
 
-    // temporary array
-    double vectors[6];
- 
-    vectors[0] = axis[0] / bx;
-    vectors[1] = axis[1] / bx;
-    vectors[2] = axis[2] / bx;
-
-    vectors[3] = axis[3] / by;
-    vectors[4] = axis[4] / by;
-    vectors[5] = axis[5] / by;
+    // medio-lateral and cranio-caudal axis 
+    double temp[6];
+    temp[0] = axis[0];
+    temp[1] = axis[1];
+    temp[2] = axis[2];
+    temp[3] = axis[3];
+    temp[4] = axis[4];
+    temp[5] = axis[5];
+    axis[6] = axis[3];
+    axis[7] = axis[4];
+    axis[8] = axis[5];
 
     if (side == "RIGHT")
     {
-        // x - medio-lateral axis X longitudinal axis (should points anterior)
-        axis[0] = (vectors[1]*vectors[5])-(vectors[2]*vectors[4]);
-        axis[1] = (vectors[2]*vectors[3])-(vectors[0]*vectors[5]);
-        axis[2] = (vectors[0]*vectors[4])-(vectors[1]*vectors[3]);
+        // x - medio-lateral axis X cranio-caucal axis (should points anterior)
+        axis[0] = (temp[1]*temp[5])-(temp[2]*temp[4]);
+        axis[1] = (temp[2]*temp[3])-(temp[0]*temp[5]);
+        axis[2] = (temp[0]*temp[4])-(temp[1]*temp[3]);
 
-        // y - mediolateral (ML) axis, vectorsZ X AP (should points medial)
-        axis[3] = (vectors[4]*axis[2])-(vectors[5]*axis[1]);
-        axis[4] = (vectors[5]*axis[0])-(vectors[3]*axis[2]);
-        axis[5] = (vectors[3]*axis[1])-(vectors[4]*axis[0]);
+        // y - mediolateral (ML) axis, Z X AP (should points medial)
+        axis[3] = (temp[4]*axis[2])-(temp[5]*axis[1]);
+        axis[4] = (temp[5]*axis[0])-(temp[3]*axis[2]);
+        axis[5] = (temp[3]*axis[1])-(temp[4]*axis[0]);
     }
     else if (side == "LEFT")
     {
-        // x - anteroposterior (AP) axis, vectorsZ X vectorsY (should points anterior)
-        axis[0] = (vectors[4]*vectors[2])-(vectors[5]*vectors[1]);
-        axis[1] = (vectors[5]*vectors[0])-(vectors[3]*vectors[2]);
-        axis[2] = (vectors[3]*vectors[1])-(vectors[4]*vectors[0]);
+        // x - antero-posterior (AP) axis,Z X Y (should points anterior)
+        axis[0] = (temp[4]*temp[2]) - (temp[5]*temp[1]);
+        axis[1] = (temp[5]*temp[0]) - (temp[3]*temp[2]);
+        axis[2] = (temp[3]*temp[1]) - (temp[4]*temp[0]);
 
-        // y - mediolateral (ML) axis, AP X vectorsZ (should points medial)
-        axis[3] = (axis[1]*vectors[5])-(axis[2]*vectors[4]);
-        axis[4] = (axis[2]*vectors[3])-(axis[0]*vectors[5]);
-        axis[5] = (axis[0]*vectors[4])-(axis[1]*vectors[3]);
+        // y - medio-lateral (ML) axis, AP X Z (should points medial)
+        axis[3] = (axis[1]*temp[5]) - (axis[2]*temp[4]);
+        axis[4] = (axis[2]*temp[3]) - (axis[0]*temp[5]);
+        axis[5] = (axis[0]*temp[4]) - (axis[1]*temp[3]);
+
     }
 
-    // z - longitudinal axis, vectorsZ (should points kranial)
-    axis[6] = vectors[3];
-    axis[7] = vectors[4];
-    axis[8] = vectors[5];
+    // z - cranio-caudal axis, Z (should points kranial)
+
+    // norm
+    double bx = sqrt(pow(axis[0], 2) + pow(axis[1], 2) + pow(axis[2], 2));
+    double by = sqrt(pow(axis[3], 2) + pow(axis[4], 2) + pow(axis[5], 2));
+    double bz = sqrt(pow(axis[6], 2) + pow(axis[7], 2) + pow(axis[8], 2));
+
+    axis[0] /= bx;
+    axis[1] /= bx;
+    axis[2] /= bx;
+
+    axis[3] /= by;
+    axis[4] /= by;
+    axis[5] /= by;
+
+    axis[6] /= bz;
+    axis[7] /= bz;
+    axis[8] /= bz;
+
+    std::cout << axis[0] << " " << axis[1] << " " << axis[2] << " " << std::endl;
+    std::cout << axis[3] << " " << axis[4] << " " << axis[5] << " " << std::endl;
+    std::cout << axis[6] << " " << axis[7] << " " << axis[8] << " " << std::endl;
+
+    float b1 = (axis[0]*axis[0])+(axis[1]*axis[1])+(axis[2]*axis[2]);
+    float b2 = (axis[3]*axis[3])+(axis[4]*axis[4])+(axis[5]*axis[5]);
+    float b3 = (axis[6]*axis[6])+(axis[7]*axis[7])+(axis[8]*axis[8]);
+
+    std::cout << b1 << "\t" << b2 << "\t" << b3 << std::endl;
+
 }
 
 void Anatomy::SphereFit(double p[][3], int n, double ai, double bi, double ci) {
@@ -377,7 +400,7 @@ void Anatomy::SetAnatomicalLandmarks(const std::string path) {
     // make file ending great (again)
     std::string tmp = "";
     tmp.resize(path.size());
-    std::transform(path.begin(), path.end(), tmp.begin(), toupper);
+    std::transform(path.begin(), path.end(), tmp.begin(), (int (*)(int))std::toupper);
 
     // check for supported file type
     if (tmp.substr(tmp.length() - 3, 3) != "CSV") {
@@ -460,13 +483,12 @@ void Anatomy::SetAnatomicalLandmarksFromJsonArray(const std::string json) {
 
 }
 
-
 void Anatomy::SetAnatomicalMesh(const std::string path) {
 
     // make file ending great (again)
     std::string tmp = "";
     tmp.resize(path.size());
-    std::transform(path.begin(), path.end(), tmp.begin(), toupper);
+    std::transform(path.begin(), path.end(), tmp.begin(), (int (*)(int))std::toupper);
     tmp = tmp.substr(tmp.length() - 3, 3);
 
     // check for supported file type

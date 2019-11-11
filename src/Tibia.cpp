@@ -82,11 +82,11 @@ void Tibia::Thesis()
 
     GuessEthnicGroup();
 
-    std::cout << "ap width: " << AP_width << "mm" << std::endl;
     std::cout << "bone length: " << bone_length << "mm" << std::endl;
-    std::cout << "lateral offset: " << lateral_offset << "mm" << std::endl;
     std::cout << "medial offset: " << medial_offset << "mm" << std::endl;
+    std::cout << "lateral offset: " << lateral_offset << "mm" << std::endl;
     std::cout << "ml width: " << ML_width << "mm" << std::endl;
+    std::cout << "ap width: " << AP_width << "mm" << std::endl;
     std::cout << "torsion: " << torsion << "°" << std::endl;
     std::cout << "asian: " << asian << "%" << std::endl;
     std::cout << "caucasian: " << caucasian << "%" << std::endl;
@@ -472,9 +472,9 @@ void Tibia::GuessEthnicGroup()
     else if (sex == "MALE")
         gender = 1;
 
-    float logits = 
+    float logits =
         (coefficients.at(0) * bone_length) +
-        (coefficients.at(1) * medial_offset) + 
+        (coefficients.at(1) * medial_offset) +
         (coefficients.at(2) * lateral_offset) +
         (coefficients.at(3) * ML_width) +
         (coefficients.at(4) * AP_width) +
