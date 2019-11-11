@@ -197,11 +197,11 @@ void Femur::PPFX()
 
     FemoralNeckAxis1();
 
-    FemoralNeckAxisCorrection1();
+    //FemoralNeckAxisCorrection1();
 
-    FemoralNeckAndShaftAxisInterception1();
+    //FemoralNeckAndShaftAxisInterception1();
 
-    FemoralNeckAxis2();
+    //FemoralNeckAxis2();
 
     FemoralAnteversionAndInclination1();
 
