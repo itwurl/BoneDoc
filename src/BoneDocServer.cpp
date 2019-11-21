@@ -59,8 +59,10 @@ void session(boost::asio::ip::tcp::socket socket)
                     side = request_header.substr(6, request_header.length() - 7);
                 else if (request_header.compare(0, 5, "Study") == 0)
                     study = request_header.substr(7, request_header.length() - 8);
-		else if (request_header.compare(0, 7, "Dataset") == 0)
+		else if (request_header.compare(0, 7, "Dataset") == 0) {
 		    dataset = request_header.substr(9, request_header.length() - 10);
+		    //std::cout << "dataset: " << dataset << std::endl;
+		}
 		else
 		{
 		    // unknown request
@@ -82,11 +84,12 @@ void session(boost::asio::ip::tcp::socket socket)
             // client message is only considered for analysis if header consists of meta infos
             if ((anatomy != "") && (study == "Thesis"))
             {
-                // concatenate correct path's (DEBUG: currently 'VTK' and 'FCSV' format required!)???
+                // concatenate correct path's (DEBUG: support for stl/vtk)
                 std::stringstream anatomicalMeshPath;
                 anatomicalMeshPath << BONEDOC_PATH << "/Data/Temp/" << dataset << ".vtk";
 		//anatomicalMeshPath << BONEDOC_PATH << "/Data/Temp/" << dataset << ".stl";
-		//std::cout << anatomicalMeshPath.str() << std::endl;
+
+		std::cout << anatomicalMeshPath.str() << std::endl;
 
                 std::stringstream anatomicallandmarksPath;
                 anatomicallandmarksPath << BONEDOC_PATH << "/Data/Temp/" << dataset << "-landmarks.csv";
@@ -100,7 +103,7 @@ void session(boost::asio::ip::tcp::socket socket)
 		    //std::cout << anatomicalMeshPath.str() << " " << anatomicallandmarksPath.str() << " " << configPath.str() << std::endl;
 
                     Femur femur(anatomicalMeshPath.str(), anatomicallandmarksPath.str(), configPath.str());
-					femur.Thesis();
+		    femur.Thesis();
 
                     response_stream << "bone length: " << float(int(femur.bone_length * 100)) / 100 << "mm" << std::endl;
                     response_stream << "medial offset: " << float(int(femur.medial_offset * 100)) / 100 << "mm" << std::endl;
