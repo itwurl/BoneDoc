@@ -594,6 +594,9 @@ void Femur::FemoralNeckAxis1()
     neck_axis[1] = neck_axis[1] / b3;
     neck_axis[2] = neck_axis[2] / b3;
 
+    //std::cout << "neck_isthmus_center: " << "\t" << neck_isthmus_center[0] << "\t" << neck_isthmus_center[1] << "\t" << neck_isthmus_center[2] << std::endl;
+    //std::cout << "neck_axis: " << "\t" << neck_axis[0] << "\t" << neck_axis[1] << "\t" << neck_axis[2] << std::endl;
+
 }
 
 void Femur::FemoralNeckAxisCorrection1()
@@ -603,7 +606,7 @@ void Femur::FemoralNeckAxisCorrection1()
         cout << "neck-isthmus-center not defined!" << endl;
         return;
     }
-    
+
     if ((head[0] == 0) && (head[1] == 0) && (head[2] == 0))
     {
         cout << "head-center not defined!" << endl;
@@ -630,7 +633,7 @@ void Femur::FemoralNeckAxisCorrection1()
 
     // set up sizes +1 for the head
     centers.resize(neck_intersection_size+1);
-    
+
     for (int i = 0; i < neck_intersection_size+1; ++i)
         centers[i].resize(3);
 
@@ -728,9 +731,9 @@ void Femur::FemoralNeckAxis2()
     neck_axis[2] = (head[2] - neck_shaft_interception[2]) / b;
 
 
-    std::cout << neck_isthmus_center[0] << " " << neck_isthmus_center[1] << " " << neck_isthmus_center[2] << std::endl;
-    std::cout << neck_axis[0] << " " << neck_axis[1] << " " << neck_axis[2] << std::endl;
-    std::cout << neck_shaft_interception[0] << " " << neck_shaft_interception[1] << " " << head[2] << std::endl;
+    //std::cout << neck_isthmus_center[0] << " " << neck_isthmus_center[1] << " " << neck_isthmus_center[2] << std::endl;
+    //std::cout << neck_axis[0] << " " << neck_axis[1] << " " << neck_axis[2] << std::endl;
+    //std::cout << neck_shaft_interception[0] << " " << neck_shaft_interception[1] << " " << head[2] << std::endl;
 
 }
 
