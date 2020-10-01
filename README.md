@@ -20,6 +20,8 @@ So you are free to create and use your own data. For quick testing files in '/da
 
 ```
 >./BoneDoc data/FemurLeftFemaleA.vtk data/FemurLeftFemaleA-landmarks.csv config.txt
+>
+>407.208	24.6018	18.6065	29.7854	27.1256	21.382	130.959	17.3214	92	8
 >anteversion: 27.25°
 >antero-posterior width: 26.63mm
 >bone length: 397.16mm
@@ -32,7 +34,7 @@ So you are free to create and use your own data. For quick testing files in '/da
 >caucasian: 15%
 ```
 
-Output shows calculated anatomical parameters which are then used to predict the bones underlying ethnic group and the calculated probalitity for all relevant populations. In this case data belongs to the asian population.
+Output shows calculated anatomical parameters and calculated probalitity for asian and causian group of a left asian femur. Here parameters in detail cover **femoral bone length [mm]**, **femoral medial offset [mm]**, **femoral lateral offset [mm]**, **femoral ml width [mm]**, **femoral ap width [mm]**, **femoral head radius [mm]**, **femoral inclination [°]**, **femoral anteversion [°]**, **probability for asian bone [%]**, **probability for caucasian bone [%]**.
 
 ## Related Projects
 
