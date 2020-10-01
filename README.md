@@ -21,7 +21,7 @@ For quick testing files in '/data' folder might be used like that:
 ```
 >./BoneDoc data/FemurLeftFemaleA.vtk data/FemurLeftFemaleA-landmarks.csv config.txt
 >
->407.208	24.6018	18.6065	29.7854	27.1256	21.382	130.959	17.3214	92	8
+>407.208 24.6018 18.6065 29.7854 27.1256 21.382 130.959 17.3214 92 8
 >
 ```
 
