@@ -14,9 +14,7 @@ BoneDoc needs to be compiled from sources using typical [CMake](https://cmake.or
 
 ## Quickstart
 
-Starting BoneDoc from command line requires three input files (mesh, landmarks, config). A Mesh represents a bone by polygonal data where actually vtk- and stl format can be processed with BoneDoc while the landmarks file contains anatomical landmarks. In the config file precalculated parameters used to predict the ethnic group are listed.
-
-For quick testing files in '/data' folder might be used like that:
+Starting BoneDoc from command line requires three input files (mesh, landmarks, config). For quick testing files in '/data' folder might be used like that:
 
 ```
 >./BoneDoc data/FemurLeftFemaleA.vtk data/FemurLeftFemaleA-landmarks.csv config.txt
