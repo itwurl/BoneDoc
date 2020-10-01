@@ -23,7 +23,7 @@ Starting BoneDoc from command line requires three input files (mesh, landmarks, 
 >
 ```
 
-Output of BoneDoc covers bone length [mm], medial offset [mm], lateral offset [mm], ml width [mm], ap width [mm], head radius [mm], inclination [°], anteversion [°], probability for asian bone [%] and probability for caucasian bone [%].
+Output of BoneDoc given a femur bne covers bone length [mm], medial offset [mm], lateral offset [mm], ml width [mm], ap width [mm], head radius [mm], inclination [°], anteversion [°], probability for asian bone [%] and probability for caucasian bone [%].
 
 
 ## Related Projects
