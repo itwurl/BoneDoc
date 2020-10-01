@@ -14,7 +14,7 @@ BoneDoc needs to be compiled from sources using typical [CMake](https://cmake.or
 
 ## Quickstart
 
-Starting BoneDoc from command line requires three input files (mesh, landmarks, config). For quick testing files in '/data' folder might be used like that:
+Starting BoneDoc from command line requires three input files (mesh, landmarks, config). For quick testing files in '/data' folder might be used.
 
 ```
 >./BoneDoc data/FemurLeftFemaleA.vtk data/FemurLeftFemaleA-landmarks.csv config.txt
@@ -23,7 +23,7 @@ Starting BoneDoc from command line requires three input files (mesh, landmarks, 
 >
 ```
 
-Output covers bone length [mm], medial offset [mm], lateral offset [mm], ml width [mm], ap width [mm], head radius [mm], inclination [°], anteversion [°], probability for asian bone [%] and probability for caucasian bone [%].
+Output of BoneDoc covers bone length [mm], medial offset [mm], lateral offset [mm], ml width [mm], ap width [mm], head radius [mm], inclination [°], anteversion [°], probability for asian bone [%] and probability for caucasian bone [%].
 
 
 ## Related Projects
