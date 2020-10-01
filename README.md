@@ -34,7 +34,7 @@ So you are free to create and use your own data. For quick testing files in '/da
 >caucasian: 15%
 ```
 
-Output shows calculated anatomical parameters and calculated probalitity for asian and causian group of a left asian femur. Here parameters in detail cover **femoral bone length [mm]**, **femoral medial offset [mm]**, **femoral lateral offset [mm]**, **femoral ml width [mm]**, **femoral ap width [mm]**, **femoral head radius [mm]**, **femoral inclination [°]**, **femoral anteversion [°]**, **probability for asian bone [%]**, **probability for caucasian bone [%]**.
+Output shows calculated anatomical parameters and calculated probalitity for asian and causian group of a left asian femur. Here parameters in detail cover bone length [mm], medial offset [mm], lateral offset [mm], ml width [mm], ap width [mm], head radius [mm], inclination [°], anteversion [°], probability for asian bone [%] and probability for caucasian bone [%].
 
 ## Related Projects
 
