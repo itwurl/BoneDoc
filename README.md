@@ -16,25 +16,17 @@ BoneDoc needs to be compiled from sources using typical [CMake](https://cmake.or
 
 Starting BoneDoc from command line requires three input files (mesh, landmarks, config). The mesh represents a bone by polygonal data where actually vtk- and stl format can be processed with BoneDoc. Each row in a landmarks file represents an anatomical landmark. The config file contains size and label for all anatomical landmarks currently used.
 
-So you are free to create and use your own data. For quick testing files in '/data' folder might be used like that:
+For quick testing files in '/data' folder might be used like that:
 
 ```
 >./BoneDoc data/FemurLeftFemaleA.vtk data/FemurLeftFemaleA-landmarks.csv config.txt
 >
 >407.208	24.6018	18.6065	29.7854	27.1256	21.382	130.959	17.3214	92	8
->anteversion: 27.25°
->antero-posterior width: 26.63mm
->bone length: 397.16mm
->head radius: 20.98mm
->inclination: 135.37°
->lateral offset: 18.65mm
->medial offset: 24.06mm
->medio-lateral width: 29.05mm
->asian: 85%
->caucasian: 15%
+>
 ```
 
-Output shows calculated anatomical parameters and calculated probalitity for asian and causian group of a left asian femur. Here parameters in detail cover bone length [mm], medial offset [mm], lateral offset [mm], ml width [mm], ap width [mm], head radius [mm], inclination [°], anteversion [°], probability for asian bone [%] and probability for caucasian bone [%].
+Output covers bone length [mm], medial offset [mm], lateral offset [mm], ml width [mm], ap width [mm], head radius [mm], inclination [°], anteversion [°], probability for asian bone [%] and probability for caucasian bone [%].
+
 
 ## Related Projects
 
