@@ -17,7 +17,7 @@ BoneDoc needs to be compiled from sources using typical [CMake](https://cmake.or
 Starting BoneDoc from command line requires three input files (mesh, landmarks, config). For quick testing files in '/data' folder might be used.
 
 ```
->./BoneDoc data/FemurLeftFemaleA.vtk data/FemurLeftFemaleA-landmarks.csv config.txt
+>bin/BoneDoc data/FemurLeftFemaleA.vtk /data/FemurLeftFemaleA-landmarks.csv bin/bonehost.conf
 >
 >407.208 24.6018 18.6065 29.7854 27.1256 21.382 130.959 17.3214 92 8
 >
