@@ -89,7 +89,7 @@ void session(boost::asio::ip::tcp::socket socket)
                 anatomicalMeshPath << BONEDOC_PATH << "/Data/Temp/" << dataset << ".vtk";
 		//anatomicalMeshPath << BONEDOC_PATH << "/Data/Temp/" << dataset << ".stl";
 
-		std::cout << anatomicalMeshPath.str() << std::endl;
+		//std::cout << anatomicalMeshPath.str() << std::endl;
 
                 std::stringstream anatomicallandmarksPath;
                 anatomicallandmarksPath << BONEDOC_PATH << "/Data/Temp/" << dataset << "-landmarks.csv";
