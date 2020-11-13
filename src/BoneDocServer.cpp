@@ -9,7 +9,6 @@ BoneDocServer::BoneDocServer(const char* path)
     full_path = boost::filesystem::system_complete(boost::filesystem::path(path));
     std::size_t found = full_path.string().find_last_of("/\\");
     BONEDOC_PATH = full_path.string().substr(0, found);
-    //BONEDOC_PATH = "/home/pi/Projects/BoneDoc";
 }
 
 void session(boost::asio::ip::tcp::socket socket)
@@ -95,7 +94,7 @@ void session(boost::asio::ip::tcp::socket socket)
                 anatomicallandmarksPath << BONEDOC_PATH << "/Data/Temp/" << dataset << "-landmarks.csv";
 
                 std::stringstream configPath;
-                configPath << BONEDOC_PATH << "/config.txt";
+                configPath << BONEDOC_PATH << "/bonehost.conf";
 
                 // DEBUG: recognize anatomy from dataset's name
 		if (anatomy.compare("Femur") == 0)
