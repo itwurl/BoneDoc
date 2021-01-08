@@ -10,7 +10,7 @@ For visual use BoneDoc and prototypes are integrated into 3D-Unity frontend 'Bon
 
 ## Installation
 
-BoneDoc needs to be compiled from sources using typical [CMake](https://cmake.org/) workflow considering dependencies [VTK](http://www.vtk.org) and [Boost](http://www.boost.org). Moreve only linux (debian) is supported yet.
+BoneDoc needs to be compiled from sources using typical [CMake](https://cmake.org/) workflow considering dependencies [VTK](http://www.vtk.org) and [Boost](http://www.boost.org). Moreover only linux (debian) is supported yet.
 
 ## Quickstart
 
