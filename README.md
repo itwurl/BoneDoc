@@ -5,16 +5,17 @@ BoneDoc is a c++ command line tool for 3d shape analysis of human bones. Abstrac
 ## Prototypes:
 
 * Thesis - logistic model based prediction of ethnic group for femur, humerus and tibia bone
+* Modelfitting - prediction of ethnic group for femur, humerus and tibia bone based on statistical model fitting 
 
-For visual use BoneDoc and prototypes are integrated into 3D-Unity frontend 'BoneHost' which can be found [here](http://bonehost.net).
+For visualization current prototypes are integrated into 3D-Unity frontend 'BoneHost' which can be found [here](http://bonehost.net).
 
 ## Installation
 
-BoneDoc needs to be compiled from sources using typical [CMake](https://cmake.org/) workflow considering dependencies [VTK](http://www.vtk.org) and [Boost](http://www.boost.org). Moreover only linux (debian) is supported yet.
+BoneDoc needs to be compiled from sources using typical [CMake](https://cmake.org/) workflow considering dependencies [VTK](http://www.vtk.org) and [Boost](http://www.boost.org). Moreover only linux is supported yet.
 
 ## Quickstart
 
-Starting BoneDoc from command line requires three input files (mesh, landmarks, config). For quick testing files in '/data' folder might be used.
+Starting BoneDoc from command line requires three parameters. Expected are paths for a 3d-shape file in vtk format, an anatomical landmark file and a configuration file in csv format. For a quick test files in '/data' folder might be used.
 
 ```
 >bin/BoneDoc data/FemurLeftFemaleA.vtk data/FemurLeftFemaleA-landmarks.csv bin/bonehost.conf
