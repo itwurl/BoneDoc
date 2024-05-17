@@ -1,41 +1,28 @@
-CMAKE_MINIMUM_REQUIRED(VERSION 2.8.1)
-PROJECT(BoneDoc)
+cmake_minimum_required(VERSION 3.10)
+project(BoneDoc)
 
-IF((CMAKE_SYSTEM_NAME STREQUAL Linux) AND 
-    ((CMAKE_SYSTEM_PROCESSOR STREQUAL x86_64) OR
-        (CMAKE_SYSTEM_PROCESSOR STREQUAL armv7l)))
+# Setze den C++-Standard
+set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-    # linux found - tested with x86_64/arm systems
-    MESSAGE("Using configuration for Linux ...")
+# Setze Ausgabeverzeichnisse auf das Arbeitverzeichnis von CMake
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG ${CMAKE_BINARY_DIR})
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEASE ${CMAKE_BINARY_DIR})
 
-    # c++11 is used
-    ADD_DEFINITIONS(-std=c++11)
+# Suche nach Boost und VTK (nur Release-Versionen)
+find_package(Boost REQUIRED COMPONENTS filesystem system)
+find_package(VTK REQUIRED)
 
-    SET(BoneDoc_SOURCES src/BoneDocServer.cpp src/main.cpp src/Anatomy.cpp src/Femur.cpp src/Humerus.cpp src/Tibia.cpp src/Study.cpp)
-    SET(BoneDoc_HEADERS src/BoneDocServer.h src/Anatomy.h src/Femur.h src/Humerus.h src/Tibia.h src/Study.h)
+# Fasse Quell- und Headerdateien in Variablen zusammen
+file(GLOB BoneDoc_SOURCES "src/*.cpp")
+file(GLOB BoneDoc_HEADERS "src/*.h")
 
-    # BOOST
-    FIND_PACKAGE(Boost REQUIRED)
-    SET(Boost_LIBRARIES boost_system boost_thread boost_filesystem)
+# Füge die Include-Verzeichnisse von Boost und VTK hinzu
+include_directories(${Boost_INCLUDE_DIRS} ${VTK_INCLUDE_DIRS})
 
-    # VTK
-    FIND_PACKAGE(VTK REQUIRED)
+# Erstelle das ausführbare Binary BoneDoc
+add_executable(BoneDoc ${BoneDoc_SOURCES} ${BoneDoc_HEADERS})
 
-    INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS} ${VTK_INCLUDE_DIRS})
-
-    # build executable
-    SET(CMAKE_BINARY_DIR ${PROJECT_SOURCE_DIR}/bin)
-    MESSAGE("CMAKE_BINARY_DIR: " ${CMAKE_BINARY_DIR})
-    SET(EXECUTABLE_OUTPUT_PATH ${CMAKE_BINARY_DIR})
-
-    ADD_EXECUTABLE(BoneDoc ${BoneDoc_SOURCES} ${BoneDoc_HEADERS})
-
-    TARGET_LINK_LIBRARIES(BoneDoc ${VTK_LIBRARIES} ${Boost_LIBRARIES})
-
-ELSE()
-
-    # other systems not supported
-    MESSAGE("System not supported!")
-
-ENDIF()
-
+# Verknüpfe das Binary mit den Boost- und VTK-Bibliotheken
+target_link_libraries(BoneDoc ${Boost_LIBRARIES} ${VTK_LIBRARIES})
