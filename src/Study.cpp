@@ -1,7 +1,7 @@
 // BoneDoc
 #include "Study.h"
 
-Study::Study(std::string meshFile, std::string landmarksFile, std::string configFile) {
+Study::Study(string meshFile, string landmarksFile, string configFile) {
 
     // use first parameter to parse anatomy string from
     anatomy = getAnatomyFromString(meshFile);
@@ -11,7 +11,7 @@ Study::Study(std::string meshFile, std::string landmarksFile, std::string config
 
 }
 
-void Study::Start(std::string studyID) {
+void Study::Start(string studyID) {
 
     if (anatomy.compare("FEMUR") == 0)
     {
@@ -39,31 +39,31 @@ void Study::Start(std::string studyID) {
     }
     else
     {
-         std::cout << "No valid anatomy found!" << std::endl;
+         cout << "No valid anatomy found!" << endl;
     }
     
 }
 
 // try to get anatomical identifier from file (femur, humerus, tibia)
-std::string Study::getAnatomyFromString(std::string s) {
+string Study::getAnatomyFromString(string s) {
 
     // string s might be a file path - try to cut starting from last '/'
     int pos = s.find_last_of("/");
 
-    if (pos != std::string::npos)
+    if (pos != string::npos)
         s = s.substr(pos + 1, s.length() - (pos + 1));
 
-    std::string ret = "";
+    string ret = "";
     
     // make 'file' great again
-    std::transform(s.begin(), s.end(), s.begin(), ::toupper);
+    transform(s.begin(), s.end(), s.begin(), ::toupper);
 
     // try to find side ...
-    if ( (s.find("FEMUR") != std::string::npos) || (s.compare(0, 3, "FEM") == 0) )
+    if ( (s.find("FEMUR") != string::npos) || (s.compare(0, 3, "FEM") == 0) )
         ret = "FEMUR";
-    else if ( (s.find("HUMERUS") != std::string::npos) || (s.compare(0, 3, "HUM") == 0) )
+    else if ( (s.find("HUMERUS") != string::npos) || (s.compare(0, 3, "HUM") == 0) )
         ret = "HUMERUS";
-    else if ( (s.find("TIBIA") != std::string::npos) || (s.compare(0, 3, "TIB") == 0) )
+    else if ( (s.find("TIBIA") != string::npos) || (s.compare(0, 3, "TIB") == 0) )
         ret = "TIBIA";
     else
         ret = "";

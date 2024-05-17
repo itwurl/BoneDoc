@@ -9,18 +9,18 @@
 class Study {
 
 private:
-    std::string meshFile;
-    std::string landmarksFile;
-    std::string configFile;
-    std::string anatomy;
+    string meshFile;
+    string landmarksFile;
+    string configFile;
+    string anatomy;
 
 public:
-    static std::string getAnatomyFromString(std::string s);
+    static string getAnatomyFromString(string s);
 
-    Study(std::string meshFile, std::string landmarksFile, std::string configFile);
+    Study(string meshFile, string landmarksFile, string configFile);
     ~Study();
     
-    void Start(std::string studyID);
+    void Start(string studyID);
 
 };
 

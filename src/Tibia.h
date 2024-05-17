@@ -5,7 +5,7 @@
 
 class Tibia : public Anatomy {
 private:
-    std::string configPath;
+    string configPath;
 
     void ResetMeasurements();
 
@@ -63,9 +63,9 @@ private:
     void GuessEthnicGroup();
         
 public:
-    Tibia(const std::string anatomicalMesh,
-            const std::string anatomicalLandmarksPath,
-                const std::string configPath);
+    Tibia(const string anatomicalMesh,
+            const string anatomicalLandmarksPath,
+                const string configPath);
     ~Tibia();
 
     void Thesis();

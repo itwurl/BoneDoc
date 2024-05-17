@@ -8,7 +8,7 @@ class Femur : public Anatomy
 private:
     
     // config file
-    std::string configPath;
+    string configPath;
 
     // optimization of distal and proximal landmark [1]
     // based on manually found most proximal/distal anatomical landmarks an axis is build and then used to redefine both landmarks as technical landmarks [1]
@@ -169,9 +169,9 @@ private:
     void CoordinateTransformation();
 
 public:
-    Femur(const std::string anatomicalMesh,
-            const std::string anatomicalLandmarksPath,
-                const std::string configPath);
+    Femur(const string anatomicalMesh,
+            const string anatomicalLandmarksPath,
+                const string configPath);
 
     ~Femur();
 

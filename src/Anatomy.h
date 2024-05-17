@@ -35,7 +35,7 @@ protected:
     double distanceToPlane(double nx, double ny, double nz, double x, double y, double z, double px, double py, double pz);
 
     // Closest point (in polydata, outgoing from p) found in cp[0..2] and id cp[4] will be written back to 'cp'
-    void getClosestPointFromMesh(const vector <float> p, double* cp, vtkPolyData* anatomicalMesh);
+    void getClosestPointFromMesh(const vector <double> p, double* cp, vtkPolyData* anatomicalMesh);
 
     // defines coordinate system based on 2 vectors (mediolateral and longitudinal), ml becomes new, lon stayed (order of parameter is important)
     void SetCoordinateSystem();
@@ -102,7 +102,7 @@ protected:
     void SetAnatomicalLandmarks(const string path);
 	void SetAnatomicalLandmarksFromJsonArray(const string array);
 
-    vector<vector<float>> anatomicalLandmarks;
+    vector<vector<double>> anatomicalLandmarks;
 
     // estimate age, sex and side from file name
     void SetMetaInfo(const string path);

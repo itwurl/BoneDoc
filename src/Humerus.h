@@ -5,7 +5,7 @@
 
 class Humerus : public Anatomy {
 private:
-    std::string configPath;
+    string configPath;
 
     void ResetMeasurements();
 
@@ -89,9 +89,9 @@ private:
     void GuessEthnicGroup();
         
 public:
-    Humerus(const std::string anatomicalMesh,
-            const std::string anatomicalLandmarksPath,
-                const std::string configPath);
+    Humerus(const string anatomicalMesh,
+            const string anatomicalLandmarksPath,
+                const string configPath);
     ~Humerus();
 
     // see thesis 'Ethnizitaetsbestimmung mit multivariater Statistik' (Alexander Wurl) for humerus bone

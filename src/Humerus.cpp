@@ -1,8 +1,8 @@
 #include "Humerus.h"
 
-Humerus::Humerus(const std::string anatomicalMeshPath,
-        const std::string anatomicalLandmarksPath,
-        const std::string configPath)
+Humerus::Humerus(const string anatomicalMeshPath,
+        const string anatomicalLandmarksPath,
+        const string configPath)
 {
     this->configPath = configPath;
     
@@ -76,9 +76,9 @@ void Humerus::MapAnatomicalLandmarksToAnatomicalMesh()
 
 void Humerus::Thesis()
 {
-    //std::cout << "####################" << std::endl;
-    //std::cout << "# Thesis - Humerus #" << std::endl;
-    //std::cout << "####################" << std::endl;
+    //cout << "####################" << endl;
+    //cout << "# Thesis - Humerus #" << endl;
+    //cout << "####################" << endl;
 
     SetProximalShaftCenter();
     
@@ -146,7 +146,7 @@ void Humerus::SetProximalShaftCenter()
     // crash's may occure if no suitable were done - so return then
     if (cutPoly_prox->GetNumberOfPoints() == 0)
     {
-        std::cout << "error cutting proximal part of shaft!" << std::endl;
+        cout << "error cutting proximal part of shaft!" << endl;
         return;
     }
 
@@ -191,7 +191,7 @@ void Humerus::SetDistalShaftCenter()
     // crash's may occure if no suitable were done - so return then
     if (cutPoly_dist->GetNumberOfPoints() == 0)
     {
-        std::cout << "error cutting distal part of shaft!" << std::endl;
+        cout << "error cutting distal part of shaft!" << endl;
         return;
     }
 
@@ -236,7 +236,7 @@ void Humerus::SetOffsetAndWidth()
     // crash's may occure if no suitable were done - so return then
     if (cutPoly_dist->GetNumberOfPoints() == 0)
     {
-        std::cout << "error cutting distal part of shaft!" << std::endl;
+        cout << "error cutting distal part of shaft!" << endl;
         return;
     }
 
@@ -461,7 +461,7 @@ void Humerus::HumerusHeadCenter()
 void Humerus::HumerusInclinationAndRetroversion()
 {
     // vector pointing posterior
-    std::vector<double> v1(3);
+    vector<double> v1(3);
     v1.at(0) = most_posterior_neck_point[0] - most_medial_neck_point[0];
     v1.at(1) = most_posterior_neck_point[1] - most_medial_neck_point[1];
     v1.at(2) = most_posterior_neck_point[2] - most_medial_neck_point[2];
@@ -473,7 +473,7 @@ void Humerus::HumerusInclinationAndRetroversion()
     v1.at(2) = v1.at(2) / b1;
 
     // vector pointing anterior
-    std::vector<double> v2(3);
+    vector<double> v2(3);
     v2.at(0) = most_anterior_neck_point[0] - most_medial_neck_point[0];
     v2.at(1) = most_anterior_neck_point[1] - most_medial_neck_point[1];
     v2.at(2) = most_anterior_neck_point[2] - most_medial_neck_point[2];
@@ -485,7 +485,7 @@ void Humerus::HumerusInclinationAndRetroversion()
     v2.at(2) = v2.at(2) / b2;
 
     // neck axis is cross product
-    std::vector<double> neck_axis(3);
+    vector<double> neck_axis(3);
 
     // correct orientation for neck axis depends on side
     if (side.compare("RIGHT") == 0)
@@ -494,7 +494,7 @@ void Humerus::HumerusInclinationAndRetroversion()
         neck_axis = CrossProduct(v2, v1);
 
     // coronal projected neck axis
-    std::vector<double> neck_axis_ap(3);
+    vector<double> neck_axis_ap(3);
 
     // distance to coronal plane
     double lambda1 = (axis[0] * neck_axis.at(0)) + (axis[1] * neck_axis.at(1)) + (axis[2] * neck_axis.at(2));
@@ -510,14 +510,14 @@ void Humerus::HumerusInclinationAndRetroversion()
     neck_axis_ap.at(1) = neck_axis_ap.at(1) / b1;
     neck_axis_ap.at(2) = neck_axis_ap.at(2) / b1;
 
-    //std::cout << "Neck-Axis-AP: " << "\t" << neck_axis_ap.at(0) << "\t" << neck_axis_ap.at(1) << "\t" << neck_axis_ap.at(2) << std::endl;
+    //cout << "Neck-Axis-AP: " << "\t" << neck_axis_ap.at(0) << "\t" << neck_axis_ap.at(1) << "\t" << neck_axis_ap.at(2) << endl;
 
     // inclination is angle between invertec cranio-caudal axis and coronal projected neck axis
     double param1 = neck_axis_ap.at(0) * (-axis[6]) + neck_axis_ap.at(1) * (-axis[7]) + neck_axis_ap.at(2) * (-axis[8]);
     inclination = acos(param1) * (360 / (2 * PI));
 
     // axial projected neck axis
-    std::vector<double> neck_axis_kk(3);
+    vector<double> neck_axis_kk(3);
 
     // distance to axial plane
     lambda1 = (axis[6]) * neck_axis.at(0) + (axis[7]) * neck_axis.at(1) + (axis[8]) * neck_axis.at(2);
@@ -533,8 +533,8 @@ void Humerus::HumerusInclinationAndRetroversion()
     neck_axis_kk.at(1) = neck_axis_kk.at(1) / b1;
     neck_axis_kk.at(2) = neck_axis_kk.at(2) / b1;
 
-    //std::cout << "neck_axis: " << "\t" << neck_axis.at(0) << "\t" << neck_axis.at(1) << "\t" << neck_axis.at(2) << std::endl;
-    //std::cout << "neck_axis_kk: " << "\t" << neck_axis_kk.at(0) << "\t" << neck_axis_kk.at(1) << "\t" << neck_axis_kk.at(2) << std::endl;
+    //cout << "neck_axis: " << "\t" << neck_axis.at(0) << "\t" << neck_axis.at(1) << "\t" << neck_axis.at(2) << endl;
+    //cout << "neck_axis_kk: " << "\t" << neck_axis_kk.at(0) << "\t" << neck_axis_kk.at(1) << "\t" << neck_axis_kk.at(2) << endl;
 
     // epicondyle axis
     epicondyle_axis[0] = medial_epicondyle[0] - lateral_epicondyle[0];
@@ -548,7 +548,7 @@ void Humerus::HumerusInclinationAndRetroversion()
     epicondyle_axis[2] = epicondyle_axis[2] / b;
 
     // axial projected epicondyle axis
-    std::vector<double> epicondyle_axis_kk(3);
+    vector<double> epicondyle_axis_kk(3);
 
     // distance
     double lambda2 = (axis[6]) * epicondyle_axis[0] + (axis[7]) * epicondyle_axis[1] + (axis[8]) * epicondyle_axis[2];
@@ -571,8 +571,8 @@ void Humerus::HumerusInclinationAndRetroversion()
     epicondyle_axis_kk.at(1) = epicondyle_axis_kk.at(1) / b2;
     epicondyle_axis_kk.at(2) = epicondyle_axis_kk.at(2) / b2;
 
-    //std::cout << "epicondyle_axis: " << "\t" << epicondyle_axis[0] << "\t" << epicondyle_axis[1] << "\t" << epicondyle_axis[2] << std::endl;
-    //std::cout << "epicondyle_axis_kk: " << "\t" << epicondyle_axis_kk.at(0) << "\t" << epicondyle_axis_kk.at(1) << "\t" << epicondyle_axis_kk.at(2) << std::endl;
+    //cout << "epicondyle_axis: " << "\t" << epicondyle_axis[0] << "\t" << epicondyle_axis[1] << "\t" << epicondyle_axis[2] << endl;
+    //cout << "epicondyle_axis_kk: " << "\t" << epicondyle_axis_kk.at(0) << "\t" << epicondyle_axis_kk.at(1) << "\t" << epicondyle_axis_kk.at(2) << endl;
 
     // retroversion is angle between axial projected epicondyle and axial projected neck axis
     double param2 = epicondyle_axis_kk.at(0) * neck_axis_kk.at(0) + epicondyle_axis_kk.at(1) * neck_axis_kk.at(1) + epicondyle_axis_kk.at(2) * neck_axis_kk.at(2);
@@ -595,21 +595,21 @@ void Humerus::SetMedialAndLateralAxis()
 void Humerus::GuessEthnicGroup()
 {
     // set logistic model
-    std::string model = "LogisticModelHumerus";
+    string model = "LogisticModelHumerus";
 
     // load model from config file
-    std::ifstream file(configPath);
-    std::string value;
-    std::string row;
+    ifstream file(configPath);
+    string value;
+    string row;
     bool found = false;
-    std::vector<float> coefficients;
+    vector<float> coefficients;
     size_t pos = 0;
-    std::string delimiter = ",";
+    string delimiter = ",";
 
     while (getline(file, row)) {
         found = false;
 
-        while ((pos = row.find(delimiter)) != std::string::npos) {
+        while ((pos = row.find(delimiter)) != string::npos) {
             value = row.substr(0, pos);
 
             row.erase(0, pos + delimiter.length());
@@ -617,12 +617,12 @@ void Humerus::GuessEthnicGroup()
             if (value.compare(model) == 0)
                     found = true;
             else if (found)
-                    coefficients.push_back(std::stof(value.c_str()));
+                    coefficients.push_back(stof(value.c_str()));
         }
         
         if (found) {
             value = row.substr(pos+1, row.length());
-            coefficients.push_back(std::stof(value.c_str()));
+            coefficients.push_back(stof(value.c_str()));
         }
 
     }

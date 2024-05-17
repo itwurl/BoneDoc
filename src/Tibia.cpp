@@ -1,8 +1,8 @@
 #include "Tibia.h"
 
-Tibia::Tibia(const std::string anatomicalMeshPath,
-                const std::string anatomicalLandmarksPath,
-                    const std::string configPath)
+Tibia::Tibia(const string anatomicalMeshPath,
+                const string anatomicalLandmarksPath,
+                    const string configPath)
 {
     this->configPath = configPath;
     
@@ -53,9 +53,9 @@ void Tibia::MapAnatomicalLandmarksToAnatomicalMesh()
 
 void Tibia::Thesis()
 {
-    //std::cout << "##################" << std::endl;
-    //std::cout << "# Thesis - Tibia #" << std::endl;
-    //std::cout << "##################" << std::endl;
+    //cout << "##################" << endl;
+    //cout << "# Thesis - Tibia #" << endl;
+    //cout << "##################" << endl;
 
     // to be calculated in global system
     SetProximalShaftCenter();
@@ -125,7 +125,7 @@ void Tibia::SetProximalShaftCenter()
     // crash's may occure if no suitable cut were done - so return then
     if (cutPoly_prox->GetNumberOfPoints() == 0)
     {
-        std::cout << "error cutting proximal part of shaft!" << std::endl;
+        cout << "error cutting proximal part of shaft!" << endl;
         return;
     }
 }
@@ -167,7 +167,7 @@ void Tibia::SetDistalShaftCenter()
     // crash's may occure if no suitable cut were done - so return then
     if (cutPoly_dist->GetNumberOfPoints() == 0)
     {
-        std::cout << "error cutting distal part of shaft!" << std::endl;
+        cout << "error cutting distal part of shaft!" << endl;
         return;
     }
 
@@ -361,7 +361,7 @@ void Tibia::APWidth()
 void Tibia::TibiaTorsion()
 {
     // malleolus axis
-    std::vector<double> malleolus_axis(3);
+    vector<double> malleolus_axis(3);
 
     // malleolus
     malleolus_axis.at(0) = medial_malleolus[0] - fibular_notch[0];
@@ -378,7 +378,7 @@ void Tibia::TibiaTorsion()
     double lambda1 = (axis[6]) * malleolus_axis.at(0) + (axis[7]) * malleolus_axis.at(1) + (axis[8]) * malleolus_axis.at(2);
 
     // project neck axis onot axial plane
-    std::vector<double> malleolus_axis_kk(3);
+    vector<double> malleolus_axis_kk(3);
 
     // if lambda1 < 0 (behind plane + projection, else - projection)
     malleolus_axis_kk.at(0) = malleolus_axis.at(0) - lambda1 * (axis[6]);
@@ -390,7 +390,7 @@ void Tibia::TibiaTorsion()
     malleolus_axis_kk.at(0) = malleolus_axis_kk.at(0) / b1;
     malleolus_axis_kk.at(1) = malleolus_axis_kk.at(1) / b1;
     malleolus_axis_kk.at(2) = malleolus_axis_kk.at(2) / b1;
-    std::vector<double> tib_epicondyle_axis(3);
+    vector<double> tib_epicondyle_axis(3);
     tib_epicondyle_axis.at(0) = medial_condyle[0] - lateral_condyle[0];
     tib_epicondyle_axis.at(1) = medial_condyle[1] - lateral_condyle[1];
     tib_epicondyle_axis.at(2) = medial_condyle[2] - lateral_condyle[2];
@@ -401,7 +401,7 @@ void Tibia::TibiaTorsion()
     tib_epicondyle_axis.at(2) = tib_epicondyle_axis.at(2) / b;
 
     // project epicondyle axis onto axial plane
-    std::vector<double> tib_epicondyle_axis_kk(3);
+    vector<double> tib_epicondyle_axis_kk(3);
 
     // lambda:
     double lambda2 = (axis[6]) * tib_epicondyle_axis.at(0) + (axis[7]) * tib_epicondyle_axis.at(1) + (axis[8]) * tib_epicondyle_axis.at(2);
@@ -425,21 +425,21 @@ void Tibia::TibiaTorsion()
 void Tibia::GuessEthnicGroup()
 {
     // set current model
-    std::string model = "LogisticModelTibia";
+    string model = "LogisticModelTibia";
 
     // load model from config file
-    std::ifstream file(configPath);
-    std::string value;
-    std::string row;
+    ifstream file(configPath);
+    string value;
+    string row;
     bool found = false;
-    std::vector<float> coefficients;
+    vector<float> coefficients;
     size_t pos = 0;
-    std::string delimiter = ",";
+    string delimiter = ",";
 
     while (getline(file, row)) {
         found = false;
 
-        while ((pos = row.find(delimiter)) != std::string::npos) {
+        while ((pos = row.find(delimiter)) != string::npos) {
                 value = row.substr(0, pos);
 
                 row.erase(0, pos + delimiter.length());
@@ -447,13 +447,13 @@ void Tibia::GuessEthnicGroup()
                 if (value.compare(model) == 0)
                     found = true;
                 else if (found)
-                    coefficients.push_back(std::stof(value.c_str()));
+                    coefficients.push_back(stof(value.c_str()));
         }
         
         if (found) {
             value = row.substr(pos+1, row.length());
-            //std::cout << "value: " << value << std::endl;
-            coefficients.push_back(std::stof(value.c_str()));
+            //cout << "value: " << value << endl;
+            coefficients.push_back(stof(value.c_str()));
         }
         
     }

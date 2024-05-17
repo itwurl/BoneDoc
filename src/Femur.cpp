@@ -594,8 +594,8 @@ void Femur::FemoralNeckAxis1()
     neck_axis[1] = neck_axis[1] / b3;
     neck_axis[2] = neck_axis[2] / b3;
 
-    //std::cout << "neck_isthmus_center: " << "\t" << neck_isthmus_center[0] << "\t" << neck_isthmus_center[1] << "\t" << neck_isthmus_center[2] << std::endl;
-    //std::cout << "neck_axis: " << "\t" << neck_axis[0] << "\t" << neck_axis[1] << "\t" << neck_axis[2] << std::endl;
+    //cout << "neck_isthmus_center: " << "\t" << neck_isthmus_center[0] << "\t" << neck_isthmus_center[1] << "\t" << neck_isthmus_center[2] << endl;
+    //cout << "neck_axis: " << "\t" << neck_axis[0] << "\t" << neck_axis[1] << "\t" << neck_axis[2] << endl;
 
 }
 
@@ -731,9 +731,9 @@ void Femur::FemoralNeckAxis2()
     neck_axis[2] = (head[2] - neck_shaft_interception[2]) / b;
 
 
-    //std::cout << neck_isthmus_center[0] << " " << neck_isthmus_center[1] << " " << neck_isthmus_center[2] << std::endl;
-    //std::cout << neck_axis[0] << " " << neck_axis[1] << " " << neck_axis[2] << std::endl;
-    //std::cout << neck_shaft_interception[0] << " " << neck_shaft_interception[1] << " " << head[2] << std::endl;
+    //cout << neck_isthmus_center[0] << " " << neck_isthmus_center[1] << " " << neck_isthmus_center[2] << endl;
+    //cout << neck_axis[0] << " " << neck_axis[1] << " " << neck_axis[2] << endl;
+    //cout << neck_shaft_interception[0] << " " << neck_shaft_interception[1] << " " << head[2] << endl;
 
 }
 
@@ -982,7 +982,7 @@ void Femur::GuessEthnicGroup()
         
     if (!file.is_open())
     {
-        cout << "Could not load config file!" << endl;
+        cout << "Could not load " << configPath << "!" << endl;
         return;
     }
 

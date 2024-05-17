@@ -6,7 +6,7 @@ Anatomy::Anatomy() {
     anatomicalMesh = vtkSmartPointer<vtkPolyData>::New();
 }
 
-void Anatomy::getClosestPointFromMesh(const std::vector<float> p, double* cp, vtkPolyData* polyData) {
+void Anatomy::getClosestPointFromMesh(const vector<double> p, double* cp, vtkPolyData* polyData) {
     int min_id = 0;
     double min = 9999.99;
 
@@ -38,7 +38,7 @@ void Anatomy::SetCoordinateSystem()
 {
     if ((side != "RIGHT") && (side != "LEFT"))
     {
-        std::cout << "Unknown side - can not define coordinate system!" << std::endl;
+        cout << "Unknown side - can not define coordinate system!" << endl;
         return;
     }
 
@@ -189,7 +189,7 @@ void Anatomy::getCenterOfIntersectionContour(vtkPolyData* polydata, double* n, d
 
     // crash's may occure if no suitable cut were done - return then
     if (cutPoly->GetNumberOfPoints() == 0)
-        std::cout << "could not define intersection contour!" << std::endl;
+        cout << "could not define intersection contour!" << endl;
     else {
         // get the cutting-contours center
         cutPoly->GetCenter(c);
@@ -219,7 +219,7 @@ void Anatomy::getCenterOfIntersectionContour(vtkPolyData* polydata, double nx, d
 
     // crash's may occure if no suitable cut were done - return then
     if (cutPoly->GetNumberOfPoints() == 0) {
-        std::cout << "could not define intersection contour!" << std::endl;
+        cout << "could not define intersection contour!" << endl;
         return;
     } else {
         // get the cutting-contours center
@@ -227,7 +227,7 @@ void Anatomy::getCenterOfIntersectionContour(vtkPolyData* polydata, double nx, d
     }
 }
 
-void Anatomy::getLineFit(std::vector<std::vector<double>> points, int n, double* result) {
+void Anatomy::getLineFit(vector<vector<double>> points, int n, double* result) {
     double center[3] = {0, 0, 0};
     
     for (int i = 0; i < n; i++) {
@@ -387,31 +387,31 @@ void Anatomy::getEigenvector(double eigenvalue1, double eigenvalue2, double eige
 
 }
 
-void Anatomy::SetAnatomicalLandmarks(const std::string path) {
+void Anatomy::SetAnatomicalLandmarks(const string path) {
     anatomicalLandmarks.clear();
 
     // make file ending great (again)
-    std::string tmp = "";
+    string tmp = "";
     tmp.resize(path.size());
-    std::transform(path.begin(), path.end(), tmp.begin(), (int (*)(int))std::toupper);
+    transform(path.begin(), path.end(), tmp.begin(), (int (*)(int))toupper);
 
     // check for supported file type
     if (tmp.substr(tmp.length() - 3, 3) != "CSV") {
-        std::cout << "File format not supported!" << std::endl;
+        cout << "File format not supported!" << endl;
         exit(-1);
     }
 
     // load csv from path
-    std::ifstream file(path);
+    ifstream file(path);
 
     if (!file.is_open()) {
-        std::cout << "Could not load landmark file!" << std::endl;
+        cout << "Could not load " << path << "!" << endl;
         return;
     }
 
-    std::string row;
+    string row;
     size_t pos = 0;
-    std::string delimiter = ",";
+    string delimiter = ",";
 
     // read all lines
     while (getline(file, row)) {
@@ -423,16 +423,16 @@ void Anatomy::SetAnatomicalLandmarks(const std::string path) {
         row.erase(0, pos + delimiter.length());
 
         // temporary array for coordinates
-        std::vector<float> values;
+        vector<float> values;
 
         // read every single comma separated value
-        while ((pos = row.find(delimiter)) != std::string::npos) {
-            values.push_back(std::stod(row.substr(0, pos)));
+        while ((pos = row.find(delimiter)) != string::npos) {
+            values.push_back(stod(row.substr(0, pos)));
             row.erase(0, pos + delimiter.length());
         }
 
         // last value
-        values.push_back(std::stod(row.substr(pos+1, row.length())));
+        values.push_back(stod(row.substr(pos+1, row.length())));
         
         // fill 3d float vector element 
         auto it = values.begin();
@@ -442,10 +442,10 @@ void Anatomy::SetAnatomicalLandmarks(const std::string path) {
     file.close();
 }
 
-void Anatomy::SetAnatomicalLandmarksFromJsonArray(const std::string json) {
+void Anatomy::SetAnatomicalLandmarksFromJsonArray(const string json) {
 
     anatomicalLandmarks.clear();
-	std::vector<double> values;
+	vector<double> values;
 	
 	for (int i = 0; i < json.length() - 1; ++i) {
 
@@ -458,7 +458,7 @@ void Anatomy::SetAnatomicalLandmarksFromJsonArray(const std::string json) {
 
 				printf( json.substr(pos, i-pos).c_str() );
 				printf("\n");
-				values.push_back(std::stod(json.substr(pos, i - pos)));
+				values.push_back(stod(json.substr(pos, i - pos)));
 				pos = i + 1;
 			}
 
@@ -468,7 +468,7 @@ void Anatomy::SetAnatomicalLandmarksFromJsonArray(const std::string json) {
 
 		printf(json.substr(pos, i - pos).c_str());
 		printf("\n");
-		values.push_back(std::stod(json.substr(pos, i - pos)));
+		values.push_back(stod(json.substr(pos, i - pos)));
 
 		auto it = values.begin();
         anatomicalLandmarks.push_back({ *it, *(++it), *(++it) });
@@ -476,17 +476,17 @@ void Anatomy::SetAnatomicalLandmarksFromJsonArray(const std::string json) {
 
 }
 
-void Anatomy::SetAnatomicalMesh(const std::string path) {
+void Anatomy::SetAnatomicalMesh(const string path) {
 
     // make file ending great (again)
-    std::string tmp = "";
+    string tmp = "";
     tmp.resize(path.size());
-    std::transform(path.begin(), path.end(), tmp.begin(), (int (*)(int))std::toupper);
+    transform(path.begin(), path.end(), tmp.begin(), (int (*)(int))toupper);
     tmp = tmp.substr(tmp.length() - 3, 3);
 
     // check for supported file type
     if ((tmp != "STL") && (tmp != "VTK")) {
-        std::cout << "File format not supported!" << std::endl;
+        cout << "File format not supported!" << endl;
         exit(-1);
     }
 
@@ -502,26 +502,26 @@ void Anatomy::SetAnatomicalMesh(const std::string path) {
     }
 
     if ((anatomicalMesh == nullptr) || (anatomicalMesh->GetNumberOfPoints() <= 0)) {
-        std::cout << "Error loading anatomical mesh!" << std::endl;
+        cout << "Could not load " << path << "!" << endl;
         exit(-1);
     }
 }
 
-void Anatomy::SetAnatomicalLandmarksSize(std::string configPath, std::string identifier) {
+void Anatomy::SetAnatomicalLandmarksSize(string configPath, string identifier) {
 
     // load model from config file
-    std::ifstream file(configPath);
+    ifstream file(configPath);
 
     if (!file.is_open()) {
-        std::cout << "Could not load config file!" << std::endl;
+        cout << "Could not load " << configPath << endl;
         exit(-1);
     }
     
-    std::string value;
-    std::string row;
+    string value;
+    string row;
     bool found = false;
     size_t pos = 0;
-    std::string delimiter = ",";
+    string delimiter = ",";
 
     // read all lines
     while (getline(file, row)) {
@@ -529,7 +529,7 @@ void Anatomy::SetAnatomicalLandmarksSize(std::string configPath, std::string ide
         found = false;
 
         // read every single comma separated value
-        while ((pos = row.find(delimiter)) != std::string::npos) {			
+        while ((pos = row.find(delimiter)) != string::npos) {			
             value = row.substr(0, pos);
             row.erase(0, pos + delimiter.length());
 
@@ -542,7 +542,7 @@ void Anatomy::SetAnatomicalLandmarksSize(std::string configPath, std::string ide
         // next row and store 'anatomicalLandmarksSize'
         if (found) {
             value = row.substr(pos+1, row.length());
-            //values.push_back(std::stof(value.c_str()));
+            //values.push_back(stof(value.c_str()));
             anatomicalLandmarksSize = atoi(value.c_str());
         }
         
@@ -552,12 +552,12 @@ void Anatomy::SetAnatomicalLandmarksSize(std::string configPath, std::string ide
 
 }
 
-void Anatomy::SetMetaInfo(const std::string path) {
+void Anatomy::SetMetaInfo(const string path) {
 
     // find some meta info's coded in filename
     int pos = path.find_last_of("/");
 
-    std::string file = path.substr(pos + 1, path.length() - (pos + 1));
+    string file = path.substr(pos + 1, path.length() - (pos + 1));
 
     // separator '-' must be found
     pos = file.find("-");
@@ -566,38 +566,38 @@ void Anatomy::SetMetaInfo(const std::string path) {
     if (pos <= 0) {
 
         // make 'file' great again
-        std::transform(file.begin(), file.end(), file.begin(), ::toupper);
+        transform(file.begin(), file.end(), file.begin(), ::toupper);
 
         // try to find side ...
-        if (file.find("LEFT") != std::string::npos)
+        if (file.find("LEFT") != string::npos)
             this->side = "LEFT";
-        else if (file.find("RIGHT") != std::string::npos)
+        else if (file.find("RIGHT") != string::npos)
             this->side = "RIGHT";		
         else {
             this->side = "";
-            std::cout << "Meta-info 'side' not found!" << std::endl;
+            cout << "Meta-info 'side' not found!" << endl;
         }
         
         // ... and gender
-        if (file.find("FEMALE") != std::string::npos)
+        if (file.find("FEMALE") != string::npos)
             this->sex = "FEMALE";
-        else if (file.find("MALE") != std::string::npos)
+        else if (file.find("MALE") != string::npos)
             this->sex = "MALE";		
         else {
             this->sex = "";
-            std::cout << "Meta-info 'gender' not found!" << std::endl;
+            cout << "Meta-info 'gender' not found!" << endl;
         }
     
         // age ist not important yet
         this->age = "";
-        //std::cout << "Meta-info 'age' not found!" << std::endl;
+        //cout << "Meta-info 'age' not found!" << endl;
 
         return;
     }
 
     // set sex found at 4 position after '-' ...
-    std::string sex = file.substr(pos + 4, 1);
-    std::transform(sex.begin(), sex.end(), sex.begin(), ::toupper);
+    string sex = file.substr(pos + 4, 1);
+    transform(sex.begin(), sex.end(), sex.begin(), ::toupper);
 
     if (sex.compare("M") == 0) {
         this->sex = "MALE";
@@ -605,12 +605,12 @@ void Anatomy::SetMetaInfo(const std::string path) {
         this->sex = "FEMALE";
     } else {
         this->sex = "";
-        std::cout << "Meta-info 'gender' not found!" << std::endl;
+        cout << "Meta-info 'gender' not found!" << endl;
     }
 
     // ... and side on first position after '-' ...
-    std::string side = file.substr(pos + 1, 1);
-    std::transform(side.begin(), side.end(), side.begin(), ::toupper);
+    string side = file.substr(pos + 1, 1);
+    transform(side.begin(), side.end(), side.begin(), ::toupper);
 
     if (side.compare("L") == 0) {
         this->side = "LEFT";
@@ -618,16 +618,16 @@ void Anatomy::SetMetaInfo(const std::string path) {
         this->side = "RIGHT";
     } else {
         this->side = "";
-        std::cout << "Meta-info 'side' not found!" << std::endl;
+        cout << "Meta-info 'side' not found!" << endl;
     }
     // ... and age on second position after '-' (two places)
-    std::string age = file.substr(pos + 2, 2);
+    string age = file.substr(pos + 2, 2);
 
     if (age != "XX")
         this->age = age;
     else {
         this->age = "";
-        std::cout << "Meta-info 'age' not found!" << std::endl;
+        cout << "Meta-info 'age' not found!" << endl;
     }
     
 }
