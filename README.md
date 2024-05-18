@@ -29,9 +29,9 @@ it will listen for HTTP requests if no parameters are provided at startup.
 BoneDocServer started. Listening on port 61180 ...
 ```
 
-For local use BoneDoc needs 3 arguments which can be passed via the command line.
+For local use, BoneDoc three arguments that can be passed via the command line.
 
-Arguments are paths to mesh file, landmark file and configuration file.
+Arguments are paths to the mesh file, landmark file and configuration file.
 
 ```
 .\BoneDoc.exe .\data\FemurLeftFemaleA.vtk .\data\FemurLeftFemaleA-landmarks.csv .\bonedoc.conf
