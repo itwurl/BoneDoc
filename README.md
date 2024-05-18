@@ -5,21 +5,44 @@ BoneDoc is a c++ command line tool for 3d shape analysis of human bones. Abstrac
 ## Prototypes:
 
 * Thesis - logistic model based prediction of ethnic group for femur, humerus and tibia bone
-* Modelfitting - prediction of ethnic group for femur, humerus and tibia bone based on statistical model fitting 
 
 ## Installation
 
-BoneDoc needs to be compiled from sources using typical [CMake](https://cmake.org/) workflow considering dependencies [VTK](http://www.vtk.org) and [Boost](http://www.boost.org). Moreover only linux is supported yet.
+BoneDoc needs to be compiled from sources using typical [CMake](https://cmake.org/) workflow considering dependencies [VTK](http://www.vtk.org) and [Boost](http://www.boost.org).
+So assure cmake, boost and vtk are installed to start building process.
+To start process clone repository BoneDoc first, then run CMake as desribed below.
+
+```
+>git clone https://github.com/alexander-wurl/BoneDoc.git .
+>cd BoneDoc
+>cmake .
+>cmake --build .
+```
 
 ## Quickstart
 
-Starting BoneDoc from command line requires three parameters. Expected are paths for a 3d-shape file in vtk format, an anatomical landmark file and a configuration file in csv format. For a quick test files in '/data' folder might be used.
+Since BoneDoc is designed to run as a service, 
+it will listen for HTTP requests on port 61180 if no parameters are provided at startup.
 
 ```
->bin/BoneDoc data/FemurLeftFemaleA.vtk data/FemurLeftFemaleA-landmarks.csv bin/bonehost.conf
->
->407.208 24.6018 18.6065 29.7854 27.1256 21.382 130.959 17.3214 92 8
->
+.\BoneDoc.exe
+BoneDocServer started. Listening on port 61180 ...
+```
+
+For local use BoneDoc needs 3 arguments which can be passed via the command line.
+
+Arguments are paths to a mesh file, a landmark file and a configuration file.
+
+```
+.\BoneDoc.exe .\data\FemurLeftFemaleA.vtk .\data\FemurLeftFemaleA-landmarks.csv .\bonedoc.conf
+407.20 24.60 18.60 29.78 27.12 21.38 130.95 17.32 92 8
+```
+
+Starting BoneDoc from command line requires three parameters.
+
+```
+bin/BoneDoc data/FemurLeftFemaleA.vtk data/FemurLeftFemaleA-landmarks.csv bin/bonehost.conf
+407.21 24.62 18.61 29.79 27.13 21.38 130.96 17.32 92 8
 ```
 
 Calculated and returned results for femur bone covers bone length [mm], medial offset [mm], lateral offset [mm], ml width [mm], ap width [mm], head radius [mm], inclination [°], anteversion [°], probability for asian bone [%] and probability for caucasian bone [%].
