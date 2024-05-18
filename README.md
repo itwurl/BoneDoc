@@ -40,7 +40,6 @@ Arguments are paths to the mesh file, landmark file and configuration file.
 
 Returned results for femur bone covers bone length [mm], medial offset [mm], lateral offset [mm], ml width [mm], ap width [mm], head radius [mm], inclination [°], anteversion [°], probability for asian bone [%] and probability for caucasian bone [%].
 
-
 ## Related Projects
 
 * [Statismo](https://github.com/statismo/statismo) is a c++ framework for statistical shape modeling. It supports all shape modeling tasks, from model building to shape analysis.
