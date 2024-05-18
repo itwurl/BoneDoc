@@ -2,8 +2,10 @@ cmake_minimum_required(VERSION 3.10)
 project(BoneDoc)
 
 # set the c++ standard 11
-set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_STANDARD 11)
+
+# pthread flag
 set(THREADS_PREFER_PTHREAD_FLAG ON)
 
 # set output directories to cmake's working directory 
@@ -28,5 +30,5 @@ include_directories(${Boost_INCLUDE_DIRS} ${VTK_INCLUDE_DIRS})
 # create binary
 add_executable(BoneDoc ${BoneDoc_SOURCES} ${BoneDoc_HEADERS})
 
-# link binary with boost and vtk libraries
-target_link_libraries(BoneDoc ${Boost_LIBRARIES} ${VTK_LIBRARIES} Threads::Threads)
+# link binary with boost, vtk and threads library
+target_link_libraries(BoneDoc ${Boost_LIBRARIES} ${VTK_LIBRARIES} ${Thread_Libraries})

@@ -1,6 +1,6 @@
 # BoneDoc
 
-BoneDoc is a c++ command line tool for 3d shape analysis of human bones. Abstract concept in code faciliates protoyping for anatomical studies of various kinds.
+BoneDoc is a c++ command line tool for 3d shape analysis of human bones. Abstract concept in code are meant to faciliate protoyping for various types of anatomical studies.
 
 ## Prototypes:
 
@@ -8,9 +8,9 @@ BoneDoc is a c++ command line tool for 3d shape analysis of human bones. Abstrac
 
 ## Installation
 
-BoneDoc needs to be compiled from sources using typical [CMake](https://cmake.org/) workflow considering dependencies [VTK](http://www.vtk.org) and [Boost](http://www.boost.org).
-So assure cmake, boost and vtk are installed to start building process.
-To start process clone repository BoneDoc first, then run CMake as desribed below.
+BoneDoc needs to be compiled from sources using [CMake](https://cmake.org/) workflow considering dependencies [VTK](http://www.vtk.org) and [Boost](http://www.boost.org).
+
+To start process clone repository BoneDoc first, then run CMake as described below.
 
 ```
 git clone https://github.com/alexander-wurl/BoneDoc.git .
