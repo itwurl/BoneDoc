@@ -10,11 +10,9 @@ BoneDoc is a c++ command line tool for 3d shape analysis of human bones. Abstrac
 
 Before compiling BoneDoc, ensure that your system is up to date and that a C++ compiler is installed.
 
-<<<<<<< HEAD
 BoneDoc needs to be compiled from source using [CMake](https://cmake.org/) workflow, considering dependencies [VTK](http://www.vtk.org) and [Boost](http://www.boost.org).
-=======
+
 BoneDoc then needs to be compiled from sources using then [CMake](https://cmake.org/) workflow, taking into account dependencies [VTK](http://www.vtk.org) and [Boost](http://www.boost.org).
->>>>>>> 40c1eb5 (update documentation)
 
 When all dependencies are met, complete the installation by following the steps below.
 
