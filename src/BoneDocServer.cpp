@@ -85,7 +85,7 @@ void session(boost::asio::ip::tcp::socket socket)
                 anatomicallandmarksPath << BONEDOC_PATH << "\\Data\\" << dataset << "-landmarks.csv";
 
                 stringstream configPath;
-                configPath << BONEDOC_PATH << "\\bonehost.conf";
+                configPath << BONEDOC_PATH << "\\bonedoc.conf";
 
                 // DEBUG: recognize anatomy from dataset's name
 				if (anatomy.compare("Femur") == 0)

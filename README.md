@@ -8,21 +8,25 @@ BoneDoc is a c++ command line tool for 3d shape analysis of human bones. Abstrac
 
 ## Installation
 
-BoneDoc needs to be compiled from sources using [CMake](https://cmake.org/) workflow considering dependencies [VTK](http://www.vtk.org) and [Boost](http://www.boost.org).
+Before compiling BoneDoc, ensure that your system is up to date and that a C++ compiler is installed.
 
-To start process clone repository BoneDoc first, then run CMake as described below.
+<<<<<<< HEAD
+BoneDoc needs to be compiled from source using [CMake](https://cmake.org/) workflow, considering dependencies [VTK](http://www.vtk.org) and [Boost](http://www.boost.org).
+=======
+BoneDoc then needs to be compiled from sources using then [CMake](https://cmake.org/) workflow, taking into account dependencies [VTK](http://www.vtk.org) and [Boost](http://www.boost.org).
+>>>>>>> 40c1eb5 (update documentation)
+
+When all dependencies are met, complete the installation by following the steps below.
 
 ```
 git clone https://github.com/alexander-wurl/BoneDoc.git .
-cd BoneDoc
 cmake .
 cmake --build .
 ```
 
 ## Quickstart
 
-Since BoneDoc is designed to run as a service, 
-it will listen for HTTP requests if no parameters are provided at startup.
+Designed to run as a service, BoneDoc will listen for HTTP requests if no startup parameters are provided.
 
 ```
 .\BoneDoc.exe
@@ -31,21 +35,27 @@ BoneDocServer started. Listening on port 61180 ...
 
 For local use, BoneDoc three arguments that can be passed via the command line.
 
-Arguments are paths to the mesh file, landmark file and configuration file.
+Arguments are paths to the mesh file, the landmark file, and the configuration file.
 
 ```
 .\BoneDoc.exe .\data\FemurLeftFemaleA.vtk .\data\FemurLeftFemaleA-landmarks.csv .\bonedoc.conf
-407.20 24.60 18.60 29.78 27.12 21.38 130.95 17.32 92 8
-```
 
-Returned results for femur bone covers bone length [mm], medial offset [mm], lateral offset [mm], ml width [mm], ap width [mm], head radius [mm], inclination [°], anteversion [°], probability for asian bone [%] and probability for caucasian bone [%].
+calculated parameters
+—————————————————————
+bone length  407.21mm
+med. offset  24.60mm
+lat. offset  18.61mm
+ml width     29.79mm
+ap width     27.13mm
+head radius  21.38mm
+inclination  130.96mm
+anteversion  17.32mm
+asians       92%
+caucasians   8%
+```
 
 ## Related Projects
 
 * [Statismo](https://github.com/statismo/statismo) is a c++ framework for statistical shape modeling. It supports all shape modeling tasks, from model building to shape analysis.
 
 * [Scalismo](http://github.com/unibas-gravis/scalismo) is like Statismo a library for image analysis and shape modelling but designed for the Java Virtual Machine. It is written in [Scala](http://www.scala-lang.org/) and based on the same underlying concepts as statismo (and partly developed by the same people).
-
-* [Boost](https://www.boost.org/)
-
-* [VTK](http://www.vtk.org)

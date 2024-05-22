@@ -165,7 +165,19 @@ void Femur::Thesis()
 
     GuessEthnicGroup();
 
-    cout << bone_length << "\t" << medial_offset << "\t" << lateral_offset << "\t" << ML_width << "\t" << AP_width << "\t" << head_radius << "\t" << inclination << "\t" << anteversion << "\t" << asian << "\t" << caucasian << endl;
+	cout 	<< "\n"
+			<< "calculated parameters" << "\n"
+			<< "————————————" << "\n"
+			<< "bone length" << "\t" << bone_length << "mm\n" 
+			<< "med. offset" << "\t" << medial_offset << "mm\n" 
+			<< "lat. offset" << "\t" << lateral_offset << "mm\n"
+			<< "ml width" << "\t" << ML_width << "mm\n" 
+			<< "ap width" << "\t" << AP_width << "mm\n"
+			<< "head radius" << "\t" << head_radius << "mm\n"
+			<< "inclination" << "\t" << inclination << "mm\n"
+			<< "anteversion" << "\t" << anteversion << "mm\n"
+			<< "asians" << "\t\t" << asian << "%\n"
+			<< "caucasians" << "\t" << caucasian << "%\n";
 }
 
 void Femur::PPFX()
