@@ -107,9 +107,6 @@ protected:
     // estimate age, sex and side from file name
     void SetMetaInfo(const string path);
 
-    void SetAnatomicalLandmarksSize(string configPath, string identifier);
-
-
 
 public:
     Anatomy();

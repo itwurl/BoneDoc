@@ -507,50 +507,6 @@ void Anatomy::SetAnatomicalMesh(const string path) {
     }
 }
 
-void Anatomy::SetAnatomicalLandmarksSize(string configPath, string identifier) {
-
-    // load model from config file
-    ifstream file(configPath);
-
-    if (!file.is_open()) {
-        cout << "Could not load " << configPath << endl;
-        exit(-1);
-    }
-    
-    string value;
-    string row;
-    bool found = false;
-    size_t pos = 0;
-    string delimiter = ",";
-
-    // read all lines
-    while (getline(file, row)) {
-
-        found = false;
-
-        // read every single comma separated value
-        while ((pos = row.find(delimiter)) != string::npos) {			
-            value = row.substr(0, pos);
-            row.erase(0, pos + delimiter.length());
-
-            // if identifier for model was found in value follows
-            if (value.compare(identifier) == 0)
-                found = true;
-            
-        }
-        
-        // next row and store 'anatomicalLandmarksSize'
-        if (found) {
-            value = row.substr(pos+1, row.length());
-            //values.push_back(stof(value.c_str()));
-            anatomicalLandmarksSize = atoi(value.c_str());
-        }
-        
-    }
-    
-    file.close();
-
-}
 
 void Anatomy::SetMetaInfo(const string path) {
 

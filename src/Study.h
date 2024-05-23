@@ -11,13 +11,12 @@ class Study {
 private:
     string meshFile;
     string landmarksFile;
-    string configFile;
     string anatomy;
 
 public:
     static string getAnatomyFromString(string s);
 
-    Study(string meshFile, string landmarksFile, string configFile);
+    Study(string meshFile, string landmarksFile);
     ~Study();
     
     void Start(string studyID);

@@ -1,13 +1,12 @@
 // BoneDoc
 #include "Study.h"
 
-Study::Study(string meshFile, string landmarksFile, string configFile) {
+Study::Study(string meshFile, string landmarksFile) {
 
     // use first parameter to parse anatomy string from
     anatomy = getAnatomyFromString(meshFile);
     this->meshFile = meshFile;
     this->landmarksFile = landmarksFile;
-    this->configFile = configFile;
 
 }
 
@@ -16,7 +15,7 @@ void Study::Start(string studyID) {
     if (anatomy.compare("FEMUR") == 0)
     {
          // check meta info and create subclassed anatomy 'femur'
-         Femur femur(meshFile, landmarksFile, configFile);
+         Femur femur(meshFile, landmarksFile);
 
          // start study 'thesis'
          femur.Thesis();
@@ -24,7 +23,7 @@ void Study::Start(string studyID) {
     else if (anatomy.compare("HUMERUS") == 0)
     {
          // check meta info and create subclassed anatomy
-         Humerus humerus(meshFile, landmarksFile, configFile);
+         Humerus humerus(meshFile, landmarksFile);
 
          // start study 'thesis'
          humerus.Thesis();
@@ -32,7 +31,7 @@ void Study::Start(string studyID) {
     else if (anatomy.compare("TIBIA") == 0)
     {
          // check meta info and create subclassed anatomy
-         Tibia tibia(meshFile, landmarksFile, configFile);
+         Tibia tibia(meshFile, landmarksFile);
 
          // start study 'thesis'
          tibia.Thesis();

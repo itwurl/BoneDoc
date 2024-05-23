@@ -1,13 +1,8 @@
 #include "Humerus.h"
 
 Humerus::Humerus(const string anatomicalMeshPath,
-        const string anatomicalLandmarksPath,
-        const string configPath)
+        const string anatomicalLandmarksPath)
 {
-    this->configPath = configPath;
-    
-    // read number of anatomical landmarks
-    SetAnatomicalLandmarksSize(configPath, "humerus-anatomical-landmarks-size");
 
     // anatomical landmarks
     SetAnatomicalLandmarks(anatomicalLandmarksPath);
@@ -106,7 +101,18 @@ void Humerus::Thesis()
 
     GuessEthnicGroup();
 
-    cout << bone_length << "\t" << medial_offset << "\t" << lateral_offset << "\t" << ML_width << "\t" << AP_width << "\t" << head_radius << "\t" << inclination << "\t" << retroversion << "\t" << asian << "\t" << caucasian << endl;
+    cout << "\n"
+        << "calculated parameters:" << "\n" << "\n"
+        << "bone length" << "\t" << bone_length << "mm\n"
+        << "med. offset" << "\t" << medial_offset << "mm\n"
+        << "lat. offset" << "\t" << lateral_offset << "mm\n"
+        << "ml with" << "\t" << ML_width << "mm\n"
+        << "ap width" << "\t" << AP_width << "mm\n"
+        << "head radius" << "\t" << head_radius << "mm\n"
+        << "inclination" << "\t" << inclination << "mm\n"
+        << "retroversion" << "\t" << retroversion << "mm\n"
+        << "asians" << "\t" << asian << "%\n"
+        << "caucasian" << "\t" << caucasian << "%\n\n";
 
 }
 
@@ -598,7 +604,7 @@ void Humerus::GuessEthnicGroup()
     string model = "LogisticModelHumerus";
 
     // load model from config file
-    ifstream file(configPath);
+    ifstream file("bonedoc.conf");
     string value;
     string row;
     bool found = false;

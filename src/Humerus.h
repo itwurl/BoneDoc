@@ -5,7 +5,6 @@
 
 class Humerus : public Anatomy {
 private:
-    string configPath;
 
     void ResetMeasurements();
 
@@ -90,8 +89,8 @@ private:
         
 public:
     Humerus(const string anatomicalMesh,
-            const string anatomicalLandmarksPath,
-                const string configPath);
+            const string anatomicalLandmarksPath);
+
     ~Humerus();
 
     // see thesis 'Ethnizitaetsbestimmung mit multivariater Statistik' (Alexander Wurl) for humerus bone

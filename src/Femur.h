@@ -6,9 +6,6 @@
 class Femur : public Anatomy
 {
 private:
-    
-    // config file
-    string configPath;
 
     // optimization of distal and proximal landmark [1]
     // based on manually found most proximal/distal anatomical landmarks an axis is build and then used to redefine both landmarks as technical landmarks [1]
@@ -170,8 +167,7 @@ private:
 
 public:
     Femur(const string anatomicalMesh,
-            const string anatomicalLandmarksPath,
-                const string configPath);
+            const string anatomicalLandmarksPath);
 
     ~Femur();
 

@@ -84,13 +84,10 @@ void session(boost::asio::ip::tcp::socket socket)
                 stringstream anatomicallandmarksPath;
                 anatomicallandmarksPath << BONEDOC_PATH << "\\Data\\" << dataset << "-landmarks.csv";
 
-                stringstream configPath;
-                configPath << BONEDOC_PATH << "\\bonedoc.conf";
-
                 // DEBUG: recognize anatomy from dataset's name
 				if (anatomy.compare("Femur") == 0)
                 {
-                    Femur femur(anatomicalMeshPath.str(), anatomicallandmarksPath.str(), configPath.str());
+                    Femur femur(anatomicalMeshPath.str(), anatomicallandmarksPath.str());
 					femur.Thesis();
 
                     response_stream << "bone length: " << float(int(femur.bone_length * 100)) / 100 << "mm" << endl;
@@ -106,7 +103,7 @@ void session(boost::asio::ip::tcp::socket socket)
                 }
                 else if (anatomy.compare("Humerus") == 0)
                 {
-                    Humerus humerus(anatomicalMeshPath.str(), anatomicallandmarksPath.str(), configPath.str());
+                    Humerus humerus(anatomicalMeshPath.str(), anatomicallandmarksPath.str());
                     humerus.Thesis();
 
                     response_stream << "bone length: " << float(int(humerus.bone_length * 100)) / 100 << "mm" << endl;
@@ -122,7 +119,7 @@ void session(boost::asio::ip::tcp::socket socket)
 				}
 				else if (anatomy.compare("Tibia") == 0)
                 {
-                    Tibia tibia(anatomicalMeshPath.str(), anatomicallandmarksPath.str(), configPath.str());
+                    Tibia tibia(anatomicalMeshPath.str(), anatomicallandmarksPath.str());
                     tibia.Thesis();
 
                     response_stream << "bone length: " << float(int(tibia.bone_length * 100)) / 100 << "mm" << endl;

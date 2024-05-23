@@ -5,7 +5,6 @@
 
 class Tibia : public Anatomy {
 private:
-    string configPath;
 
     void ResetMeasurements();
 
@@ -64,8 +63,8 @@ private:
         
 public:
     Tibia(const string anatomicalMesh,
-            const string anatomicalLandmarksPath,
-                const string configPath);
+            const string anatomicalLandmarksPath);
+
     ~Tibia();
 
     void Thesis();

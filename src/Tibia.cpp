@@ -1,14 +1,9 @@
 #include "Tibia.h"
 
 Tibia::Tibia(const string anatomicalMeshPath,
-                const string anatomicalLandmarksPath,
-                    const string configPath)
+                const string anatomicalLandmarksPath)
 {
-    this->configPath = configPath;
-    
-    // read number of anatomical landmarks
-    SetAnatomicalLandmarksSize(configPath, "tibia-anatomical-landmarks-size");
-    
+
     // load and set anatomical landmarks
     SetAnatomicalLandmarks(anatomicalLandmarksPath);
 
@@ -82,7 +77,15 @@ void Tibia::Thesis()
 
     GuessEthnicGroup();
 
-    cout << bone_length << "\t" << medial_offset << "\t" << lateral_offset << "\t" << ML_width << "\t" << AP_width << "\t" << torsion << "\t" << asian << "\t" << caucasian << endl;
+    cout << "\n"
+        << "calculated parameters:" << "\n" << "\n"
+        << "bone length" << "\t" << bone_length << "mm\n"
+        << "med. offset" << "\t" << medial_offset << "mm\n"
+        << "lat. offset" << "\t" << lateral_offset << "mm\n"
+        << "ml with" << "\t" << ML_width << "mm\n"
+        << "ap width" << "\t" << AP_width << "mm\n"
+        << "asians" << "\t" << asian << "%\n"
+        << "caucasian" << "\t" << caucasian << "%\n\n";
 
 }
 
@@ -428,7 +431,7 @@ void Tibia::GuessEthnicGroup()
     string model = "LogisticModelTibia";
 
     // load model from config file
-    ifstream file(configPath);
+    ifstream file("bonedoc.conf");
     string value;
     string row;
     bool found = false;

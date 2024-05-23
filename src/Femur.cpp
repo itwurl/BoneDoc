@@ -1,13 +1,8 @@
 #include "Femur.h"
 
 Femur::Femur(const string anatomicalMeshPath,
-        const string anatomicalLandmarksPath,
-        const string configPath)
+        const string anatomicalLandmarksPath)
 {
-    this->configPath = configPath;
-
-    // read number of anatomical landmarks (todo: should be used for error handling)
-    SetAnatomicalLandmarksSize(configPath, "femur-anatomical-landmarks-size");
 
     // load anatomical landmarks
     SetAnatomicalLandmarks(anatomicalLandmarksPath);
@@ -166,8 +161,7 @@ void Femur::Thesis()
     GuessEthnicGroup();
 
 	cout 	<< "\n"
-			<< "calculated parameters" << "\n"
-			<< "————————————" << "\n"
+			<< "calculated parameters:" << "\n" << "\n"
 			<< "bone length" << "\t" << bone_length << "mm\n" 
 			<< "med. offset" << "\t" << medial_offset << "mm\n" 
 			<< "lat. offset" << "\t" << lateral_offset << "mm\n"
@@ -177,7 +171,7 @@ void Femur::Thesis()
 			<< "inclination" << "\t" << inclination << "mm\n"
 			<< "anteversion" << "\t" << anteversion << "mm\n"
 			<< "asians" << "\t\t" << asian << "%\n"
-			<< "caucasians" << "\t" << caucasian << "%\n";
+			<< "caucasians" << "\t" << caucasian << "%\n\n";
 }
 
 void Femur::PPFX()
@@ -990,11 +984,11 @@ void Femur::GuessEthnicGroup()
     string model = "LogisticModelFemur";
 
     // load model from config file
-    ifstream file(configPath);
+    ifstream file("bonedoc.conf");
         
     if (!file.is_open())
     {
-        cout << "Could not load " << configPath << "!" << endl;
+        cout << "Could not load bonedoc.conf!" << endl;
         return;
     }
 

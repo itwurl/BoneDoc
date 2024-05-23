@@ -10,10 +10,10 @@ int main(int argc, char *argv[])
         BoneDocServer server(argv[0]);
         server.Start();
     }
-    else if (argc == 4)
+    else if (argc == 3)
     {
         // create a study
-        Study study(argv[1], argv[2], argv[3]);
+        Study study(argv[1], argv[2]);
         
         // start an analysis
         study.Start("Thesis");
@@ -21,7 +21,7 @@ int main(int argc, char *argv[])
     else
     {
         cout << "Usage (server):\t./BoneDoc" << endl;
-        cout << "Usage (command line):\t./BoneDoc [mesh (*.stl *.vtk)] [landmarks (*.csv)] [config (*.txt)]" << endl;
+        cout << "Usage (command line):\t./BoneDoc [mesh (*.stl *.vtk)] [landmarks (*.csv)]" << endl;
         return -1;
     }
 
