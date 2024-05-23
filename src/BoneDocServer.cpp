@@ -1,14 +1,24 @@
 #include "BoneDocServer.h"
 
-static string BONEDOC_PATH;
+// Funktion zur Ermittlung des Verzeichnisses des Binarys
+fs::path getExecutablePath() {
+    return fs::initial_path<fs::path>();
+}
 
 BoneDocServer::BoneDocServer(const char* path)
 {
-    // extract application path 
-    boost::filesystem::path full_path(boost::filesystem::initial_path<boost::filesystem::path>());
-    full_path = boost::filesystem::system_complete(boost::filesystem::path(path));
-    size_t found = full_path.string().find_last_of("/\\");
-    BONEDOC_PATH = full_path.string().substr(0, found);
+    cout << "BONEDOC_WORKING_DIR: " << BONEDOC_WORKING_DIR << endl;
+    cout << "BONEDOC_CONFIGURATION_FILE: " << BONEDOC_CONFIGURATION_FILE << endl;
+
+    // initial directory for binary
+    // output on windows is 'complete path: "D:\Code\CPP\BoneDoc\BoneDoc.exe"'
+    // output on linux   is 'complete path: "/home/wurl/docker/BoneDoc/./BoneDoc"'
+    fs::path init_path(fs::initial_path<fs::path>());
+    cout << "Initial working directory is " << init_path << "." << endl;
+
+    // define full path for configuration file
+    fs::path full_configuration_path = init_path / this->BONEDOC_CONFIGURATION_FILE;
+    cout << "Configuration file " << full_configuration_path << " loaded successfully."  << endl;
 }
 
 void session(boost::asio::ip::tcp::socket socket)
@@ -79,10 +89,17 @@ void session(boost::asio::ip::tcp::socket socket)
             {
                 // concatenate correct path's (DEBUG: support for stl/vtk)
                 stringstream anatomicalMeshPath;
-                anatomicalMeshPath << BONEDOC_PATH << "\\Data\\" << dataset << ".vtk";
+                //anatomicalMeshPath << BONEDOC_PATH << "\\Data\\" << dataset << ".vtk";
+                anatomicalMeshPath << BONEDOC_WORKING_DIR << "\\Data\\" << dataset << ".vtk";
+
+  
+                //fs::path anatomicalMeshPath = anatomicalMeshPath / BONEDOC_WORKING_DIR;
+
+                //cout << "Configuration file " << full_configuration_path << " loaded successfully." << endl;
+
 
                 stringstream anatomicallandmarksPath;
-                anatomicallandmarksPath << BONEDOC_PATH << "\\Data\\" << dataset << "-landmarks.csv";
+                //anatomicallandmarksPath << BONEDOC_PATH << "\\Data\\" << dataset << "-landmarks.csv";
 
                 // DEBUG: recognize anatomy from dataset's name
 				if (anatomy.compare("Femur") == 0)
