@@ -31,7 +31,7 @@ Designed to run as a service, BoneDoc will listen for HTTP requests if no startu
 BoneDocServer started. Listening on port 61180 ...
 ```
 
-For local use, BoneDoc two arguments that can be passed via the command line.
+For local use, BoneDoc needs two arguments that can be passed via the command line.
 
 Arguments are paths to the mesh file and the landmark file.
 
