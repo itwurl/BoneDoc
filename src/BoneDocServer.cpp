@@ -9,19 +9,9 @@ BoneDocServer::BoneDocServer(const char* path)
 {
     cout << "BONEDOC_WORKING_DIR: " << BONEDOC_WORKING_DIR << endl;
     cout << "BONEDOC_CONFIGURATION_FILE: " << BONEDOC_CONFIGURATION_FILE << endl;
-
-    // initial directory for binary
-    // output on windows is 'complete path: "D:\Code\CPP\BoneDoc\BoneDoc.exe"'
-    // output on linux   is 'complete path: "/home/wurl/docker/BoneDoc/./BoneDoc"'
-    fs::path init_path(fs::initial_path<fs::path>());
-    cout << "Initial working directory is " << init_path << "." << endl;
-
-    // define full path for configuration file
-    fs::path full_configuration_path = init_path / this->BONEDOC_CONFIGURATION_FILE;
-    cout << "Configuration file " << full_configuration_path << " loaded successfully."  << endl;
 }
 
-void session(boost::asio::ip::tcp::socket socket)
+void BoneDocServer::session(ip::tcp::socket socket)
 {
     try
     {
@@ -87,24 +77,23 @@ void session(boost::asio::ip::tcp::socket socket)
             // client message is only considered for analysis if header consists of meta infos
             if ((anatomy != "") && (study == "Thesis"))
             {
-                // concatenate correct path's (DEBUG: support for stl/vtk)
-                stringstream anatomicalMeshPath;
-                //anatomicalMeshPath << BONEDOC_PATH << "\\Data\\" << dataset << ".vtk";
-                anatomicalMeshPath << BONEDOC_WORKING_DIR << "\\Data\\" << dataset << ".vtk";
+                // sub dir 'data' for meshes and landmarks is mandatory
+                fs::path dataDir = BONEDOC_WORKING_DIR / "data";
+                cout << "dataDir: " << dataDir << endl;
 
-  
-                //fs::path anatomicalMeshPath = anatomicalMeshPath / BONEDOC_WORKING_DIR;
+                // file type vtk for meshes is mandatory
+                string mesh_dataset = dataset + ".vtk";
+                fs::path anatomicalMeshPath = dataDir / mesh_dataset;
+                cout << "anatomicalMeshPath: " << anatomicalMeshPath << endl;
 
-                //cout << "Configuration file " << full_configuration_path << " loaded successfully." << endl;
+                // file type csv for landmarks is mandatory
+                string landmark_dataset = dataset + "-landmarks.csv";
+                fs::path anatomicallandmarksPath = dataDir / landmark_dataset;
+                cout << "anatomicallandmarksPath: " << anatomicallandmarksPath << endl;
 
-
-                stringstream anatomicallandmarksPath;
-                //anatomicallandmarksPath << BONEDOC_PATH << "\\Data\\" << dataset << "-landmarks.csv";
-
-                // DEBUG: recognize anatomy from dataset's name
 				if (anatomy.compare("Femur") == 0)
                 {
-                    Femur femur(anatomicalMeshPath.str(), anatomicallandmarksPath.str());
+                    Femur femur(anatomicalMeshPath.string(), anatomicallandmarksPath.string());
 					femur.Thesis();
 
                     response_stream << "bone length: " << float(int(femur.bone_length * 100)) / 100 << "mm" << endl;
@@ -120,7 +109,7 @@ void session(boost::asio::ip::tcp::socket socket)
                 }
                 else if (anatomy.compare("Humerus") == 0)
                 {
-                    Humerus humerus(anatomicalMeshPath.str(), anatomicallandmarksPath.str());
+                    Humerus humerus(anatomicalMeshPath.string(), anatomicallandmarksPath.string());
                     humerus.Thesis();
 
                     response_stream << "bone length: " << float(int(humerus.bone_length * 100)) / 100 << "mm" << endl;
@@ -136,7 +125,7 @@ void session(boost::asio::ip::tcp::socket socket)
 				}
 				else if (anatomy.compare("Tibia") == 0)
                 {
-                    Tibia tibia(anatomicalMeshPath.str(), anatomicallandmarksPath.str());
+                    Tibia tibia(anatomicalMeshPath.string(), anatomicallandmarksPath.string());
                     tibia.Thesis();
 
                     response_stream << "bone length: " << float(int(tibia.bone_length * 100)) / 100 << "mm" << endl;
@@ -168,18 +157,18 @@ void session(boost::asio::ip::tcp::socket socket)
 
 void BoneDocServer::Start()
 {
-    cout << "BoneDocServer started. Listening on port " << BONEDOC_SERVER_PORT_STR << " ..." << endl << endl;
+    cout << "BoneDocServer started. Listening on port " << BONEDOC_SERVER_PORT << " ..." << endl << endl;
 
     try
     {
         boost::asio::io_service io_service;
-        boost::asio::ip::tcp::acceptor a(io_service, boost::asio::ip::tcp::endpoint(boost::asio::ip::tcp::v4(), BONEDOC_SERVER_PORT));
+        ip::tcp::acceptor a(io_service, ip::tcp::endpoint(ip::tcp::v4(), BONEDOC_SERVER_PORT));
 
         for (;;)
         {
-            boost::asio::ip::tcp::socket socket(io_service);
+            ip::tcp::socket socket(io_service);
             a.accept(socket);
-            thread(session, move(socket)).detach();
+            thread(&BoneDocServer::session, this, move(socket)).detach();
         }
 
     }
