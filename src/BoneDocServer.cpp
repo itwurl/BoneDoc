@@ -11,6 +11,32 @@ BoneDocServer::BoneDocServer(const char* path)
     cout << "BONEDOC_CONFIGURATION_FILE: " << BONEDOC_CONFIGURATION_FILE << endl;
 }
 
+
+void BoneDocServer::Start()
+{
+    cout << "BoneDocServer started. Listening on port " << BONEDOC_SERVER_PORT << " ..." << endl << endl;
+
+    try
+    {
+        boost::asio::io_service io_service;
+        ip::tcp::acceptor a(io_service, ip::tcp::endpoint(ip::tcp::v4(), BONEDOC_SERVER_PORT));
+
+        for (;;)
+        {
+            ip::tcp::socket socket(io_service);
+            a.accept(socket);
+            thread(&BoneDocServer::session, this, move(socket)).detach();
+        }
+
+    }
+    catch (exception& e)
+    {
+        cerr << "Exception: " << e.what() << "\n";
+    }
+
+    cout << "Server closed." << endl;
+}
+
 void BoneDocServer::session(ip::tcp::socket socket)
 {
     try
@@ -155,30 +181,6 @@ void BoneDocServer::session(ip::tcp::socket socket)
 
 }
 
-void BoneDocServer::Start()
-{
-    cout << "BoneDocServer started. Listening on port " << BONEDOC_SERVER_PORT << " ..." << endl << endl;
-
-    try
-    {
-        boost::asio::io_service io_service;
-        ip::tcp::acceptor a(io_service, ip::tcp::endpoint(ip::tcp::v4(), BONEDOC_SERVER_PORT));
-
-        for (;;)
-        {
-            ip::tcp::socket socket(io_service);
-            a.accept(socket);
-            thread(&BoneDocServer::session, this, move(socket)).detach();
-        }
-
-    }
-    catch (exception& e)
-    {
-        cerr << "Exception: " << e.what() << "\n";
-    }
-
-    cout << "Server closed." << endl;
-}
 
 BoneDocServer::~BoneDocServer() {
     
