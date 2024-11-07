@@ -36,7 +36,7 @@ For local use, BoneDoc needs two arguments that can be passed via the command li
 Arguments are paths to the mesh file and the landmark file.
 
 ```
-.\BoneDoc.exe .\data\FemurLeftFemaleA.vtk .\data\FemurLeftFemaleA-landmarks.csv bonedoc.conf
+.\BoneDoc.exe .\data\FemurLeftFemaleA.vtk .\data\FemurLeftFemaleA-landmarks.csv
 
 calculated parameters
 —————————————————————
