@@ -443,38 +443,32 @@ void Anatomy::SetAnatomicalLandmarks(const string path) {
 }
 
 void Anatomy::SetAnatomicalLandmarksFromJsonArray(const string json) {
-
     anatomicalLandmarks.clear();
-	vector<double> values;
-	
-	for (int i = 0; i < json.length() - 1; ++i) {
+    vector<double> values;
 
-		i = i + 2;
-		int pos = i;
+    for (size_t i = 0; i < json.length() - 1; ++i) {
+        i = i + 2;
+        size_t pos = i;
 
-		while (json.substr(i, 1) != "]") {
+        while (json.substr(i, 1) != "]") {
+            if (json.substr(i, 1) == ",") {
+                std::string segment = json.substr(pos, i - pos);
+                std::cout << segment << std::endl; // Sicherer und moderner Ansatz
+                values.push_back(stod(segment));
+                pos = i + 1;
+            }
+            i += 1;
+        }
 
-			if (json.substr(i, 1) == ",") {
+        std::string segment = json.substr(pos, i - pos);
+        std::cout << segment << std::endl; // Sicherer und moderner Ansatz
+        values.push_back(stod(segment));
 
-				printf( json.substr(pos, i-pos).c_str() );
-				printf("\n");
-				values.push_back(stod(json.substr(pos, i - pos)));
-				pos = i + 1;
-			}
-
-			i += 1;
-
-		}
-
-		printf(json.substr(pos, i - pos).c_str());
-		printf("\n");
-		values.push_back(stod(json.substr(pos, i - pos)));
-
-		auto it = values.begin();
+        auto it = values.begin();
         anatomicalLandmarks.push_back({ *it, *(++it), *(++it) });
-	}
-
+    }
 }
+
 
 void Anatomy::SetAnatomicalMesh(const string path) {
 
