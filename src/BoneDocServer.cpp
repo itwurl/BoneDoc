@@ -37,6 +37,7 @@ void BoneDocServer::Start()
     cout << "Server closed." << endl;
 }
 
+
 void BoneDocServer::session(ip::tcp::socket socket)
 {
     try
@@ -49,6 +50,12 @@ void BoneDocServer::session(ip::tcp::socket socket)
 
             // put request to input stream
             istream request_stream(&request);
+
+            // Output the incoming request for debugging
+            std::string method, target, header_line;
+            getline(request_stream, method); // Read the method line (e.g., "GET /path HTTP/1.1")
+
+            std::cout << "Incoming Request: " << method << std::endl;
 
 			// vars
 			string request_header = "";
@@ -66,6 +73,9 @@ void BoneDocServer::session(ip::tcp::socket socket)
             // print the request (header), each line is separated by carriage return symbol '\r'.
             while (getline(request_stream, request_header) && request_header != "\r")
             {
+
+		cout << "DEBUG: request_header = '" << request_header << endl;
+
                 if (request_header.compare(0, 7, "Anatomy") == 0)
                     anatomy = request_header.substr(9, request_header.length() - 10);
                 else if (request_header.compare(0, 11, "EthnicGroup") == 0)
@@ -80,13 +90,12 @@ void BoneDocServer::session(ip::tcp::socket socket)
                     side = request_header.substr(6, request_header.length() - 7);
                 else if (request_header.compare(0, 5, "Study") == 0)
                     study = request_header.substr(7, request_header.length() - 8);
-				else if (request_header.compare(0, 7, "Dataset") == 0) {
-					dataset = request_header.substr(9, request_header.length() - 10);
-				}
-				else
-				{
-					// unknown request
-				}
+		else if (request_header.compare(0, 7, "Dataset") == 0) {
+	            dataset = request_header.substr(9, request_header.length() - 10);
+		} else {
+		   // unknown request
+		}
+
             }
 
             // put server's response to output stream
@@ -183,5 +192,5 @@ void BoneDocServer::session(ip::tcp::socket socket)
 
 
 BoneDocServer::~BoneDocServer() {
-    
+	
 }

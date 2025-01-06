@@ -20,6 +20,9 @@ find_package(Threads REQUIRED)
 find_package(Boost REQUIRED COMPONENTS filesystem system thread)
 find_package(VTK REQUIRED)
 
+set(VTK_INCLUDE_DIRS "/usr/include/vtk-9.1")
+set(VTK_LIBRARIES "/usr/lib/x86_64-linux-gnu")
+
 # combine sources and headers
 file(GLOB BoneDoc_SOURCES "src/*.cpp")
 file(GLOB BoneDoc_HEADERS "src/*.h")
