@@ -4,7 +4,7 @@ BoneDoc is a c++ command line tool for 3d shape analysis of human bones. Abstrac
 
 ## Prototypes:
 
-* Thesis - logistic model-based prediction of ethnic groups for the femur, the humerus and the tibia bone
+* Thesis - logistic model-based prediction for ethnic groups of the femur, the humerus and the tibia bone
 
 ## Installation
 
