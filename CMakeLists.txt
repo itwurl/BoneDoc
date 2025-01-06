@@ -15,6 +15,9 @@ file(GLOB BoneDoc_HEADERS "src/*.h")
 # Inklusive Verzeichnisse für Boost und VTK
 include_directories(${Boost_INCLUDE_DIRS} ${VTK_INCLUDE_DIRS})
 
+# Setze den Ausgabepfad für ausführbare Dateien
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR})
+
 # Erstelle die ausführbare Datei
 add_executable(BoneDoc ${BoneDoc_SOURCES} ${BoneDoc_HEADERS})
 
