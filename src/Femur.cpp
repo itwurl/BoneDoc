@@ -494,7 +494,6 @@ void Femur::SetOffsetAndWidth()
     cutPoly_dist->GetPoint(maxi, most_anterior_shaft_point);
 }
 
-
 void Femur::FemoralHeadCenter1()
 {
     double sphere[8][3];
@@ -742,8 +741,6 @@ void Femur::FemoralNeckAxis2()
     //cout << neck_shaft_interception[0] << " " << neck_shaft_interception[1] << " " << head[2] << endl;
 
 }
-
-
 
 void Femur::FemoralShaftLength1()
 {
