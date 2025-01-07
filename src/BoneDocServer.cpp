@@ -1,4 +1,12 @@
 #include "BoneDocServer.h"
+#include <iostream>
+#include <cmath> // Für std::round
+
+// Funktion zum Runden auf eine bestimmte Dezimalstelle
+double roundToDecimalPlaces(double value, int decimalPlaces) {
+    double factor = std::pow(10.0, decimalPlaces);
+    return std::round(value * factor) / factor;
+}
 
 // Funktion zur Ermittlung des Verzeichnisses des Binarys
 fs::path getExecutablePath() {
@@ -80,34 +88,34 @@ void BoneDocServer::session(ip::tcp::socket socket)
             if (anatomy == "Femur") {
                 Femur femur(anatomicalMeshPath.string(), anatomicallandmarksPath.string());
                 femur.Thesis();
-                responseStream << "Bone Length: " << femur.bone_length << " mm\n";
-                responseStream << "Medial Offset: " << femur.medial_offset << " mm\n";
-                responseStream << "Lateral Offset: " << femur.lateral_offset << " mm\n";
-                responseStream << "ML Width: " << femur.ML_width << " mm\n";
-                responseStream << "AP Width: " << femur.AP_width << " mm\n";
-                responseStream << "Head Radius: " << femur.head_radius << " mm\n";
-                responseStream << "Inclination: " << femur.inclination << "°\n";
-                responseStream << "Anteversion: " << femur.anteversion << "°\n";
+                responseStream << "Bone Length: " << roundToDecimalPlaces(femur.bone_length, 1) << " mm\n";
+                responseStream << "Medial Offset: " << roundToDecimalPlaces(femur.medial_offset, 1) << " mm\n";
+                responseStream << "Lateral Offset: " << roundToDecimalPlaces(femur.lateral_offset, 1) << " mm\n";
+                responseStream << "ML Width: " << roundToDecimalPlaces(femur.ML_width, 1) << " mm\n";
+                responseStream << "AP Width: " << roundToDecimalPlaces(femur.AP_width, 1) << " mm\n";
+                responseStream << "Head Radius: " << roundToDecimalPlaces(femur.head_radius, 1) << " mm\n";
+                responseStream << "Inclination: " << roundToDecimalPlaces(femur.inclination, 1) << "°\n";
+                responseStream << "Anteversion: " << roundToDecimalPlaces(femur.anteversion, 1) << "°\n";
             } else if (anatomy == "Humerus") {
                 Humerus humerus(anatomicalMeshPath.string(), anatomicallandmarksPath.string());
                 humerus.Thesis();
-                responseStream << "Bone Length: " << humerus.bone_length << " mm\n";
-                responseStream << "Medial Offset: " << humerus.medial_offset << " mm\n";
-                responseStream << "Lateral Offset: " << humerus.lateral_offset << " mm\n";
-                responseStream << "ML Width: " << humerus.ML_width << " mm\n";
-                responseStream << "AP Width: " << humerus.AP_width << " mm\n";
-                responseStream << "Head Radius: " << humerus.head_radius << " mm\n";
-                responseStream << "Inclination: " << humerus.inclination << "°\n";
-                responseStream << "Retroversion: " << humerus.retroversion << "°\n";
+                responseStream << "Bone Length: " << roundToDecimalPlaces(humerus.bone_length, 1) << " mm\n";
+                responseStream << "Medial Offset: " << roundToDecimalPlaces(humerus.medial_offset, 1) << " mm\n";
+                responseStream << "Lateral Offset: " << roundToDecimalPlaces(humerus.lateral_offset, 1) << " mm\n";
+                responseStream << "ML Width: " << roundToDecimalPlaces(humerus.ML_width, 1) << " mm\n";
+                responseStream << "AP Width: " << roundToDecimalPlaces(humerus.AP_width, 1) << " mm\n";
+                responseStream << "Head Radius: " << roundToDecimalPlaces(humerus.head_radius, 1) << " mm\n";
+                responseStream << "Inclination: " << roundToDecimalPlaces(humerus.inclination, 1) << "°\n";
+                responseStream << "Retroversion: " << roundToDecimalPlaces(humerus.retroversion, 1) << "°\n";
             } else if (anatomy == "Tibia") {
                 Tibia tibia(anatomicalMeshPath.string(), anatomicallandmarksPath.string());
                 tibia.Thesis();
-                responseStream << "Bone Length: " << tibia.bone_length << " mm\n";
-                responseStream << "Medial Offset: " << tibia.medial_offset << " mm\n";
-                responseStream << "Lateral Offset: " << tibia.lateral_offset << " mm\n";
-                responseStream << "ML Width: " << tibia.ML_width << " mm\n";
-                responseStream << "AP Width: " << tibia.AP_width << " mm\n";
-                responseStream << "Torsion: " << tibia.torsion << "°\n";
+                responseStream << "Bone Length: " << roundToDecimalPlaces(tibia.bone_length, 1)  << " mm\n";
+                responseStream << "Medial Offset: " << roundToDecimalPlaces(tibia.medial_offset, 1)  << " mm\n";
+                responseStream << "Lateral Offset: " << roundToDecimalPlaces(tibia.lateral_offset, 1)  << " mm\n";
+                responseStream << "ML Width: " << roundToDecimalPlaces(tibia.ML_width, 1)  << " mm\n";
+                responseStream << "AP Width: " << roundToDecimalPlaces(tibia.AP_width, 1)  << " mm\n";
+                responseStream << "Torsion: " << roundToDecimalPlaces(tibia.torsion, 1)  << "°\n";
             } else {
                 responseStream << "Error: Unsupported anatomy type\n";
             }
