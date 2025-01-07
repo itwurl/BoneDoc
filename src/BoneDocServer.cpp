@@ -47,9 +47,12 @@ void BoneDocServer::session(ip::tcp::socket socket)
 
         responseStream << "HTTP/1.1 200 OK\r\n";
         responseStream << "Content-Type: text/plain\r\n";
-        responseStream << "Access-Control-Allow-Origin: *\r\n";
         responseStream << "Connection: keep-alive\r\n";
-        responseStream << "Access-Control-Allow-Headers: Dataset,Anatomy,EthnicGroup,Gender,Mean,Random,Side,Study\r\n\r\n";
+        //responseStream << "Access-Control-Allow-Headers: Dataset,Anatomy,EthnicGroup,Gender,Mean,Random,Side,Study\r\n\r\n";
+        responseStream << "Access-Control-Allow-Origin: *\r\n";
+        responseStream << "Access-Control-Allow-Methods: GET, POST, OPTIONS\r\n";
+        responseStream << "Access-Control-Allow-Headers: Content-Type, Authorization, Dataset, Anatomy, Side, Gender, EthnicGroup, Study\r\n";
+        responseStream << "Access-Control-Max-Age: 86400\r\n";
 
         std::string header;
         std::map<std::string, std::string> headers;
