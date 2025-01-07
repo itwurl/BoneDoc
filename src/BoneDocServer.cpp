@@ -47,12 +47,11 @@ void BoneDocServer::session(ip::tcp::socket socket)
 
         responseStream << "HTTP/1.1 200 OK\r\n";
         responseStream << "Content-Type: text/plain\r\n";
-        responseStream << "Connection: keep-alive\r\n";
-        //responseStream << "Access-Control-Allow-Headers: Dataset,Anatomy,EthnicGroup,Gender,Mean,Random,Side,Study\r\n\r\n";
         responseStream << "Access-Control-Allow-Origin: *\r\n";
         responseStream << "Access-Control-Allow-Methods: GET, POST, OPTIONS\r\n";
         responseStream << "Access-Control-Allow-Headers: Content-Type, Authorization, Dataset, Anatomy, Side, Gender, EthnicGroup, Study\r\n";
         responseStream << "Access-Control-Max-Age: 86400\r\n";
+        responseStream << "\r\n";
 
         std::string header;
         std::map<std::string, std::string> headers;
@@ -118,6 +117,9 @@ void BoneDocServer::session(ip::tcp::socket socket)
 
         // Antwort zurücksenden
         boost::asio::write(socket, boost::asio::buffer(responseStream.str()));
+        // Schließen der Sendepipeline
+        socket.shutdown(boost::asio::socket_base::shutdown_send);
+
     } catch (const std::exception& e) {
         std::cerr << "Exception in session: " << e.what() << std::endl;
     }
