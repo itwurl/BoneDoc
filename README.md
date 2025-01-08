@@ -15,7 +15,7 @@ cmake .
 cmake --build .
 ```
 
-To run BoneDoc and perform analysis locally, two arguments are required: mesh file path and landmark file path.
+To run BoneDoc and perform analysis locally, two arguments are required: path to mesh file (vtk format) and path to landmark file (csv format).
 
 ```
 ./BoneDoc <mesh-file-path> <landmark-file-path>
