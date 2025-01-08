@@ -61,7 +61,7 @@ caucasians   8%
 ```
 
 ## Related Projects
-* [BoneHost.net](https://bonehost.net) is a web application for 3d shape analysis of human bones.
+* [Bonehost](https://bonehost.net) is a web application for 3d shape analysis of human bones.
 
 * [Statismo](https://github.com/statismo/statismo) is a c++ framework for statistical shape modeling. It supports all shape modeling tasks, from model building to shape analysis.
 
