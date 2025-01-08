@@ -65,4 +65,4 @@ caucasians   8%
 
 * [Statismo](https://github.com/statismo/statismo): Is a C++ framework for statistical shape modeling. It supports all shape modeling tasks, from model building to shape analysis.
 
-* [Scalismo](http://github.com/unibas-gravis/scalismo): Built for the Java Virtual Machine, this library focuses on image analysis and shape modeling. Written in [Scala](http://www.scala-lang.org/), it shares concepts with Statismo and was partially developed by the same team.
+* [Scalismo](http://github.com/unibas-gravis/scalismo): Built for the Java Virtual Machine, this library focuses on image analysis and shape modeling. Written in [Scala](http://www.scala-lang.org/), shares concepts with Statismo and was developed by the same team.
