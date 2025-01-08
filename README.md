@@ -48,8 +48,11 @@ docker pull itawu/bonedoc:1.0
 docker run -d -p 61180:61180 --name bonedoc itawu/bonedoc:1.0
 ```
 
+Thus, analyses can be performed either locally or through the container, with BoneDoc operating in a client-server architecture.
+
 ### BoneHost
 
+BoneHost implements a client-server architecture, utilizing BoneDoc as a microservice, which is already deployed online as a web service. See bonehost.net for more information.
 
 ## Related Projects
 * [Bonehost](https://bonehost.net): This web application facilitates 3D shape analysis of human bones.
