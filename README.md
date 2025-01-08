@@ -15,35 +15,14 @@ cmake .
 cmake --build .
 ```
 
-To run BoneDoc and perform analysis locally, two arguments are required: path to mesh file (vtk format) and path to landmark file (csv format).
+To run BoneDoc and perform analysis locally, two arguments are required: path to mesh file and path to landmark file.
 
 ```
-./BoneDoc <mesh-file-path> <landmark-file-path>
+./BoneDoc <vtk-file-path> <csv-file-path>
 BoneDocServer started. Listening on port 61180 ...
 ```
 
-### Docker
-
-Alternatively, you can use BoneDoc inside a Docker container without compiling it yourself.
-
-```
-docker pull itawu/bonedoc:1.0
-docker run -d -p 61180:61180 --name bonedoc itawu/bonedoc:1.0
-```
-
-So analyses can be performed either locally or via the container with a request like the one below.
-
-```
-curl "http://localhost:61180" \
-     -H "Dataset: <Dataset>" \
-     -H "Anatomy: <Anatomy>" \
-     -H "Side: <Side>" \
-     -H "Gender: <Gender>" \
-     -H "EthnicGroup: <EthnicGroup>" \
-     -H "Study: <Study>"
-```
-
-The response will then display the results of the analysis, including the calculated anatomical parameters and the predicted ethnic group based on the provided data.
+Calculated results are printed out after analysis, including the calculated anatomical parameters and the predicted ethnic group based on the provided data.
 
 ```
 calculated parameters
@@ -59,6 +38,18 @@ anteversion  17.32mm
 asians       92%
 caucasians   8%
 ```
+
+### Docker
+
+Instead of using the binary via the command line, you can run BoneDoc inside a Docker container.
+
+```
+docker pull itawu/bonedoc:1.0
+docker run -d -p 61180:61180 --name bonedoc itawu/bonedoc:1.0
+```
+
+### BoneHost
+
 
 ## Related Projects
 * [Bonehost](https://bonehost.net): This web application facilitates 3D shape analysis of human bones.
