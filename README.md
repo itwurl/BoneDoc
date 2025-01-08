@@ -15,7 +15,7 @@ cmake .
 cmake --build .
 ```
 
-To run BoneDoc and perform analysis locally, two arguments are required: path to mesh file and path to landmark file. Without arguments BoneDoc will run as a http service waiting for requests.
+To run the binary and perform analysis, two arguments are required: the path to the mesh file and the path to the landmark file. Without arguments, BoneDoc starts as an HTTP service, waiting for appropriate requests.
 
 ```
 ./BoneDoc <vtk-file-path> <csv-file-path>
