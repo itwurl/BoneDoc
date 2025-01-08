@@ -61,8 +61,8 @@ caucasians   8%
 ```
 
 ## Related Projects
-* [Bonehost](https://bonehost.net): Is a web application for 3d shape analysis of human bones.
+* [Bonehost](https://bonehost.net): This web application facilitates 3D shape analysis of human bones.
 
-* [Statismo](https://github.com/statismo/statismo): A c++ framework for statistical shape modeling. It supports all shape modeling tasks, from model building to shape analysis.
+* [Statismo](https://github.com/statismo/statismo): Is a C++ framework for statistical shape modeling. It supports all shape modeling tasks, from model building to shape analysis.
 
 * [Scalismo](http://github.com/unibas-gravis/scalismo): Built for the Java Virtual Machine, this library focuses on image analysis and shape modeling. Written in [Scala](http://www.scala-lang.org/), it shares concepts with Statismo and was partially developed by the same team.
