@@ -7,7 +7,7 @@ Running as a service, BoneDoc listens on port 61180 by default, whether it is ex
 
 ### Binary
 
-Ensure that your system is up to date and that a C++ compiler is installed. BoneDoc needs to be compiled from source using [CMake](https://cmake.org/) workflow, considering dependencies [VTK](http://www.vtk.org) and [Boost](http://www.boost.org). Then complete installation using git and cmake.
+Ensure that your system is up to date and that a C++ compiler is installed. BoneDoc needs to be compiled from source using [CMake](https://cmake.org/) workflow, considering dependencies [VTK](http://www.vtk.org) and [Boost](http://www.boost.org). Then clone the repository and use CMake to configure and build the project.
 
 ```
 git clone https://github.com/alexander-wurl/BoneDoc.git .
