@@ -43,8 +43,8 @@ caucasians   8%
 Instead of using the binary via the command line, you can run BoneDoc inside a Docker container.
 
 ```
-docker pull itawu/bonedoc:1.0
-docker run -d -p 61180:61180 --name bonedoc itawu/bonedoc:1.0
+docker pull itwurl/bonedoc:1.0
+docker run -d -p 61180:61180 --name bonedoc itwurl/bonedoc:1.0
 ```
 
 Thus, analyses can be performed either locally or through the container, with BoneDoc operating in a client-server architecture.
