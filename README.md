@@ -38,16 +38,16 @@ asians       92%
 caucasians   8%
 ```
 
-### Docker
+### Docker Image
 
-Instead of using the binary via the command line, you can run BoneDoc inside a Docker container.
+Instead of running BoneDoc as a standalone binary via the command line, you can use the pre-built Docker image from Docker Hub and start a container:
 
 ```
 docker pull itwurl/bonedoc:1.0
 docker run -d -p 61180:61180 --name bonedoc itwurl/bonedoc:1.0
 ```
 
-Thus, analyses can be performed either locally or through the container, with BoneDoc operating in a client-server architecture.
+This setup allows you to perform analyses either locally or within the container. BoneDoc operates in a client-server architecture, providing flexibility for various use cases.
 
 ### BoneHost
 
