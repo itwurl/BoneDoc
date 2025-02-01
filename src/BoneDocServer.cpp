@@ -81,7 +81,7 @@ void BoneDocServer::session(ip::tcp::socket socket)
         std::string dataset = headers["Dataset"];
 
         if (!anatomy.empty() && study == "Thesis") {
-            fs::path dataDir = BONEDOC_WORKING_DIR / "data";
+            fs::path dataDir = BONEDOC_WORKING_DIR / "Data";
             fs::path anatomicalMeshPath = dataDir / (dataset + ".vtk");
             fs::path anatomicallandmarksPath = dataDir / (dataset + "-landmarks.csv");
 
