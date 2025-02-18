@@ -109,8 +109,8 @@ void BoneDocServer::session(ip::tcp::socket socket)
                 responseStream << "Head Radius: " << roundToDecimalPlaces(humerus.head_radius, 1) << " mm\n";
                 responseStream << "Inclination: " << roundToDecimalPlaces(humerus.inclination, 1) << "°\n";
                 responseStream << "Retroversion: " << roundToDecimalPlaces(humerus.retroversion, 1) << "°\n";
-                responseStream << "Asian: " << roundToDecimalPlaces(femur.asian, 1) << "%\n";
-                responseStream << "Caucasian: " << roundToDecimalPlaces(femur.caucasian, 1) << "%\n";
+                responseStream << "Asian: " << roundToDecimalPlaces(humerus.asian, 1) << "%\n";
+                responseStream << "Caucasian: " << roundToDecimalPlaces(humerus.caucasian, 1) << "%\n";
             } else if (anatomy == "Tibia") {
                 Tibia tibia(anatomicalMeshPath.string(), anatomicallandmarksPath.string());
                 tibia.Thesis();
@@ -120,8 +120,8 @@ void BoneDocServer::session(ip::tcp::socket socket)
                 responseStream << "ML Width: " << roundToDecimalPlaces(tibia.ML_width, 1)  << " mm\n";
                 responseStream << "AP Width: " << roundToDecimalPlaces(tibia.AP_width, 1)  << " mm\n";
                 responseStream << "Torsion: " << roundToDecimalPlaces(tibia.torsion, 1)  << "°\n";
-                responseStream << "Asian: " << roundToDecimalPlaces(femur.asian, 1) << "%\n";
-                responseStream << "Caucasian: " << roundToDecimalPlaces(femur.caucasian, 1) << "%\n";
+                responseStream << "Asian: " << roundToDecimalPlaces(tibia.asian, 1) << "%\n";
+                responseStream << "Caucasian: " << roundToDecimalPlaces(tibia.caucasian, 1) << "%\n";
             } else {
                 responseStream << "Error: Unsupported anatomy type\n";
             }
