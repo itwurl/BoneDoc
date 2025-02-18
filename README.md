@@ -34,8 +34,8 @@ ap width     27.13mm
 head radius  21.38mm
 inclination  130.96mm
 anteversion  17.32mm
-asians       92%
-caucasians   8%
+asian        92%
+caucasian    8%
 ```
 
 ### Docker Image
