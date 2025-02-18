@@ -170,8 +170,8 @@ void Femur::Thesis()
 			<< "head radius" << "\t" << head_radius << "mm\n"
 			<< "inclination" << "\t" << inclination << "mm\n"
 			<< "anteversion" << "\t" << anteversion << "mm\n"
-			<< "asians" << "\t\t" << asian << "%\n"
-			<< "caucasians" << "\t" << caucasian << "%\n\n";
+			<< "asian" << "\t\t" << asian << "%\n"
+			<< "caucasian" << "\t" << caucasian << "%\n\n";
 }
 
 void Femur::PPFX()
