@@ -84,7 +84,7 @@ void Tibia::Thesis()
         << "lat. offset" << "\t" << lateral_offset << "mm\n"
         << "ml with" << "\t" << ML_width << "mm\n"
         << "ap width" << "\t" << AP_width << "mm\n"
-        << "asians" << "\t" << asian << "%\n"
+        << "asian" << "\t" << asian << "%\n"
         << "caucasian" << "\t" << caucasian << "%\n\n";
 
 }

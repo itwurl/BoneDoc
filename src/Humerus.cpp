@@ -111,7 +111,7 @@ void Humerus::Thesis()
         << "head radius" << "\t" << head_radius << "mm\n"
         << "inclination" << "\t" << inclination << "mm\n"
         << "retroversion" << "\t" << retroversion << "mm\n"
-        << "asians" << "\t" << asian << "%\n"
+        << "asian" << "\t" << asian << "%\n"
         << "caucasian" << "\t" << caucasian << "%\n\n";
 
 }
