@@ -13,7 +13,7 @@ RUN apt-get update && apt-get install -y \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
-RUN git clone https://github.com/alexander-wurl/BoneDoc.git /workdir/BoneDoc
+RUN git clone https://github.com/itwurl/BoneDoc.git /workdir/BoneDoc
 WORKDIR /workdir/BoneDoc
 
 RUN cmake .
