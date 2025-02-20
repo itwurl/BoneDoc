@@ -10,7 +10,7 @@ Running as a service, BoneDoc listens on port 61180 by default, whether it is ex
 Ensure that your system is up to date and that a C++ compiler is installed. BoneDoc needs to be compiled from source using [CMake](https://cmake.org/) workflow, considering dependencies [VTK](http://www.vtk.org) and [Boost](http://www.boost.org). Then clone the repository and use CMake to configure and build the project.
 
 ```
-git clone https://github.com/alexander-wurl/BoneDoc.git .
+git clone https://github.com/itwurl/BoneDoc.git .
 cmake .
 cmake --build .
 ```
@@ -58,4 +58,4 @@ BoneHost implements a client-server architecture, utilizing BoneDoc as a microse
 
 * [Statismo](https://github.com/statismo/statismo): Is a C++ framework for statistical shape modeling.
 
-* [Scalismo](http://github.com/unibas-gravis/scalismo): Written in [Scala](http://www.scala-lang.org/), shares concepts with Statismo and was developed by the same team.
+* [Scalismo](http://hub.com/unibas-gravis/scalismo): Written in [Scala](http://www.scala-lang.org/), shares concepts with Statismo and was developed by the same team.
