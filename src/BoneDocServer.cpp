@@ -43,7 +43,6 @@ void BoneDocServer::Start()
     std::cout << "Server closed." << std::endl;
 }
 
-
 void BoneDocServer::session(ip::tcp::socket socket)
 {
     try {
@@ -88,12 +87,12 @@ void BoneDocServer::session(ip::tcp::socket socket)
             if (anatomy == "Femur") {
                 Femur femur(anatomicalMeshPath.string(), anatomicallandmarksPath.string());
                 femur.Thesis();
-                responseStream << "Bone Length: " << roundToDecimalPlaces(femur.bone_length, 1) << " mm\n";
-                responseStream << "Medial Offset: " << roundToDecimalPlaces(femur.medial_offset, 1) << " mm\n";
-                responseStream << "Lateral Offset: " << roundToDecimalPlaces(femur.lateral_offset, 1) << " mm\n";
-                responseStream << "ML Width: " << roundToDecimalPlaces(femur.ML_width, 1) << " mm\n";
-                responseStream << "AP Width: " << roundToDecimalPlaces(femur.AP_width, 1) << " mm\n";
-                responseStream << "Head Radius: " << roundToDecimalPlaces(femur.head_radius, 1) << " mm\n";
+                responseStream << "Bone Length: " << roundToDecimalPlaces(femur.bone_length, 1) << "mm\n";
+                responseStream << "Medial Offset: " << roundToDecimalPlaces(femur.medial_offset, 1) << "mm\n";
+                responseStream << "Lateral Offset: " << roundToDecimalPlaces(femur.lateral_offset, 1) << "mm\n";
+                responseStream << "ML Width: " << roundToDecimalPlaces(femur.ML_width, 1) << "mm\n";
+                responseStream << "AP Width: " << roundToDecimalPlaces(femur.AP_width, 1) << "mm\n";
+                responseStream << "Head Radius: " << roundToDecimalPlaces(femur.head_radius, 1) << "mm\n";
                 responseStream << "Inclination: " << roundToDecimalPlaces(femur.inclination, 1) << "°\n";
                 responseStream << "Anteversion: " << roundToDecimalPlaces(femur.anteversion, 1) << "°\n";
                 responseStream << "Asian: " << roundToDecimalPlaces(femur.asian, 1) << "%\n";
@@ -101,12 +100,12 @@ void BoneDocServer::session(ip::tcp::socket socket)
             } else if (anatomy == "Humerus") {
                 Humerus humerus(anatomicalMeshPath.string(), anatomicallandmarksPath.string());
                 humerus.Thesis();
-                responseStream << "Bone Length: " << roundToDecimalPlaces(humerus.bone_length, 1) << " mm\n";
-                responseStream << "Medial Offset: " << roundToDecimalPlaces(humerus.medial_offset, 1) << " mm\n";
-                responseStream << "Lateral Offset: " << roundToDecimalPlaces(humerus.lateral_offset, 1) << " mm\n";
-                responseStream << "ML Width: " << roundToDecimalPlaces(humerus.ML_width, 1) << " mm\n";
-                responseStream << "AP Width: " << roundToDecimalPlaces(humerus.AP_width, 1) << " mm\n";
-                responseStream << "Head Radius: " << roundToDecimalPlaces(humerus.head_radius, 1) << " mm\n";
+                responseStream << "Bone Length: " << roundToDecimalPlaces(humerus.bone_length, 1) << "mm\n";
+                responseStream << "Medial Offset: " << roundToDecimalPlaces(humerus.medial_offset, 1) << "mm\n";
+                responseStream << "Lateral Offset: " << roundToDecimalPlaces(humerus.lateral_offset, 1) << "mm\n";
+                responseStream << "ML Width: " << roundToDecimalPlaces(humerus.ML_width, 1) << "mm\n";
+                responseStream << "AP Width: " << roundToDecimalPlaces(humerus.AP_width, 1) << "mm\n";
+                responseStream << "Head Radius: " << roundToDecimalPlaces(humerus.head_radius, 1) << "mm\n";
                 responseStream << "Inclination: " << roundToDecimalPlaces(humerus.inclination, 1) << "°\n";
                 responseStream << "Retroversion: " << roundToDecimalPlaces(humerus.retroversion, 1) << "°\n";
                 responseStream << "Asian: " << roundToDecimalPlaces(humerus.asian, 1) << "%\n";
@@ -114,11 +113,11 @@ void BoneDocServer::session(ip::tcp::socket socket)
             } else if (anatomy == "Tibia") {
                 Tibia tibia(anatomicalMeshPath.string(), anatomicallandmarksPath.string());
                 tibia.Thesis();
-                responseStream << "Bone Length: " << roundToDecimalPlaces(tibia.bone_length, 1)  << " mm\n";
-                responseStream << "Medial Offset: " << roundToDecimalPlaces(tibia.medial_offset, 1)  << " mm\n";
-                responseStream << "Lateral Offset: " << roundToDecimalPlaces(tibia.lateral_offset, 1)  << " mm\n";
-                responseStream << "ML Width: " << roundToDecimalPlaces(tibia.ML_width, 1)  << " mm\n";
-                responseStream << "AP Width: " << roundToDecimalPlaces(tibia.AP_width, 1)  << " mm\n";
+                responseStream << "Bone Length: " << roundToDecimalPlaces(tibia.bone_length, 1)  << "mm\n";
+                responseStream << "Medial Offset: " << roundToDecimalPlaces(tibia.medial_offset, 1)  << "mm\n";
+                responseStream << "Lateral Offset: " << roundToDecimalPlaces(tibia.lateral_offset, 1)  << "mm\n";
+                responseStream << "ML Width: " << roundToDecimalPlaces(tibia.ML_width, 1)  << "mm\n";
+                responseStream << "AP Width: " << roundToDecimalPlaces(tibia.AP_width, 1)  << "mm\n";
                 responseStream << "Torsion: " << roundToDecimalPlaces(tibia.torsion, 1)  << "°\n";
                 responseStream << "Asian: " << roundToDecimalPlaces(tibia.asian, 1) << "%\n";
                 responseStream << "Caucasian: " << roundToDecimalPlaces(tibia.caucasian, 1) << "%\n";
