@@ -51,6 +51,7 @@ docker run -d -p 61180:61180 --name bonedoc itwurl/bonedoc:1.0
 
 Once the container is running locally, you can test the BoneDoc REST service with a simple curl request:
 
+```
 curl -X GET "http://localhost:61180" \
   -H "Dataset: HumerusRightMaleC" \
   -H "Anatomy: Humerus" \
@@ -58,6 +59,7 @@ curl -X GET "http://localhost:61180" \
   -H "Gender: Male" \
   -H "EthnicGroup: Caucasian" \
   -H "Study: Thesis"
+```
 
 ### Response:
 
