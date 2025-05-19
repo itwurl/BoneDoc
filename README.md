@@ -47,6 +47,33 @@ docker pull itwurl/bonedoc:1.0
 docker run -d -p 61180:61180 --name bonedoc itwurl/bonedoc:1.0
 ```
 
+### Test the BoneDoc API
+
+Once the container is running locally, you can test the BoneDoc REST service with a simple curl request:
+
+curl -X GET "http://localhost:61180" \
+  -H "Dataset: HumerusRightMaleC" \
+  -H "Anatomy: Humerus" \
+  -H "Side: Right" \
+  -H "Gender: Male" \
+  -H "EthnicGroup: Caucasian" \
+  -H "Study: Thesis"
+
+### Response:
+
+```
+Bone Length: 328mm
+Medial Offset: 21.2mm
+Lateral Offset: 23.2mm
+ML Width: 24.8mm
+AP Width: 19.5mm
+Head Radius: 25.6mm
+Inclination: 121.9°
+Retroversion: 20.8°
+Asian: 1%
+Caucasian: 99%
+```
+
 This setup allows you to perform analyses either locally or within the container. BoneDoc operates in a client-server architecture, providing flexibility for various use cases.
 
 ### BoneHost
