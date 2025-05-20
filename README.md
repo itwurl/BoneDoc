@@ -23,21 +23,6 @@ To run the binary and perform analysis, two arguments are required: the path to 
 
 After analysis, results are printed, showing anatomical parameters and the predicted ethnic group based on the provided data.
 
-```
-calculated parameters
-—————————————————————
-bone length  407.21mm
-med. offset  24.60mm
-lat. offset  18.61mm
-ml width     29.79mm
-ap width     27.13mm
-head radius  21.38mm
-inclination  130.96mm
-anteversion  17.32mm
-asian        92%
-caucasian    8%
-```
-
 ### Docker Image
 
 Instead of running BoneDoc as a standalone binary via the command line, you can use the pre-built Docker image from Docker Hub and start a container:
@@ -61,7 +46,7 @@ curl -X GET "http://localhost:61180" \
   -H "Study: Thesis"
 ```
 
-### Response:
+### Expected response:
 
 ```
 Bone Length: 328mm
