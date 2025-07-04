@@ -76,12 +76,17 @@ void BoneDocServer::session(ip::tcp::socket socket)
             }
         }
 
-        // Header-Daten abrufen
+        // Header-Daten abrufen und validieren
         std::string anatomy = headers["Anatomy"];
         std::string study = headers["Study"];
         std::string dataset = headers["Dataset"];
 
-        if (!anatomy.empty() && study == "Thesis") {
+        // Validate dataset format (should contain anatomy + gender + identifier)
+        if (!dataset.empty() && dataset.find(anatomy) == std::string::npos) {
+            dataset = anatomy + dataset; // Prepend anatomy if missing
+        }
+
+        if (!anatomy.empty() && study == "Thesis" && !dataset.empty()) {
             fs::path dataDir = BONEDOC_WORKING_DIR / "Data";
             fs::path anatomicalMeshPath = dataDir / (dataset + ".vtk");
             fs::path anatomicallandmarksPath = dataDir / (dataset + "-landmarks.csv");
