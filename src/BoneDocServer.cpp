@@ -89,14 +89,36 @@ void BoneDocServer::session(ip::tcp::socket socket)
         std::string gender = headers["Gender"];
         std::string identifier = headers["EthnicGroup"];
 
-        // Construct complete dataset name if not fully provided
-        if (!dataset.empty() && dataset.find(anatomy) == std::string::npos) {
-            dataset = anatomy + dataset;
+        // Handle Opera Mobile's different header format
+        std::string userAgent = headers["User-Agent"];
+        bool isOperaMobile = userAgent.find("OPR/") != std::string::npos;
+
+        // Construct dataset name based on browser
+        if (isOperaMobile) {
+            // For Opera Mobile, use simplified format (Anatomy+Side+Gender+First letter of EthnicGroup)
+            if (!dataset.empty() && dataset.find(anatomy) == std::string::npos) {
+                dataset = anatomy + dataset;
+            }
+            if (!gender.empty() && !identifier.empty()) {
+                dataset += gender + identifier.substr(0, 1); // Just first letter of ethnic group
+            }
+        } else {
+            // Normal browser handling
+            if (!dataset.empty() && dataset.find(anatomy) == std::string::npos) {
+                dataset = anatomy + dataset;
+            }
+            if (!gender.empty() && !identifier.empty() && 
+                dataset.find(gender) == std::string::npos &&
+                dataset.find(identifier) == std::string::npos) {
+                dataset += gender + identifier;
+            }
         }
-        if (!gender.empty() && !identifier.empty() && 
-            dataset.find(gender) == std::string::npos &&
-            dataset.find(identifier) == std::string::npos) {
-            dataset += gender + identifier;
+
+        // Final validation
+        if (dataset.empty()) {
+            responseStream << "Error: Missing dataset information\n";
+            boost::asio::write(socket, boost::asio::buffer(responseStream.str()));
+            return;
         }
         std::cerr << "Using dataset: " << dataset << "\n";
 
