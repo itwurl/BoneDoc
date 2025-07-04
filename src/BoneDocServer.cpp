@@ -89,30 +89,17 @@ void BoneDocServer::session(ip::tcp::socket socket)
         std::string gender = headers["Gender"];
         std::string identifier = headers["EthnicGroup"];
 
-        // Handle Opera Mobile's different header format
-        std::string userAgent = headers["User-Agent"];
-        bool isOperaMobile = userAgent.find("OPR/") != std::string::npos;
-
-        // Construct dataset name based on browser
-        if (isOperaMobile) {
-            // For Opera Mobile, use simplified format (Anatomy+Side+Gender+First letter of EthnicGroup)
-            if (!dataset.empty() && dataset.find(anatomy) == std::string::npos) {
-                dataset = anatomy + dataset;
-            }
-            if (!gender.empty() && !identifier.empty()) {
-                dataset += gender + identifier.substr(0, 1); // Just first letter of ethnic group
-            }
+        // Build dataset name in exact expected format: Anatomy+Side+Gender+FirstLetterOfEthnicGroup
+        std::string side = headers["Side"];
+        if (!dataset.empty() && dataset == (anatomy + side + gender + identifier.substr(0, 1))) {
+            // Dataset header is already in correct format
         } else {
-            // Normal browser handling
-            if (!dataset.empty() && dataset.find(anatomy) == std::string::npos) {
-                dataset = anatomy + dataset;
-            }
-            if (!gender.empty() && !identifier.empty() && 
-                dataset.find(gender) == std::string::npos &&
-                dataset.find(identifier) == std::string::npos) {
-                dataset += gender + identifier;
-            }
+            // Construct from components
+            dataset = anatomy + side + gender + identifier.substr(0, 1);
         }
+        
+        // Log final dataset name for debugging
+        std::cerr << "Final dataset name: " << dataset << "\n";
 
         // Final validation
         if (dataset.empty()) {
