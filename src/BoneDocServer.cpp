@@ -66,11 +66,13 @@ void BoneDocServer::session(ip::tcp::socket socket)
         // Header lesen und aufteilen
         while (std::getline(requestStream, header) && header != "\r") {
             auto delimiterPos = header.find(":");
-            if (delimiterPos != std::string::npos) {
+            if (delimiterPos != std::string::npos && delimiterPos + 2 < header.length()) {
                 std::string key = header.substr(0, delimiterPos);
                 std::string value = header.substr(delimiterPos + 2); // ": " überspringen
                 value.erase(value.find_last_not_of("\r\n") + 1);     // Entferne "\r\n"
                 headers[key] = value;
+            } else {
+                std::cerr << "Warning: Malformed header - " << header << std::endl;
             }
         }
 
