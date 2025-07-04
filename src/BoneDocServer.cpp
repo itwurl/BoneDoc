@@ -76,15 +76,29 @@ void BoneDocServer::session(ip::tcp::socket socket)
             }
         }
 
+        // Debug log all received headers
+        std::cerr << "Received Headers:\n";
+        for (const auto& [key, value] : headers) {
+            std::cerr << key << ": " << value << "\n";
+        }
+
         // Header-Daten abrufen und validieren
         std::string anatomy = headers["Anatomy"];
         std::string study = headers["Study"];
         std::string dataset = headers["Dataset"];
+        std::string gender = headers["Gender"];
+        std::string identifier = headers["EthnicGroup"];
 
-        // Validate dataset format (should contain anatomy + gender + identifier)
+        // Construct complete dataset name if not fully provided
         if (!dataset.empty() && dataset.find(anatomy) == std::string::npos) {
-            dataset = anatomy + dataset; // Prepend anatomy if missing
+            dataset = anatomy + dataset;
         }
+        if (!gender.empty() && !identifier.empty() && 
+            dataset.find(gender) == std::string::npos &&
+            dataset.find(identifier) == std::string::npos) {
+            dataset += gender + identifier;
+        }
+        std::cerr << "Using dataset: " << dataset << "\n";
 
         if (!anatomy.empty() && study == "Thesis" && !dataset.empty()) {
             fs::path dataDir = BONEDOC_WORKING_DIR / "Data";
